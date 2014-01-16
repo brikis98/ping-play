@@ -5,11 +5,9 @@
 GET        /mock/:serviceName        controllers.Mock.mock(serviceName: String)
 
 GET        /wvyu                     controllers.Wvyu.index(embed: Boolean ?= false)
+
 GET        /wvyp                     controllers.Wvyp.index(embed: Boolean ?= false)
-
 GET        /aggregate                controllers.Aggregator.index
-
-GET        /enumerator               controllers.Enum.index
 GET        /stream                   controllers.WvypStream.index
 
 # Map static resources from the /public folder to the /assets URL path

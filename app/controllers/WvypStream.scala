@@ -6,10 +6,14 @@ import ui.{HtmlStream, Pagelet}
 import ui.HtmlStreamImplicits._
 import play.api.libs.concurrent.Execution.Implicits._
 
+/**
+ * An example standalone module that represents the "Who's Viewed Your Profile" module from the LinkedIn homepage.
+ * It's identical to the Wvyp controller, except that the data is streamed to the browser as soon as it's available in
+ * small "pagelets", similar to Facebook's BigPipe.
+ */
 object WvypStream extends Controller {
 
   def index = Action {
-
     val wvypCountFuture = ServiceClient.makeServiceCall("wvyp")
     val searchCountFuture = ServiceClient.makeServiceCall("search")
 

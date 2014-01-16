@@ -5,6 +5,11 @@ import scala.concurrent.Future
 import play.api.libs.concurrent.Promise
 import play.api.libs.concurrent.Execution.Implicits._
 
+/**
+ * Instead of calling real remote services, the examples in this app call this mock endpoint, which lets us control
+ * the data returned and the service's latency. To keep the examples simple, we return simple strings or numbers as
+ * data; obviously, a real service would return something more complicated, like JSON.
+ */
 object Mock extends Controller {
 
   def mock(serviceName: String) = Action.async {

@@ -4,6 +4,9 @@ import play.api.mvc.{Action, Controller}
 import play.api.libs.concurrent.Execution.Implicits._
 import ui.Pagelet
 
+/**
+ * This controller shows an example of composing together the results of two other controllers togheter: Wvyp and Wvyu.
+ */
 object Aggregator extends Controller {
 
   def index = Action.async { request =>

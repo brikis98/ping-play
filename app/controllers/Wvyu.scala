@@ -4,6 +4,9 @@ import play.api.mvc.{Action, Controller}
 import data.ServiceClient
 import play.api.libs.concurrent.Execution.Implicits._
 
+/**
+ * An example standalone module that represents the "Who's Viewed Your Updates" module from the LinkedIn homepage.
+ */
 object Wvyu extends Controller {
 
   def index(embed: Boolean) = Action.async {
