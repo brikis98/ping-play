@@ -1,7 +1,8 @@
 # Ping-Play
 
-This is a sample app for the "Composable and streaming Play apps" talk at
-[Ping Conference 2014](http://www.ping-conf.com/). The slides for the talk will be posted on SlideShare soon.
+This is a sample app for the
+[Composable and streamable Play apps](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps) talk at
+[Ping Conference 2014](http://www.ping-conf.com/).
 
 The code shows some examples of how to:
 
