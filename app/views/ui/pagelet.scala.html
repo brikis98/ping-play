@@ -1,0 +1,9 @@
+@(contents: Html, id: String)
+
+<script type="text/html-stream" id="@id-contents">
+  @contents
+</script>
+
+<script type="text/javascript">
+  document.getElementById("@id").innerHTML = document.getElementById("@id-contents").innerHTML;
+</script>
