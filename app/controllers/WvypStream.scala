@@ -22,6 +22,6 @@ object WvypStream extends Controller {
 
     val body = HtmlStream.interleave(wvypStream, searchStream)
 
-    Ok.feed(views.stream.wvyp.wvyp(body))
+    Ok.chunked(views.stream.wvyp.wvyp(body))
   }
 }
