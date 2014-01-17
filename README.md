@@ -2,7 +2,7 @@
 
 This is a sample app for the
 [Composable and streamable Play apps](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps) talk at
-[Ping Conference 2014](http://www.ping-conf.com/).
+[Ping Conference 2014](http://www.ping-conf.com/). A recording of the talk, which includes live coding demos with this sample app, is available on [ustream](http://www.ustream.tv/recorded/42801129).
 
 The code shows some examples of how to:
 
