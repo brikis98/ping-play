@@ -10,3 +10,6 @@ play.Keys.templatesTypes ++= Map("stream" -> "ui.HtmlStreamFormat")
 // Add some useful default imports for streaming templates
 play.Keys.templatesImport ++= Vector("_root_.ui.HtmlStream", "_root_.ui.HtmlStream._", "_root_.ui.StaticContent")
 
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-java" % play.core.PlayVersion.current
+)

@@ -1,11 +1,14 @@
 package ui
 
-import play.api.libs.iteratee.{Enumeratee, Enumerator}
+import play.api.libs.iteratee.{Iteratee, Enumeratee, Enumerator}
 import play.api.templates.{HtmlFormat, Html}
 import play.templates.{Format, Appendable}
 import scala.concurrent.Future
-import play.api.mvc.SimpleResult
+import play.api.mvc.{Codec, SimpleResult}
 import play.api.libs.concurrent.Execution.Implicits._
+import play.mvc.Results.Chunks.Out
+import play.api.http.{Writeable, ContentTypeOf}
+import play.mvc.Results.Chunks
 
 /**
  * A custom Appendable that lets us have .scala.stream templates instead of .scala.html. These templates can mix Html
@@ -93,6 +96,38 @@ object HtmlStream {
    */
   def flatten(eventuallyStream: Future[HtmlStream]): HtmlStream = {
     HtmlStream(Enumerator.flatten(eventuallyStream.map(_.enumerator)))
+  }
+
+  /**
+   * Java API. Provides a convenience method for interleaving streams from a Java controller that doesn't rely on
+   * scala's Seq
+   *
+   * @param streams
+   * @return
+   */
+  def interleave(streams: java.util.List[HtmlStream]): HtmlStream = {
+    import collection.JavaConverters._
+    HtmlStream(Enumerator.interleave(streams.asScala.map(_.enumerator)))
+  }
+
+  /**
+   * Java API. Creates a Chunks object that can be returned from a Java controller to stream out the HtmlStream.
+   *
+   * @param stream
+   * @return
+   */
+  def toChunks(stream: HtmlStream): Chunks[Html] = {
+    val utf8 = Codec.javaSupported("utf-8")
+
+    new Chunks[Html](Writeable.writeableOf_Content(utf8, ContentTypeOf.contentTypeOf_Html(utf8))) {
+      def onReady(out: Out[Html]) {
+        stream.enumerator.run(Iteratee.foreach { html =>
+          if (!html.toString.isEmpty) {
+            out.write(html)
+          }
+        }).onComplete(_ => out.close())
+      }
+    }
   }
 }
 

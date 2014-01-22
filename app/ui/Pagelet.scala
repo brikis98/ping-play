@@ -6,6 +6,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.mvc.{Cookie, Cookies, Codec, SimpleResult}
 import play.api.libs.iteratee.Iteratee
 import play.api.http.HeaderNames
+import play.libs.F.Promise
 
 /**
  * Helpers for working with small "pieces" of pages.
@@ -67,5 +68,17 @@ object Pagelet {
    */
   def renderStream(htmlFuture: Future[Html], id: String): HtmlStream = {
     HtmlStream.flatten(htmlFuture.map(html => renderStream(html, id)))
+  }
+
+  /**
+   * Java API. Wrap the given Html in a script tag that will inject the Html into the DOM node with the given id.
+   * Returns an HtmlStream that can be used in a .scala.stream template.
+   *
+   * @param htmlPromise
+   * @param id
+   * @return
+   */
+  def renderStream(htmlPromise: Promise[Html], id: String): HtmlStream = {
+    renderStream(htmlPromise.wrapped(), id)
   }
 }
