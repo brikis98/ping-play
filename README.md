@@ -26,3 +26,7 @@ The main example code to look:
 2. `app/controllers/Aggregator` shows how these modules can be combined to build a more complicated module.
 3. `app/controllers/WvypStream` shows how to stream the contents of a module using a BigPipe approach.
 4. `app/ui` contains reusable library for composing modules and streaming HTML.
+
+# License
+
+This code is available under the MIT license. See the LICENSE file for more info.
