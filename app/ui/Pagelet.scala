@@ -1,9 +1,9 @@
 package ui
 
-import play.api.templates.Html
+import play.twirl.api.Html
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.mvc.{Cookie, Cookies, Codec, SimpleResult}
+import play.api.mvc.{Cookie, Cookies, Codec, Result}
 import play.api.libs.iteratee.Iteratee
 import play.api.http.HeaderNames
 import play.libs.F.Promise
@@ -14,14 +14,14 @@ import play.libs.F.Promise
 object Pagelet {
 
   /**
-   * Read the body of a SimpleResult as Html. Since the body is an Enumerator and may not be available yet, this method
+   * Read the body of a Result as Html. Since the body is an Enumerator and may not be available yet, this method
    * returns a Future.
    *
    * @param result
    * @param codec
    * @return
    */
-  def readBody(result: SimpleResult)(implicit codec: Codec): Future[Html] = {
+  def readBody(result: Result)(implicit codec: Codec): Future[Html] = {
     result.body.run(Iteratee.consume()).map(bytes => Html(new String(bytes, codec.charset)))
   }
 
@@ -31,7 +31,7 @@ object Pagelet {
    * @param results
    * @return
    */
-  def mergeCookies(results: SimpleResult*): Seq[Cookie] = {
+  def mergeCookies(results: Result*): Seq[Cookie] = {
     results.flatMap(result => result.header.headers.get(HeaderNames.SET_COOKIE).map(Cookies.decode).getOrElse(Seq.empty))
   }
 

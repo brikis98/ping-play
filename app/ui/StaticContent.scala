@@ -1,7 +1,7 @@
 package ui
 
-import play.api.mvc.SimpleResult
-import play.api.templates.Html
+import play.api.mvc.Result
+import play.twirl.api.Html
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 
@@ -29,7 +29,7 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeCssHeaders(results: SimpleResult*): Seq[String] = {
+  def mergeCssHeaders(results: Result*): Seq[String] = {
     mergeHeaderValues(cssHeaderName, parseCssHeader, results:_*)
   }
 
@@ -39,11 +39,11 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeJsHeaders(results: SimpleResult*): Seq[String] = {
+  def mergeJsHeaders(results: Result*): Seq[String] = {
     mergeHeaderValues(jsHeaderName, parseJsHeader, results:_*)
   }
 
-  private def mergeHeaderValues(headerName: String, parseHeader: SimpleResult => Seq[String], results: SimpleResult*): Seq[String] = {
+  private def mergeHeaderValues(headerName: String, parseHeader: Result => Seq[String], results: Result*): Seq[String] = {
     results.flatMap(parseHeader).distinct
   }
 
@@ -53,7 +53,7 @@ object StaticContent {
    * @param result
    * @return
    */
-  def parseCssHeader(result: SimpleResult): Seq[String] = parseHeader(cssHeaderName, result)
+  def parseCssHeader(result: Result): Seq[String] = parseHeader(cssHeaderName, result)
 
   /**
    * Read the JS header from the given Result, which should define the CSS dependencies for the Result
@@ -61,7 +61,7 @@ object StaticContent {
    * @param result
    * @return
    */
-  def parseJsHeader(result: SimpleResult): Seq[String] = parseHeader(jsHeaderName, result)
+  def parseJsHeader(result: Result): Seq[String] = parseHeader(jsHeaderName, result)
 
   /**
    * Render the given sequence of CSS URLs as link tags
@@ -85,7 +85,7 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeJsFromResults(results: Future[SimpleResult]*): HtmlStream = {
+  def mergeJsFromResults(results: Future[Result]*): HtmlStream = {
     mergeDependenciesFromResults(parseJsHeader, renderJsDependencies, results)
   }
 
@@ -95,15 +95,15 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeCssFromResults(results: Future[SimpleResult]*): HtmlStream = {
+  def mergeCssFromResults(results: Future[Result]*): HtmlStream = {
     mergeDependenciesFromResults(parseCssHeader, renderCssDependencies, results)
   }
 
-  private def parseHeader(headerName: String, result: SimpleResult): Seq[String] = {
+  private def parseHeader(headerName: String, result: Result): Seq[String] = {
     result.header.headers.get(headerName).map(_.split(",").toVector).getOrElse(Vector.empty)
   }
 
-  private def mergeDependenciesFromResults(parseHeader: SimpleResult => Seq[String], render: Seq[String] => Html, resultFutures: Seq[Future[SimpleResult]]): HtmlStream = {
+  private def mergeDependenciesFromResults(parseHeader: Result => Seq[String], render: Seq[String] => Html, resultFutures: Seq[Future[Result]]): HtmlStream = {
     val allResultsFuture = Future.sequence(resultFutures)
 
     val htmlFuture = allResultsFuture.map { results =>

@@ -1,14 +1,15 @@
 package ui
 
 import play.api.libs.iteratee.{Iteratee, Enumeratee, Enumerator}
-import play.api.templates.{HtmlFormat, Html}
-import play.templates.{Format, Appendable}
+import play.twirl.api.{HtmlFormat, Html}
+import play.twirl.api.{Format, Appendable}
 import scala.concurrent.Future
-import play.api.mvc.{Codec, SimpleResult}
+import play.api.mvc.{Codec, Result}
 import play.api.libs.concurrent.Execution.Implicits._
 import play.mvc.Results.Chunks.Out
 import play.api.http.{Writeable, ContentTypeOf}
 import play.mvc.Results.Chunks
+import scala.language.implicitConversions
 
 /**
  * A custom Appendable that lets us have .scala.stream templates instead of .scala.html. These templates can mix Html
@@ -58,22 +59,22 @@ object HtmlStream {
   }
 
   /**
-   * Create an HtmlStream from the body of the SimpleResult.
+   * Create an HtmlStream from the body of the Result.
    *
    * @param result
    * @return
    */
-  def fromResult(result: SimpleResult): HtmlStream = {
+  def fromResult(result: Result): HtmlStream = {
     HtmlStream(result.body.map(bytes => Html(new String(bytes, "UTF-8"))))
   }
 
   /**
-   * Create an HtmlStream from a the body of a Future[SimpleResult].
+   * Create an HtmlStream from a the body of a Future[Result].
    *
    * @param result
    * @return
    */
-  def fromResult(result: Future[SimpleResult]): HtmlStream = {
+  def fromResult(result: Future[Result]): HtmlStream = {
     flatten(result.map(fromResult))
   }
 
@@ -144,6 +145,11 @@ object HtmlStreamFormat extends Format[HtmlStream] {
   def escape(text: String): HtmlStream = {
     raw(HtmlFormat.escape(text).body)
   }
+  
+  def empty: HtmlStream = HtmlStream("")
+  
+  def fill(elements: scala.collection.immutable.Seq[HtmlStream]): HtmlStream = HtmlStream.interleave(elements:_*)
+  
 }
 
 /**
