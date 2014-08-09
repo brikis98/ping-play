@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{Controller, SimpleResult, Action}
+import play.api.mvc.{Controller, Result, Action}
 import scala.concurrent.Future
 import play.api.libs.concurrent.Promise
 import play.api.libs.concurrent.Execution.Implicits._
@@ -22,7 +22,7 @@ object Mock extends Controller {
 
   }
 
-  private def respond(data: String, delay: Long): Future[SimpleResult] = {
+  private def respond(data: String, delay: Long): Future[Result] = {
     Promise.timeout(Ok(data), delay)
   }
 }

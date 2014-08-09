@@ -1,7 +1,7 @@
 package controllers;
 
 import data.ServiceClientJ;
-import play.api.templates.Html;
+import play.twirl.api.Html;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
