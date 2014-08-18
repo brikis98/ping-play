@@ -16,7 +16,7 @@ tossing it directly into production :)
 # How to run the app
 
 This is a standard [Play Framework](http://www.playframework.com/) app, built on Play 2.2.1. To run it,
-[install Play](http://www.playframework.com/download) and do `play run`.
+[install Play](http://www.playframework.com/download) and do `activator run`.
 
 # How to browse the code
 
