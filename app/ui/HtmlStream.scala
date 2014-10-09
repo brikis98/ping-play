@@ -18,8 +18,6 @@ import scala.language.implicitConversions
  * @param enumerator
  */
 case class HtmlStream(enumerator: Enumerator[Html]) extends Appendable[HtmlStream] {
-  def +=(other: HtmlStream): HtmlStream = andThen(other)
-
   def andThen(other: HtmlStream): HtmlStream = HtmlStream(enumerator.andThen(other.enumerator))
 }
 
@@ -148,7 +146,9 @@ object HtmlStreamFormat extends Format[HtmlStream] {
   
   def empty: HtmlStream = HtmlStream("")
   
-  def fill(elements: scala.collection.immutable.Seq[HtmlStream]): HtmlStream = HtmlStream.interleave(elements:_*)
+  def fill(elements: scala.collection.immutable.Seq[HtmlStream]): HtmlStream = {
+    elements.reduce((agg, curr) => agg.andThen(curr))
+  }
   
 }
 
