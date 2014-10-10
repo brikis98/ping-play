@@ -20,12 +20,12 @@ This is a standard [Play Framework](http://www.playframework.com/) app, built on
 
 # How to browse the code
 
-The main example code to look:
+The main example code to look at:
 
-1. `app/controllers/Wvyp` and `app/controllers/Wvyu` show a simple, standalone modules.
+1. `app/controllers/Wvyp` and `app/controllers/Wvyu` are examples of simple, standalone modules.
 2. `app/controllers/Aggregator` shows how these modules can be combined to build a more complicated module.
 3. `app/controllers/WvypStream` shows how to stream the contents of a module using a BigPipe approach.
-4. `app/ui` contains reusable library for composing modules and streaming HTML.
+4. `app/ui` a reusable library for composing modules and streaming HTML.
 
 # License
 
