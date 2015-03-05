@@ -31,6 +31,86 @@ The main example code to look at:
 
 To be able to use standalone endpoints, you need to de-dupe remote service calls, or you'll end up dramatically increasing the load on downstream dependencies. A bunch of people have asked, so here is an outline of how to de-dupe remote service calls in Play: https://gist.github.com/brikis98/761e4fa7404f6b9803bb
 
+# Safely injecting "pagelets"
+
+This method of injecting pagelets in `pagelet.scala.html` is **for demonstration purposes only**. I used it to keep the talk simple and to minimize dependencies in this code, but it's **not** a good idea to shove HTML directly into a script tag:
+
+```html
+<!-- Excerpt from pagelet.scala.html -->
+@(contents: Html, id: String)
+
+<script type="text/html-stream" id="@id-contents">
+  @contents
+</script>
+```
+If `contents` contains a closing `script` tag, your page will break. And if you're not careful about how you render `contents`, you may be opening yourself up for an injection attack.
+
+Instead of injecting server-side rendered HTML, a better approach is to inject JSON and to use a JavaScript templating technology (e.g. mustache, handlebars, dust, react, etc) to turn it into HTML in the browser. 
+
+To inject JSON safely, put it into a `code` tag wrapped in an HTML comment:
+
+```html
+<code id="my-data">
+<!--{"name": "Jim"}-->
+</code>
+```
+
+Note that you'll need to escape/unescape the double dash in the JSON so it can't break out of the comment block. You'll probably want an `escapeForEmbedding` function in Scala and an `unescapeForEmbedding` function in JavaScript, but I've written both in  JavaScript just to keep things simple:
+
+```javascript
+var ESC_FLAGS = "gi";
+var HTML_ENTITY = {
+  dsh: { escaped: '\\u002d\\u002d', unescaped: '--', escaped_re: '\\\\u002d\\\\u002d' }
+};
+
+function escapeForEmbedding(str) {
+  return str.replace(new RegExp(HTML_ENTITY.dsh.unescaped, ESC_FLAGS), HTML_ENTITY.dsh.escaped);
+}
+
+function unescapeForEmbedding(str) {
+  return str.replace(new RegExp(HTML_ENTITY.dsh.escaped_re, ESC_FLAGS), HTML_ENTITY.dsh.unescaped);
+}
+```  
+
+You can then use JavaScript to read the contents of the `code` block, strip the comments, and use `JSON.parse` to safely parse the JSON without exposing yourself to any sort of injection attack:
+
+```javascript
+function parseEmbeddedJson(domId) {
+  var contentElem = document.getElementById(domId);
+  var innerContent = contentElem.firstChild.nodeValue;
+  contentElem.parentNode.removeChild(contentElem);
+  return JSON.parse(unescapeForEmbedding(innerContent));
+}
+```
+
+You can pass this JSON to your favorite templating technology, render it, and inject it into the DOM. Here's an example using [Handlebars.js](http://handlebarsjs.com/):
+
+```javascript
+// You probably want to store your template in an external file
+var template = "Hello {{name}}"; 
+var json = parseEmbeddedJson("my-data");
+var html = Mustache.render(template, json);
+document.getElementById("some-dom-node").innerHTML = html;
+```
+
+Putting this all together, a better version of `pagelet.scala.html` would look something like this:
+
+```html
+@(data: Json, id: String)
+
+<code id="@id-data">
+  <!--@escapeForEmbedding(Json.stringify(data))-->
+</script>
+
+<script type="text/javascript">
+  // You probably want to store your template in an external file
+  var template = "Hello {{name}}"; 
+  var json = parseEmbeddedJson("@id-data");
+  var html = Mustache.render(template, json);
+  document.getElementById("@id").innerHTML = html;
+</script>
+```
+
 # License
 
 This code is available under the MIT license. See the LICENSE file for more info.
