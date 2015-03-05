@@ -29,9 +29,9 @@ The main example code to look at:
 
 # De-duping service calls
 
-To be able to use standalone endpoints, you need to de-dupe remote service calls, or you'll end up repeating the same calls over and over again in your controllers, which could significantly increase load on the remote endpoints. The basic idea behind de-duping is easy: store the `Future` objects your service calls return in a cache, and if the same service call is repeated, just return the cached `Future`.
+To be able to use standalone endpoints, you need to de-dupe remote service calls, or you'll end up repeating the same calls over and over again in your controllers, which could significantly increase load on the remote endpoints. The basic idea behind de-duping is easy: when you make a remote service call, store the `Future` it returns in a cache, and if the same service call is repeated, just return the cached `Future`.
 
-Here is an outline (ie, an untested, partial implementation) of a `RestClient` you can use to wrap Play's `WS` client with caching:
+Below is an outline (ie, an untested, partial implementation) of a `RestClient` you can use to wrap Play's `WS` client with caching. Note that it uses a `Cache` class (see [Cache.scala](https://gist.github.com/brikis98/5843195)), which is just a Scala-friendly wrapper of a `ConcurrentHashMap`. 
 
 ```scala
 // This is a client you use everywhere in your code to make REST requests. 
