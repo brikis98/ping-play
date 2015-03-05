@@ -131,7 +131,7 @@ object ExampleUsage extends Controller {
 
 # Safely injecting "pagelets"
 
-This method of injecting pagelets in `pagelet.scala.html` is **for demonstration purposes only**. I used it to keep the talk simple and to minimize dependencies in this code, but it's **not** a good idea to shove HTML directly into a script tag:
+The method I used to inject pagelets in `pagelet.scala.html` is **for demonstration purposes only**. I had to keep the talk short and I wanted to minimize dependencies in this repo, but it's **not** a good idea to shove HTML directly into a script tag:
 
 ```html
 <!-- Excerpt from pagelet.scala.html -->
