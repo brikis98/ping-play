@@ -27,6 +27,10 @@ The main example code to look at:
 3. `app/controllers/WvypStream` shows how to stream the contents of a module using a BigPipe approach.
 4. `app/ui` a reusable library for composing modules and streaming HTML.
 
+# De-duping service calls
+
+To be able to use standalone endpoints, you need to de-dupe remote service calls, or you'll end up dramatically increasing the load on downstream dependencies. A bunch of people have asked, so here is an outline of how to de-dupe remote service calls in Play: https://gist.github.com/brikis98/761e4fa7404f6b9803bb
+
 # License
 
 This code is available under the MIT license. See the LICENSE file for more info.
