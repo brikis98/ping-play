@@ -181,7 +181,7 @@ function parseEmbeddedJson(domId) {
 }
 ```
 
-You can pass this JSON to your favorite templating technology, render it, and inject it into the DOM. Here's an example using [Handlebars.js](http://handlebarsjs.com/):
+You can pass this JSON to your favorite templating technology, render it, and inject it into the DOM. Here's an example using [Mustache.js](https://github.com/janl/mustache.js/):
 
 ```javascript
 // You probably want to store your template in an external file
