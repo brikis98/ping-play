@@ -10,8 +10,8 @@ The code shows some examples of how to:
 2. A prototype of [Facebook's BigPipe](https://www.facebook.com/note.php?note_id=389414033919) for Play: that is,
 tools to break a page into "pagelets" and stream each pagelet to the browser as soon as the data is available.
 
-LinkedIn is using the composable endpoints and BigPipe streaming in product on its [new homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). However, the code in *this* repo is just for demonstration and education, and as there are no tests, I wouldn't recommend
-tossing it directly into production :)
+LinkedIn is using the composable endpoints and BigPipe streaming in production on its [new homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). However, the code in *this* repo is just for demonstration and education, and as there are no tests, I wouldn't recommend
+tossing it directly into your production environment :)
 
 # How to run the app
 
