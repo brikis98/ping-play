@@ -1,22 +1,21 @@
 # Ping-Play
 
-This is a sample app for the
-[Composable and streamable Play apps](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps) talk at
-[Ping Conference 2014](http://www.ping-conf.com/). A recording of the talk, which includes live coding demos with this sample app, is available on [ustream](http://www.ustream.tv/recorded/42801129).
+This is a sample [Play Framework](http://playframework.com/) application that shows how to:
 
-The code shows some examples of how to:
+1. **Compose standalone controllers** to build a more complex page from simpler parts.
+2. **Implement BigPipe-style streaming** so you can break a page into "pagelets" and stream each pagelet to the browser as soon as the data is available, dramatically reducing load times. See [Facebook BigPipe](https://www.facebook.com/note.php?note_id=389414033919) for more info.
 
-1. Compose standalone endpoints (controllers) to build a more complex page from simpler parts
-2. A prototype of [Facebook's BigPipe](https://www.facebook.com/note.php?note_id=389414033919) for Play: that is,
-tools to break a page into "pagelets" and stream each pagelet to the browser as soon as the data is available.
-
-LinkedIn is using the composable endpoints and BigPipe streaming in production on its [new homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). However, the code in *this* repo is just for demonstration and education, and as there are no tests, I wouldn't recommend
-tossing it directly into your production environment :)
+LinkedIn is using composable endpoints and BigPipe streaming in production on its [new homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). However, the code in *this* repo was built for a talk called *Composable and Streamable Play Apps* ([slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), [video](https://www.youtube.com/watch?v=4b1XLka0UIw)) at [Ping Conference 2014](http://www.ping-conf.com/), so it's just for demonstration and education purposes, and includes no tests.
 
 # How to run the app
 
 This is a standard [Play Framework](http://www.playframework.com/) app, built on Play 2.3.3. To run it,
 [install Play](http://www.playframework.com/download) and do `activator run`.
+
+# More info 
+
+* Composable and Streamable Play Apps: [slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), [video](https://www.youtube.com/watch?v=4b1XLka0UIw)
+* [Facebook BigPipe](https://www.facebook.com/note.php?note_id=389414033919)
 
 # How to browse the code
 
