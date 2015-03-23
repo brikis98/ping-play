@@ -4,19 +4,7 @@
 
 GET        /mock/:serviceName        controllers.Mock.mock(serviceName: String)
 
-GET        /wvyu                     controllers.Wvyu.index(embed: Boolean ?= false)
-
-GET        /wvyp                     controllers.Wvyp.index(embed: Boolean ?= false)
-GET        /aggregate                controllers.Aggregator.index
-GET        /stream                   controllers.WvypStream.index
-GET        /streamJava               controllers.WvypStreamJava.index()
-
-GET        /enumerator/example1      controllers.EnumeratorExamples.example1
-GET        /enumerator/example2      controllers.EnumeratorExamples.example2
-GET        /enumerator/example3      controllers.EnumeratorExamples.example3
-GET        /enumerator/example4      controllers.EnumeratorExamples.example4
-
-GET        /wvyp/enumerator          controllers.WvypEnumerator.index
+GET        /stream                  controllers.CompositeStreamController.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file             controllers.Assets.at(path="/public", file)
