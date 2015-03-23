@@ -1,0 +1,7 @@
+@()
+<div class="wvyp">
+    <h2>Who's Viewed Your Profile</h2>
+
+    <div id="wvypCount"></div>
+    <div id="searchCount"></div>
+</div>

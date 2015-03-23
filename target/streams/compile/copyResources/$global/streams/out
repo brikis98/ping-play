@@ -1,0 +1,4 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(D:\work\java\play\ping-play\conf\application.conf,D:\work\java\play\ping-play\target\scala-2.11\classes\application.conf)[0m
+[0m[[0mdebug[0m] [0m	(D:\work\java\play\ping-play\conf\openshift.conf,D:\work\java\play\ping-play\target\scala-2.11\classes\openshift.conf)[0m
+[0m[[0mdebug[0m] [0m	(D:\work\java\play\ping-play\conf\routes,D:\work\java\play\ping-play\target\scala-2.11\classes\routes)[0m

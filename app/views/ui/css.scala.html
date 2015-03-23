@@ -1,0 +1,5 @@
+@(urls: Seq[String])
+
+@for(url <- urls) {
+  <link rel="stylesheet" href="@url"/>
+}

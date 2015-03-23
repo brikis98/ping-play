@@ -1,0 +1,67 @@
+#!/bin/bash
+# The logic to stop your application should be put in this script.
+
+# debug
+# set -x
+
+LOG_FILE="${OPENSHIFT_DIY_LOG_DIR}play.log"
+
+PLAY_PROCESS="java *"
+
+function kill_app {
+        COMMAND="$1"
+        # try 5 times to kill it
+        for c in `seq 1 5`; do
+                echo "Trying to kill proccess, attempt number $c" >> $LOG_FILE
+                echo "$COMMAND" >> $LOG_FILE
+                bash -c "$COMMAND &>> $LOG_FILE 2>&1" &> /dev/null
+                sleep $c
+                #killed it
+                if [[ -z `ps aux | grep "$PLAY_PROCESS"` ]]; then
+                        if [[ -f "RUNNING_PID" ]]; then
+                                rm RUNNING_PID
+                        fi
+                        popd > /dev/null
+                        exit 0
+                fi
+        done
+}
+
+if [[ ! $? -eq 0 ]]; then
+        exit $?
+fi
+
+pushd "$OPENSHIFT_REPO_DIR/target/universal/stage/" > /dev/null
+
+#kill play if it was running
+if [[ -f "RUNNING_PID" ]]; then
+
+        pid=`cat RUNNING_PID`
+        echo "Stopping play application" >> $LOG_FILE
+
+        if [[ -n $pid ]]; then
+                #try to kill it nicely
+                kill_app "kill -SIGTERM $pid"
+                #try to kill it harshly
+                kill_app "kill -SIGKILL $pid"
+        fi
+fi
+
+#it survived, try to kill anything with play in it
+if [[ -z `ps aux | grep "$PLAY_PROCESS"` ]]; then
+        echo "Stopping java play proccess" >> $LOG_FILE
+        #try to kill it nicely
+        kill_app "ps aux | grep \"$PLAY_PROCESS\" | awk '{print $2}' | xargs kill -SIGTERM"
+        #try to kill it harshly
+        kill_app "ps aux | grep \"$PLAY_PROCESS\" | awk '{print $2}' | xargs kill -SIGKILL"
+fi
+
+#couldn't kill it
+if [[ -z `ps aux | grep "$PLAY_PROCESS"` ]]; then
+        echo "Error: could not stop play application, error executing 'ps aux | grep \"$PLAY_PROCESS\" | awk '{print $2}' | xargs kill -SIGKILL'" >> $LOG_FILE
+        popd
+        exit 1
+fi
+
+popd > /dev/null
+exit 0

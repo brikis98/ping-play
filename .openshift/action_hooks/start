@@ -1,0 +1,32 @@
+#!/bin/bash
+# The logic to start up your application should be put in this
+# script. The application will work only if it binds to
+# $OPENSHIFT_DIY_IP:8080
+
+# loads $PLAY_PARAMS 
+. ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
+
+if [[ ! $? -eq 0 ]]; then
+	exit $?
+fi
+
+LOG_FILE="${OPENSHIFT_DIY_LOG_DIR}play.log"
+APP_PATH="sh ${OPENSHIFT_REPO_DIR}target/universal/stage/bin/${OPENSHIFT_APP_NAME} "
+
+if [ -f "${OPENSHIFT_REPO_DIR}target/start" ];
+then
+   APP_PATH="${OPENSHIFT_REPO_DIR}target/start"
+   echo "Play 2.1 or earlier version"
+else
+   echo "Play 2.2 or later version"
+fi
+
+
+APP_COMMAND="${APP_PATH} $PLAY_PARAMS "\
+"-Dhttp.port=${OPENSHIFT_DIY_PORT} "\
+"-Dhttp.address=${OPENSHIFT_DIY_IP} "\
+"-Dconfig.resource=openshift.conf"
+echo "${APP_COMMAND}"
+
+echo $APP_COMMAND &>> $LOG_FILE
+nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &

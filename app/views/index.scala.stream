@@ -1,0 +1,17 @@
+@(pipe: HtmlStream)
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/assets/stylesheets/main.css"/>
+    </head>
+    <body>
+
+        @views.stream.pagelets.updates.updates()
+        @views.stream.pagelets.profiles.profile()
+
+    <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+
+        @pipe
+
+    </body>
+</html>
