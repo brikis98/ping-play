@@ -1,9 +1,11 @@
 package data
 
-import scala.concurrent.Future
-import play.api.libs.ws.WS
+import play.api.Play
 import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
+import play.api.libs.ws.WS
+
+import scala.concurrent.Future
 
 /**
  * A dirt-simple client for calling the Mock service endpoint.
@@ -11,6 +13,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 object ServiceClient {
 
   def makeServiceCall(serviceName: String): Future[String] = {
-    WS.url(s"http://localhost:9000/mock/$serviceName").get().map(_.body)
+    val port = Play.current.configuration.getString("http.port").getOrElse("9000")
+    WS.url(s"http://localhost:$port/mock/$serviceName").get().map(_.body)
   }
 }

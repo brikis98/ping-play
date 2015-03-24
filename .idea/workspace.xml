@@ -2,7 +2,110 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cc01ecf-eb78-4827-8bc9-7f31e6f50244" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.openshift/action_hooks/start" afterPath="$PROJECT_DIR$/.openshift/action_hooks/start" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/ui/ChunkedController.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/page.scala.stream" />
+      <change type="DELETED" beforePath="D:\work\java\play\ping-play\target\scala-2.11\classes\Routes$$anonfun$Routes$$controllers_Assets_at2_invoker$1.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\work\java\play\ping-play\target\scala-2.11\classes\controllers\ref\ReverseCompositeStreamController$$anonfun$index$1.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\work\java\play\ping-play\target\scala-2.11\classes_managed\Routes$$anonfun$Routes$$controllers_Assets_at2_invoker$1.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\work\java\play\ping-play\target\scala-2.11\classes_managed\controllers\ref\ReverseCompositeStreamController$$anonfun$index$1.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/CompositeStreamController$$anonfun$index$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/CompositeStreamController$$anonfun$index$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ProfileViewsStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseAssets$$anonfun$at$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseAssets$$anonfun$at$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseAssets$$anonfun$at$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseAssets$$anonfun$at$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseAssets.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseAssets.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseCompositeStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseCompositeStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseMock$$anonfun$mock$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseMock$$anonfun$mock$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseMock$$anonfun$mock$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseMock$$anonfun$mock$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/javascript/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/ref/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/javascript/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseMock.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/ref/ReverseMock.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$documentation$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$documentation$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$documentation$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$documentation$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1$$anonfun$apply$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1$$anonfun$apply$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2$$anonfun$apply$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2$$anonfun$apply$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1$$anonfun$applyOrElse$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$$anonfun$routes$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$$anonfun$routes$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/Routes.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/Routes.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/Routes.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/UpdateViewsStreamController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/copyResources/$global/streams/copy-resources" afterPath="$PROJECT_DIR$/target/streams/compile/copyResources/$global/streams/copy-resources" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index$$anonfun$f$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index$$anonfun$f$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index$$anonfun$f$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index$$anonfun$f$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/views/stream/index.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/views/stream/index.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/inputs" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/inputs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/output" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes$javascript.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes$javascript.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes$javascript.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes$javascript.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes$ref.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes$ref.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes$ref.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes$ref.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/controllers/routes.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes_managed/controllers/routes.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/CompositeStreamController.scala" afterPath="$PROJECT_DIR$/app/controllers/CompositeStreamController.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala" afterPath="$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/data/ServiceClient.scala" afterPath="$PROJECT_DIR$/app/data/ServiceClient.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala" afterPath="$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/compile/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/compile/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/incCompileSetup/$global/streams/inc_compile_2.11" afterPath="$PROJECT_DIR$/target/streams/compile/incCompileSetup/$global/streams/inc_compile_2.11" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/index.scala.stream" afterPath="$PROJECT_DIR$/app/views/index.scala.stream" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/twirl/main/views/stream/index.template.scala" afterPath="$PROJECT_DIR$/target/scala-2.11/twirl/main/views/stream/index.template.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/$global/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/$global/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/ivyConfiguration/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/ivyConfiguration/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-compile-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-compile-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-compile.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-compile.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-docs.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-docs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-optional.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-optional.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-plugin.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-pom.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-provided.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-provided.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-runtime-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-runtime-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-runtime.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-runtime.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-scala-tool.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-scala-tool.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-sources.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-sources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-test-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-test-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-test.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/ping-conference-ping-conference_2.11-test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/cache/root/compile/play_instrumentation" afterPath="$PROJECT_DIR$/target/scala-2.11/cache/root/compile/play_instrumentation" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/ping-conference/ping-conference_2.11/1.0-SNAPSHOT/resolved.xml.properties" afterPath="$PROJECT_DIR$/target/resolution-cache/ping-conference/ping-conference_2.11/1.0-SNAPSHOT/resolved.xml.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/ping-conference/ping-conference_2.11/1.0-SNAPSHOT/resolved.xml.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/ping-conference/ping-conference_2.11/1.0-SNAPSHOT/resolved.xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/controllers/routes.java" afterPath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/controllers/routes.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/routes" afterPath="$PROJECT_DIR$/conf/routes" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/routes" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/routes" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/routes_reverseRouting.scala" afterPath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/routes_reverseRouting.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/routes_routing.scala" afterPath="$PROJECT_DIR$/target/scala-2.11/src_managed/main/routes_routing.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ping-conference.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,8 +144,8 @@
       <file leaf-file-name="index.scala.stream" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/index.scala.stream">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="374">
-              <caret line="4" column="61" selection-start-line="4" selection-start-column="61" selection-end-line="4" selection-end-column="61" />
+            <state vertical-scroll-proportion="-5.8846154" vertical-offset="0" max-vertical-offset="374">
+              <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -51,9 +154,23 @@
       <file leaf-file-name="CompositeStreamController.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/CompositeStreamController.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="493">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="31" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+              <folding>
+                <element signature="e#21#61#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChunkedController.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/ui/ChunkedController.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
+              <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+              <folding>
+                <element signature="e#12#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,17 +178,51 @@
       <file leaf-file-name="ProfileViewsStreamController.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+              <folding>
+                <element signature="e#21#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServiceClient.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/data/ServiceClient.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4412214" vertical-offset="0" max-vertical-offset="655">
+              <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+              <folding>
+                <element signature="e#14#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UpdateViewsStreamController.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-              <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="start" pinned="false" current-in-tab="true">
+      <file leaf-file-name="routes" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conf/routes">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="start" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.openshift/action_hooks/start">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33740458" vertical-offset="0" max-vertical-offset="655">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
               <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
               <folding />
             </state>
@@ -93,46 +244,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1088">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Mock.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/Mock.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="578">
-              <caret line="16" column="16" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wvypCount.scala.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/pagelets/profiles/wvypCount.scala.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="187">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="searchCount.scala.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/pagelets/profiles/searchCount.scala.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profile.scala.stream" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/pagelets/profiles/profile.scala.stream">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="221">
-              <caret line="5" column="24" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -164,18 +275,23 @@
         <option value="$PROJECT_DIR$/app/views/Updates.scala.html" />
         <option value="$PROJECT_DIR$/app/views/pagelets/Updates.scala.html" />
         <option value="$PROJECT_DIR$/app/controllers/Hello.scala" />
-        <option value="$PROJECT_DIR$/app/controllers/CompositeStreamController.scala" />
         <option value="$PROJECT_DIR$/app/views/index.scala.html" />
         <option value="$PROJECT_DIR$/app/views/pagelets/profile.scala.stream" />
-        <option value="$PROJECT_DIR$/conf/routes" />
-        <option value="$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala" />
         <option value="$PROJECT_DIR$/public/stylesheets/main.css" />
         <option value="$PROJECT_DIR$/app/views/pagelets/profiles/profiles.scala.stream" />
         <option value="$PROJECT_DIR$/app/views/pagelets/profiles/wvypCount.scala.html" />
         <option value="$PROJECT_DIR$/app/controllers/Mock.scala" />
-        <option value="$PROJECT_DIR$/app/views/index.scala.stream" />
-        <option value="$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala" />
         <option value="$PROJECT_DIR$/.openshift/action_hooks/start" />
+        <option value="$PROJECT_DIR$/app/views/ui/page.scala.html" />
+        <option value="$PROJECT_DIR$/app/views/ui/page.scala.stream" />
+        <option value="$PROJECT_DIR$/app/views/page.scala.stream" />
+        <option value="$PROJECT_DIR$/conf/routes" />
+        <option value="$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala" />
+        <option value="$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala" />
+        <option value="$PROJECT_DIR$/app/ui/ChunkedController.scala" />
+        <option value="$PROJECT_DIR$/app/controllers/CompositeStreamController.scala" />
+        <option value="$PROJECT_DIR$/app/views/index.scala.stream" />
+        <option value="$PROJECT_DIR$/app/data/ServiceClient.scala" />
       </list>
     </option>
   </component>
@@ -307,7 +423,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".openshift" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -321,11 +437,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".openshift" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="action_hooks" />
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ping-conference" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ping-play" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -350,16 +484,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\work\java\play\ping-play\app\views\ui" />
       <recent name="D:\work\java\play\ping-play\app\views\pagelets" />
       <recent name="D:\work\java\play\ping-play\app\views" />
       <recent name="D:\work\java\play\ping-play\app\views\monolithic" />
       <recent name="D:\work\java\play\ping-play\app\views\wvyp" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\work\java\play\ping-play\app\views" />
       <recent name="D:\work\java\play\ping-play\app\views\pagelets\updates" />
       <recent name="D:\work\java\play\ping-play\app\views\pagelets\profiles" />
       <recent name="D:\work\java\play\ping-play\app\views\pagelets" />
-      <recent name="D:\work\java\play\ping-play\app\views" />
       <recent name="D:\work\java\play\ping-play\app\views\wvyp" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -657,12 +792,12 @@
       <option name="number" value="Default" />
       <updated>1427049923150</updated>
       <workItem from="1427049925849" duration="23904000" />
-      <workItem from="1427075201463" duration="3285000" />
+      <workItem from="1427075201463" duration="8751000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27189000" />
+    <option name="totallyTimeSpent" value="32655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1316" height="776" extended-state="6" />
@@ -686,6 +821,7 @@
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32892805" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -695,7 +831,6 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32892805" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -736,7 +871,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="493">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#21#61#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -744,7 +881,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#21#46#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -788,13 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/data/ServiceClient.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2761021" vertical-offset="0" max-vertical-offset="431">
-          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/ui/StaticContent.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.284689" vertical-offset="0" max-vertical-offset="2023">
@@ -823,13 +955,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/routes">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1557252" vertical-offset="0" max-vertical-offset="655">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9480916" vertical-offset="144" max-vertical-offset="867">
@@ -849,6 +974,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="170">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -856,21 +982,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="221">
           <caret line="5" column="24" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45015576" vertical-offset="0" max-vertical-offset="642">
-          <caret line="21" column="97" selection-start-line="21" selection-start-column="97" selection-end-line="21" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/index.scala.stream">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="374">
-          <caret line="4" column="61" selection-start-line="4" selection-start-column="61" selection-end-line="4" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -899,22 +1010,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/CompositeStreamController.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/conf/openshift.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
@@ -933,9 +1028,89 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.openshift/action_hooks/start">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33740458" vertical-offset="0" max-vertical-offset="655">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/ui/HtmlStream.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2907">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/routes">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/UpdateViewsStreamController.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/page.scala.stream">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="629">
+          <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/ui/ChunkedController.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+          <folding>
+            <element signature="e#12#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/index.scala.stream">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.8846154" vertical-offset="0" max-vertical-offset="374">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/CompositeStreamController.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding>
+            <element signature="e#21#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/ProfileViewsStreamController.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding>
+            <element signature="e#21#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/data/ServiceClient.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4412214" vertical-offset="0" max-vertical-offset="655">
+          <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+          <folding>
+            <element signature="e#14#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

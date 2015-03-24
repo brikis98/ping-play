@@ -18,6 +18,6 @@ object CompositeStreamController extends Controller {
 
     val pipe = HtmlStream.interleave(profileStream, updateStream)
 
-    Ok.chunked(views.stream.index(pipe))
+    Ok.chunked(views.stream.index(UpdateViewsStreamController.holder(), ProfileViewsStreamController.holder(), pipe))
   }
 }

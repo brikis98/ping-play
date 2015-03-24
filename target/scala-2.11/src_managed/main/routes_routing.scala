@@ -1,6 +1,6 @@
 // @SOURCE:D:/work/java/play/ping-play/conf/routes
-// @HASH:d088b37d562b5aafbe6435f96d3fe575ebea7d06
-// @DATE:Sun Mar 22 23:22:52 PDT 2015
+// @HASH:0dbd9369bd16d19b99c86a1295a06d22e46c3620
+// @DATE:Mon Mar 23 21:04:23 PDT 2015
 
 
 import play.core._
@@ -45,13 +45,27 @@ controllers.CompositeStreamController.index,
 HandlerDef(this.getClass.getClassLoader, "", "controllers.CompositeStreamController", "index", Nil,"GET", """""", Routes.prefix + """stream"""))
         
 
+// @LINE:9
+private[this] lazy val controllers_ProfileViewsStreamController_index2_route = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("profile"))))
+private[this] lazy val controllers_ProfileViewsStreamController_index2_invoker = createInvoker(
+controllers.ProfileViewsStreamController.index,
+HandlerDef(this.getClass.getClassLoader, "", "controllers.ProfileViewsStreamController", "index", Nil,"GET", """""", Routes.prefix + """profile"""))
+        
+
 // @LINE:10
-private[this] lazy val controllers_Assets_at2_route = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("assets/"),DynamicPart("file", """.+""",false))))
-private[this] lazy val controllers_Assets_at2_invoker = createInvoker(
+private[this] lazy val controllers_UpdateViewsStreamController_index3_route = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("updates"))))
+private[this] lazy val controllers_UpdateViewsStreamController_index3_invoker = createInvoker(
+controllers.UpdateViewsStreamController.index,
+HandlerDef(this.getClass.getClassLoader, "", "controllers.UpdateViewsStreamController", "index", Nil,"GET", """""", Routes.prefix + """updates"""))
+        
+
+// @LINE:13
+private[this] lazy val controllers_Assets_at4_route = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("assets/"),DynamicPart("file", """.+""",false))))
+private[this] lazy val controllers_Assets_at4_invoker = createInvoker(
 controllers.Assets.at(fakeValue[String], fakeValue[String]),
 HandlerDef(this.getClass.getClassLoader, "", "controllers.Assets", "at", Seq(classOf[String], classOf[String]),"GET", """ Map static resources from the /public folder to the /assets URL path""", Routes.prefix + """assets/$file<.+>"""))
         
-def documentation = List(("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """mock/$serviceName<[^/]+>""","""controllers.Mock.mock(serviceName:String)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """stream""","""controllers.CompositeStreamController.index"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """assets/$file<.+>""","""controllers.Assets.at(path:String = "/public", file:String)""")).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
+def documentation = List(("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """mock/$serviceName<[^/]+>""","""controllers.Mock.mock(serviceName:String)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """stream""","""controllers.CompositeStreamController.index"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """profile""","""controllers.ProfileViewsStreamController.index"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """updates""","""controllers.UpdateViewsStreamController.index"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """assets/$file<.+>""","""controllers.Assets.at(path:String = "/public", file:String)""")).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
   case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
   case l => s ++ l.asInstanceOf[List[(String,String,String)]]
 }}
@@ -75,10 +89,26 @@ case controllers_CompositeStreamController_index1_route(params) => {
 }
         
 
+// @LINE:9
+case controllers_ProfileViewsStreamController_index2_route(params) => {
+   call { 
+        controllers_ProfileViewsStreamController_index2_invoker.call(controllers.ProfileViewsStreamController.index)
+   }
+}
+        
+
 // @LINE:10
-case controllers_Assets_at2_route(params) => {
+case controllers_UpdateViewsStreamController_index3_route(params) => {
+   call { 
+        controllers_UpdateViewsStreamController_index3_invoker.call(controllers.UpdateViewsStreamController.index)
+   }
+}
+        
+
+// @LINE:13
+case controllers_Assets_at4_route(params) => {
    call(Param[String]("path", Right("/public")), params.fromPath[String]("file", None)) { (path, file) =>
-        controllers_Assets_at2_invoker.call(controllers.Assets.at(path, file))
+        controllers_Assets_at4_invoker.call(controllers.Assets.at(path, file))
    }
 }
         

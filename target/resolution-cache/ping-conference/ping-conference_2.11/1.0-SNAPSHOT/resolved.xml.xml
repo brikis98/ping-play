@@ -4,7 +4,7 @@
 		module="ping-conference_2.11"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20150322232252"
+		publication="20150323203056"
 	>
 		<description>
 		ping-conference

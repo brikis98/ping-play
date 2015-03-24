@@ -1,4 +1,4 @@
-@(pipe: HtmlStream)
+@(holder1: HtmlStream, holder2: HtmlStream, pipe: HtmlStream)
 
 <html>
     <head>
@@ -6,8 +6,8 @@
     </head>
     <body>
 
-        @views.stream.pagelets.updates.updates()
-        @views.stream.pagelets.profiles.profile()
+        @holder1
+        @holder2
 
     <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
 
