@@ -1,0 +1,17 @@
+@(holder1: HtmlStream, holder2: HtmlStream, pipe: HtmlStream)
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/assets/stylesheets/main.css"/>
+    </head>
+    <body>
+
+        @holder1
+        @holder2
+
+    <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+
+        @pipe
+
+    </body>
+</html>

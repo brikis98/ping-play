@@ -1,4 +1,4 @@
-.wvyp {
+.main {
   padding: 10px 0;
   margin: 80px auto;
   border-bottom: 1px solid #CCC;
@@ -25,4 +25,22 @@
 
 #wvypCount, #searchCount {
   height: 28px;
+}
+
+.likes-count {
+    color: #0077b5;
+}
+
+.comments-count {
+    color: #333;
+}
+
+#likesCount, #commentsCount {
+    height: 28px;
+    display: inline-block;
+}
+
+.count {
+    font-size: 31px;
+    line-height: 34px;
 }
