@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: org.jboss.logging:jboss-logging:3.1.1.GA">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.jboss.logging/jboss-logging/jars/jboss-logging-3.1.1.GA.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
