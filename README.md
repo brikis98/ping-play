@@ -14,10 +14,11 @@ This is a standard [Play Framework](http://www.playframework.com/) app, built on
 
 # Running with Docker
 
-As an experiment, I've packaged this app up as a [Docker](https://www.docker.com/) 
-container with all dependencies already downloaded and the code already compiled. 
-If you have Docker installed, this can save you time in how long the container
-takes to start. 
+As an experiment, I've added a webhook so that this app gets packaged up as a 
+[Docker](https://www.docker.com/) container with all dependencies already 
+downloaded and the code already compiled. If you have Docker installed, this 
+can significantly reduce the amount of time it takes the app to start the first
+time since you don't have to wait for dependency resolution and the build.
 
 Instructions:
 
