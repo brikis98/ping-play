@@ -22,7 +22,7 @@ takes to start.
 Instructions:
 
 1. `git clone` this repository
-2. Run `docker run -it -v /path/to/ping-play/:/app:rw -p 80:9000 brikis98/ping-play:v1`
+2. Run `docker run -it -v /path/to/ping-play/:/app:rw -p 80:9000 brikis98/ping-play`
 3. You should now be in the Play console. Use the `~run` command to start the app.
 
 # More info 
