@@ -23,8 +23,8 @@ time since you don't have to wait for dependency resolution and the build.
 Instructions:
 
 1. `git clone` this repository
-2. Run `docker run -it -v /path/to/ping-play/:/app:rw -p 80:9000 brikis98/ping-play`
-3. You should now be in the Play console. Use the `~run` command to start the app.
+2. Run `docker run -it -v $(pwd):/src -p 9000:9000 brikis98/ping-play`
+3. You should now be in the Play console. Use the `run` command to start the app.
 
 # More info 
 
