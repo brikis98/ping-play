@@ -9,7 +9,9 @@ LinkedIn is using composable endpoints and BigPipe streaming in production on it
 
 # How to run the app
 
-1. [install Play](http://www.playframework.com/download) 
+Pre-requisite: [Install Play](http://www.playframework.com/download) 
+
+1. `git clone` this repo
 2. `activator run`
 3. Go to `http://localhost:9000` to test
 
