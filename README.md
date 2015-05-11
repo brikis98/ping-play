@@ -9,8 +9,9 @@ LinkedIn is using composable endpoints and BigPipe streaming in production on it
 
 # How to run the app
 
-This is a standard [Play Framework](http://www.playframework.com/) app, built on Play 2.3.3. To run it,
-[install Play](http://www.playframework.com/download) and do `activator run`.
+1. [install Play](http://www.playframework.com/download) 
+2. `activator run`
+3. Go to `http://localhost:9000` to test
 
 # Running with Docker
 
@@ -19,8 +20,7 @@ As an alternative to installing all the dependencies locally, you can use
 
 1. `git clone` this repo
 2. `docker-compose up`
-3. You are now in the Play console. Use the `run` command to run the app and 
-   visit http://localhost:9000 to test (if you're using [Boot2Docker](http://boot2docker.io/),
+3. Go to `http://localhost:9000` to test (if you're using [Boot2Docker](http://boot2docker.io/),
    instead of `localhost`, run `boot2docker ip` to get the proper IP).
 
 # More info 
