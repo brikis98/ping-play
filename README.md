@@ -14,17 +14,14 @@ This is a standard [Play Framework](http://www.playframework.com/) app, built on
 
 # Running with Docker
 
-As an experiment, I've added a webhook so that this app gets packaged up as a 
-[Docker](https://www.docker.com/) container with all dependencies already 
-downloaded and the code already compiled. If you have Docker installed, this 
-can significantly reduce the amount of time it takes the app to start the first
-time since you don't have to wait for dependency resolution and the build.
+As an alternative to installing all the dependencies locally, you can use 
+[Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/):
 
-Instructions:
-
-1. `git clone` this repository
-2. Run `docker run -it -v $(pwd):/src -p 9000:9000 brikis98/ping-play`
-3. You should now be in the Play console. Use the `run` command to start the app.
+1. `git clone` this repo
+2. `docker-compose up`
+3. You are now in the Play console. Use the `run` command to run the app and 
+   visit http://localhost:9000 to test (if you're using [Boot2Docker](http://boot2docker.io/),
+   instead of `localhost`, run `boot2docker ip` to get the proper IP).
 
 # More info 
 

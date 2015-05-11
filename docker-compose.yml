@@ -1,0 +1,7 @@
+web:  
+  image: brikis98/ping-play
+  volumes:
+    - .:/src
+  ports:
+    - "9000:9000"
+  stdin_open: true

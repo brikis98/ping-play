@@ -9,24 +9,25 @@ RUN curl -O http://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-acti
 RUN unzip typesafe-activator-1.3.2.zip -d / && rm typesafe-activator-1.3.2.zip && chmod a+x /activator-1.3.2/activator
 ENV PATH $PATH:/activator-1.3.2
 
-# The user should mount the ping-play app into the /src folder
+# The source code will be in the /src folder
 RUN mkdir -p /src
 VOLUME /src
 WORKDIR /src
 COPY . /src
 
-# Build the app so all ivy dependencies are downloaded and all the classes are
-# compiled.  This allows the app to start MUCH faster after the initial 
-# checkout. We use a global SBT config to setup an external target directory so 
-# the compiled code isn't blown away if the user mounts a src folder from their
+# Use a global SBT config to setup an external target directory so that the 
+# compiled code isn't blown away if the user mounts a src folder from their
 # host OS.
-RUN mkdir -p /sbt-target
-RUN mkdir -p ~/.sbt/0.13/
-RUN echo 'target := file("/sbt-target") / s"${name.value}-target"' > ~/.sbt/0.13/global.sbt
+RUN mkdir -p /sbt-target \
+    && mkdir -p ~/.sbt/0.13/ \
+    && echo 'target := file("/sbt-target") / s"${name.value}-target"' > ~/.sbt/0.13/global.sbt
+
+# Build the entire app so that all the dependencies are downloaded and all the
+# code is compiled. This will make starting the app the first time much faster.
 RUN activator dist
 
 # Expose play port
 EXPOSE 9000
 
-# Default command is to run the activator shell
-CMD ["activator", "shell"]
+# Default command is to run the app
+CMD ["activator", "run"]
