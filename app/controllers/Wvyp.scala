@@ -9,7 +9,7 @@ import play.api.libs.concurrent.Execution.Implicits._
  */
 object Wvyp extends Controller {
 
-  def index(embed: Boolean) = Action.async {
+  def index(embed: Boolean) = Action.async { implicit request =>
     val wvypCountFuture = ServiceClient.makeServiceCall("wvyp")
     val searchCountFuture = ServiceClient.makeServiceCall("search")
 

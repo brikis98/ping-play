@@ -9,7 +9,7 @@ import play.api.libs.concurrent.Execution.Implicits._
  */
 object Wvyu extends Controller {
 
-  def index(embed: Boolean) = Action.async {
+  def index(embed: Boolean) = Action.async { implicit request =>
     val likesCountFuture = ServiceClient.makeServiceCall("likes")
     val commentsCountFuture = ServiceClient.makeServiceCall("comments")
 

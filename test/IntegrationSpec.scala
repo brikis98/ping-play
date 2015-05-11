@@ -5,20 +5,21 @@ import org.junit.runner._
 import play.api.test._
 import play.api.test.Helpers._
 
-/**
- * add your integration spec here.
- * An integration test will fire up a whole play application in a real (or headless) browser
- */
+import controllers.Mock
+
 @RunWith(classOf[JUnitRunner])
 class IntegrationSpec extends Specification {
 
   "Application" should {
 
-    "work from within a browser" in new WithBrowser {
+    "render the non-streaming WVYP page" in new WithBrowser {
+      browser.goTo(s"http://localhost:$port/wvyp")
+      browser.$(".wvyp-count .large-number").getTexts().get(0) must equalTo(Mock.DEFAULT_WVYP_RESPONSE)
+    }
 
-      browser.goTo("http://localhost:" + port)
-
-      browser.pageSource must contain("Your new application is ready.")
+    "render the streaming WVYP page" in new WithBrowser {
+      browser.goTo(s"http://localhost:$port/stream")
+      browser.$(".wvyp-count .large-number").getTexts().get(0) must equalTo(Mock.DEFAULT_WVYP_RESPONSE)
     }
   }
 }

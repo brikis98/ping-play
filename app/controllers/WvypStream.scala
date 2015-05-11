@@ -13,7 +13,7 @@ import play.api.libs.concurrent.Execution.Implicits._
  */
 object WvypStream extends Controller {
 
-  def index = Action {
+  def index = Action { implicit request =>
     val wvypCountFuture = ServiceClient.makeServiceCall("wvyp")
     val searchCountFuture = ServiceClient.makeServiceCall("search")
 

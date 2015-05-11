@@ -8,7 +8,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 object WvypEnumerator extends Controller {
 
-  def index = Action {
+  def index = Action { implicit request =>
     val wyvpCountFuture = ServiceClient.makeServiceCall("wvyp")
     val searchCountFuture = ServiceClient.makeServiceCall("search")
 

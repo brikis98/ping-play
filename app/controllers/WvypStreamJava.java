@@ -15,8 +15,8 @@ public class WvypStreamJava extends Controller
 {
   public static Result index()
   {
-    F.Promise<String> wvypPromise = ServiceClientJ.makeServiceCall("wvyp");
-    F.Promise<String> searchPromise = ServiceClientJ.makeServiceCall("search");
+    F.Promise<String> wvypPromise = ServiceClientJ.makeServiceCall("wvyp", request());
+    F.Promise<String> searchPromise = ServiceClientJ.makeServiceCall("search", request());
 
     F.Promise<Html> wvypHtmlPromise = render(wvypPromise, views.html.wvyp.wvypCount.f());
     F.Promise<Html> searchHtmlPromise = render(searchPromise, views.html.wvyp.searchCount.f());
