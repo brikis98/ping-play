@@ -12,9 +12,13 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 # Parse .gitignore style files and return the entries within
 def parse_ignore_file(file)
-  IO.read(file)
-    .split("\n")
-    .reject{|line| line.empty? || line.start_with?("#")}
+  if File.exist?(file)
+    IO.read(file)
+      .split("\n")
+      .reject{|line| line.empty? || line.start_with?("#")}
+  else
+    []
+  end
 end
 
 # Determine the folders to sync to the VM based on the volumes specified in the
