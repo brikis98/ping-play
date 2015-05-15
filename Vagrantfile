@@ -63,7 +63,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       rsync__args: ["--verbose", "--archive", "--delete", "-z", "--chmod=ugo=rwX"]
   end
 
-  config.vm.network "forwarded_port", guest: 4000, host: 4000
   config.ssh.insert_key = false
 
   config.vm.provider "virtualbox" do |v|

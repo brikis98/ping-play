@@ -11,7 +11,7 @@ dependencies:
   override:
     - if [[ -e ~/docker-build-cache/brikis98-ping-play-image.tar ]]; then docker load -i ~/docker-build-cache/brikis98-ping-play-image.tar; fi
     - docker build -t brikis98/ping-play .
-    - mkdir -p ~/docker-build-cache; docker save brikis98/ping-play > ~/docker-build-cache/brikis98-ping-play-image.tar
+    - mkdir -p ~/docker-build-cache && docker save brikis98/ping-play > ~/docker-build-cache/brikis98-ping-play-image.tar
 
 test:
   override:
