@@ -1,13 +1,15 @@
-# Based off an image that has JDK8 on centos
-FROM ingensi/oracle-jdk:8u5
+# Based off an image that has JDK8 on busybox
+FROM jeanblanchard/busybox-java:8
 MAINTAINER Yevgeniy Brikman <jim@ybrikman.com>
 
-RUN yum update -y && yum install -y unzip
+RUN opkg-install bash
 
 # Set up activator
-RUN curl -O http://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-activator-1.3.2.zip 
-RUN unzip typesafe-activator-1.3.2.zip -d / && rm typesafe-activator-1.3.2.zip && chmod a+x /activator-1.3.2/activator
-ENV PATH $PATH:/activator-1.3.2
+RUN wget http://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-activator-1.3.2-minimal.zip \
+    && unzip typesafe-activator-1.3.2-minimal.zip \
+    && rm -f typesafe-activator-1.3.2-minimal.zip \
+    && chmod +x activator-1.3.2-minimal/activator
+ENV PATH $PATH:/activator-1.3.2-minimal
 
 # The source code will be in the /src folder
 RUN mkdir -p /src
