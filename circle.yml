@@ -3,10 +3,16 @@ machine:
     - docker
 
 dependencies:
+  cache_directories:
+      - "~/docker-compose-1.2.0"
+      - "~/docker-build-cache"
+  pre:
+    - if [[ ! -e ~/docker-compose-1.2.0 ]]; then curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose-1.2.0/docker-compose && chmod +x ~/docker-compose-1.2.0/docker-compose; fi
   override:
-    - curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+    - if [[ -e ~/docker-build-cache/image.tar ]]; then docker load -i ~/docker-build-cache/image.tar; fi
     - docker build -t brikis98/ping-play .
+    - mkdir -p ~/docker-build-cache; docker save circleci/elasticsearch > ~/docker-build-cache/image.tar
 
 test:
   override:
-    - docker-compose run web activator test
+    - ~/docker-compose-1.2.0/docker-compose run web activator test
