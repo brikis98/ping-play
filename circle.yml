@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker build -t brikis98/ping-play .
+
+test:
+  override:
+    - docker-compose run web activator test

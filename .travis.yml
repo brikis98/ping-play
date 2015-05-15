@@ -1,6 +1,0 @@
-language: scala
-install:
-  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
-script:
-  - ./run docker build -t brikis98/ping-play .
-  - ./run docker-compose run web activator test
