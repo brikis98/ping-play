@@ -1,5 +1,5 @@
 # Based off an image that has JDK8 on centos
-FROM ingensi/oracle-jdk
+FROM ingensi/oracle-jdk:8u5
 MAINTAINER Yevgeniy Brikman <jim@ybrikman.com>
 
 RUN yum update -y && yum install -y unzip
