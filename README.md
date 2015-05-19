@@ -20,10 +20,19 @@ Pre-requisite: [Install Play](http://www.playframework.com/download)
 As an alternative to installing all the dependencies locally, you can use 
 [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/):
 
+On Linux:
+
 1. `git clone` this repo
 2. `docker-compose up`
-3. Go to `http://localhost:9000` to test (if you're using [Boot2Docker](http://boot2docker.io/),
-   instead of `localhost`, run `boot2docker ip` to get the proper IP).
+3. Go to `http://localhost:9000` to test 
+
+On OS X, using the [docker-osx-dev](https://github.com/brikis98/docker-osx-dev)
+project:
+
+1. `git clone` this repo
+2. `docker-osx-dev start`
+3. `docker-compose up`
+4. Go to `http://dockerhost:9000` to test
 
 # More info 
 
