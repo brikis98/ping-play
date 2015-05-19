@@ -17,8 +17,11 @@ Pre-requisite: [Install Play](http://www.playframework.com/download)
 
 # Running with Docker
 
-As an alternative to installing all the dependencies locally, you can use 
-[Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/):
+As an alternative to installing activator and waiting for SBT to download all
+dependencies and compile the code, if you have [Docker](https://www.docker.com/) 
+and [Docker Compose](https://docs.docker.com/compose/) already installed, 
+you can run a Docker image of ping-play that has all the code already compiled
+within it.
 
 On Linux:
 
