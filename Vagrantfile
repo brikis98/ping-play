@@ -1,3 +1,7 @@
+# This Vagrantfile was created by docker-osx-dev. It is used to create a 
+# productive development environment with Docker, Vagrant, and Rsync on OS X.
+# See https://github.com/brikis98/docker-osx-dev for more info.
+
 DOCKER_COMPOSE_FILE = "docker-compose.yml"
 DOCKER_COMPOSE_VOLUMES_KEY = "volumes"
 DOCKER_COMPOSE_VOLUMES_SEPARATOR = ":"
@@ -54,8 +58,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_version = "1.6.0"
   config.vm.box_check_update = false
 
+  # When syncing, exclude any files in .gitignore or .dockerignore
   excludes = (parse_ignore_file(".gitignore") + parse_ignore_file(".dockerignore")).uniq
 
+  # Sync folders using rsync
   folders_to_sync.each do |folder|
     config.vm.synced_folder folder[:src], folder[:dest],
       type: "rsync",
@@ -70,6 +76,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.name = VAGRANT_FOLDER_NAME + "_boot2docker"
     v.cpus = 1
     v.memory = 2048
+    # Necessary to ensure "sending build to context" runs quickly
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]    
     v.customize ["modifyvm", :id, "--nictype1", "virtio"]
@@ -81,14 +88,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.inline = <<-EOT
       echo 'DOCKER_TLS=no' >> /var/lib/boot2docker/profile
       /etc/init.d/docker restart
-    EOT
-  end  
-
-  # Adjust datetime after suspend and resume
-  config.vm.provision :shell do |s|
-    s.inline = <<-EOT
-      sudo /usr/local/bin/ntpclient -s -h pool.ntp.org
-      date
     EOT
   end  
 end
