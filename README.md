@@ -33,7 +33,7 @@ On OS X, using the [docker-osx-dev](https://github.com/brikis98/docker-osx-dev)
 project:
 
 1. `git clone` this repo
-2. `docker-osx-dev start`
+2. `docker-osx-dev`
 3. `docker-compose up`
 4. Go to `http://dockerhost:9000` to test
 
