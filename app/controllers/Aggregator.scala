@@ -7,11 +7,11 @@ import ui.Pagelet
 /**
  * This controller shows an example of composing together the results of two other controllers togheter: Wvyp and Wvyu.
  */
-object Aggregator extends Controller {
+class Aggregator(wvyp: Wvyp, wvyu: Wvyu) extends Controller {
 
   def index = Action.async { request =>
-    val wvypFuture = Wvyp.index(embed = true)(request)
-    val wvyuFuture = Wvyu.index(embed = true)(request)
+    val wvypFuture = wvyp.index(embed = true)(request)
+    val wvyuFuture = wvyu.index(embed = true)(request)
 
     for {
       wvyp <- wvypFuture

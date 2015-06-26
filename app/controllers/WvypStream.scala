@@ -11,11 +11,11 @@ import play.api.libs.concurrent.Execution.Implicits._
  * It's identical to the Wvyp controller, except that the data is streamed to the browser as soon as it's available in
  * small "pagelets", similar to Facebook's BigPipe.
  */
-object WvypStream extends Controller {
+class WvypStream(serviceClient: ServiceClient) extends Controller {
 
   def index = Action { implicit request =>
-    val wvypCountFuture = ServiceClient.makeServiceCall("wvyp")
-    val searchCountFuture = ServiceClient.makeServiceCall("search")
+    val wvypCountFuture = serviceClient.makeServiceCall("wvyp")
+    val searchCountFuture = serviceClient.makeServiceCall("search")
 
     val wvypStream = Pagelet.renderStream(wvypCountFuture.map(str => views.html.wvyp.wvypCount(str.toInt)), "wvypCount")
     val searchStream = Pagelet.renderStream(searchCountFuture.map(str => views.html.wvyp.searchCount(str.toInt)), "searchCount")

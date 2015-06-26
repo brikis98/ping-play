@@ -13,10 +13,16 @@ import java.util.Arrays;
 
 public class WvypStreamJava extends Controller
 {
-  public static Result index()
+  private final ServiceClientJ serviceClient;
+
+  public WvypStreamJava(ServiceClientJ serviceClient) {
+    this.serviceClient = serviceClient;
+  }
+
+  public Result index()
   {
-    F.Promise<String> wvypPromise = ServiceClientJ.makeServiceCall("wvyp", request());
-    F.Promise<String> searchPromise = ServiceClientJ.makeServiceCall("search", request());
+    F.Promise<String> wvypPromise = serviceClient.makeServiceCall("wvyp", request());
+    F.Promise<String> searchPromise = serviceClient.makeServiceCall("search", request());
 
     F.Promise<Html> wvypHtmlPromise = render(wvypPromise, views.html.wvyp.wvypCount.f());
     F.Promise<Html> searchHtmlPromise = render(searchPromise, views.html.wvyp.searchCount.f());
@@ -31,15 +37,8 @@ public class WvypStreamJava extends Controller
 
   // Render the contents of the given Promise as Html using the given template. Templates are functions in Play, and
   // passing them around in Java is a bit clunky
-  private static F.Promise<Html> render(F.Promise<String> promise, final Function1<Object, Html> template)
+  private F.Promise<Html> render(F.Promise<String> promise, final Function1<Object, Html> template)
   {
-    return promise.map(new F.Function<String, Html>()
-    {
-      @Override
-      public Html apply(String s) throws Throwable
-      {
-        return template.apply(Integer.parseInt(s));
-      }
-    });
+    return promise.map(s -> template.apply(Integer.parseInt(s)));
   }
 }

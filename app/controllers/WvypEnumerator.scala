@@ -6,11 +6,11 @@ import data.ServiceClient
 import play.api.libs.iteratee.Enumerator
 import play.api.libs.concurrent.Execution.Implicits._
 
-object WvypEnumerator extends Controller {
+class WvypEnumerator(serviceClient: ServiceClient) extends Controller {
 
   def index = Action { implicit request =>
-    val wyvpCountFuture = ServiceClient.makeServiceCall("wvyp")
-    val searchCountFuture = ServiceClient.makeServiceCall("search")
+    val wyvpCountFuture = serviceClient.makeServiceCall("wvyp")
+    val searchCountFuture = serviceClient.makeServiceCall("search")
 
     val wvypCountEnum = Enumerator.flatten(wyvpCountFuture.map(str => Enumerator(str + "\n")))
     val searchCountEnum = Enumerator.flatten(searchCountFuture.map(str => Enumerator(str + "\n")))

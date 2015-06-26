@@ -7,11 +7,11 @@ import play.api.libs.concurrent.Execution.Implicits._
 /**
  * An example standalone module that represents the "Who's Viewed Your Updates" module from the LinkedIn homepage.
  */
-object Wvyu extends Controller {
+class Wvyu(serviceClient: ServiceClient) extends Controller {
 
   def index(embed: Boolean) = Action.async { implicit request =>
-    val likesCountFuture = ServiceClient.makeServiceCall("likes")
-    val commentsCountFuture = ServiceClient.makeServiceCall("comments")
+    val likesCountFuture = serviceClient.makeServiceCall("likes")
+    val commentsCountFuture = serviceClient.makeServiceCall("comments")
 
     for {
       likesCount <- likesCountFuture

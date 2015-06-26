@@ -32,7 +32,7 @@ object Pagelet {
    * @return
    */
   def mergeCookies(results: Result*): Seq[Cookie] = {
-    results.flatMap(result => result.header.headers.get(HeaderNames.SET_COOKIE).map(Cookies.decode).getOrElse(Seq.empty))
+    results.flatMap(result => result.header.headers.get(HeaderNames.SET_COOKIE).map(Cookies.decodeSetCookieHeader).getOrElse(Seq.empty))
   }
 
   /**

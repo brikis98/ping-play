@@ -121,7 +121,7 @@ object HtmlStream {
     new Chunks[Html](Writeable.writeableOf_Content(utf8, ContentTypeOf.contentTypeOf_Html(utf8))) {
       def onReady(out: Out[Html]) {
         stream.enumerator.run(Iteratee.foreach { html =>
-          if (!html.toString.isEmpty) {
+          if (!html.toString().isEmpty) {
             out.write(html)
           }
         }).onComplete(_ => out.close())

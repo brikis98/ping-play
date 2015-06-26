@@ -1,8 +1,8 @@
-name := "ping-conference"
+name := "ping-play"
 
 version := "1.0-SNAPSHOT"  
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.6"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -15,7 +15,12 @@ play.twirl.sbt.Import.TwirlKeys.templateImports ++= Vector("_root_.ui.HtmlStream
 libraryDependencies ++= Seq(
   ws,
   javaWs,
-  "com.typesafe.play" %% "play-java" % play.core.PlayVersion.current
+  "com.typesafe.play" %% "play-java" % play.core.PlayVersion.current,
+  specs2 % Test
 )
 
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
 scalacOptions += "-feature"
+
+routesGenerator := InjectedRoutesGenerator

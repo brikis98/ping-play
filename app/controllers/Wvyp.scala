@@ -7,11 +7,11 @@ import play.api.libs.concurrent.Execution.Implicits._
 /**
  * An example standalone module that represents the "Who's Viewed Your Profile" module from the LinkedIn homepage.
  */
-object Wvyp extends Controller {
+class Wvyp(serviceClient: ServiceClient) extends Controller {
 
   def index(embed: Boolean) = Action.async { implicit request =>
-    val wvypCountFuture = ServiceClient.makeServiceCall("wvyp")
-    val searchCountFuture = ServiceClient.makeServiceCall("search")
+    val wvypCountFuture = serviceClient.makeServiceCall("wvyp")
+    val searchCountFuture = serviceClient.makeServiceCall("search")
 
     for {
       wvypCount <- wvypCountFuture
