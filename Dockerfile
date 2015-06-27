@@ -1,8 +1,8 @@
 # Based off an image that has JDK8 on busybox
-FROM jeanblanchard/busybox-java:8
+FROM frolvlad/alpine-oraclejdk8:slim
 MAINTAINER Yevgeniy Brikman <jim@ybrikman.com>
 
-RUN opkg-install bash
+RUN apk --update add bash
 
 # Set up activator
 RUN wget http://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-activator-1.3.2-minimal.zip \
