@@ -8,6 +8,10 @@ import play.twirl.api.Html
 
 import scala.concurrent.{Future, ExecutionContext}
 
+/**
+ * Helpers for building Play apps out of composable controllers.
+ * Note: these are not yet tested or documented, so use at your own risk.
+ */
 object Compose {
 
   val cssHeaderName = "X-CSS"

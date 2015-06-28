@@ -7,7 +7,7 @@ import play.api.mvc.RequestHeader
 import play.api.test.FakeRequest
 
 class TestDedupingCache extends Specification {
-  "The DedupingCache get method should" >> {
+  "The Scala DedupingCache get method should" >> {
 
     "throw an exception if the cache is not initialized" >> {
       val uninitializedCache = new DedupingCache[String, Integer]

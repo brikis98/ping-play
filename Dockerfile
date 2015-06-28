@@ -1,5 +1,5 @@
 # Based off an image that has JDK8 on busybox
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM frolvlad/alpine-oraclejdk8:cleaned
 MAINTAINER Yevgeniy Brikman <jim@ybrikman.com>
 
 RUN apk --update add bash
