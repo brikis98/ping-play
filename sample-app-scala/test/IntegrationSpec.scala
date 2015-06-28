@@ -8,7 +8,6 @@ import play.api.test._
 
 import controllers.Mock
 
-@RunWith(classOf[JUnitRunner])
 class IntegrationSpec extends Specification {
 
   // Without this, the WithBrowser helper uses Guice to load your app

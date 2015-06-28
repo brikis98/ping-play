@@ -2,25 +2,26 @@ package controllers;
 
 import com.ybrikman.ping.javaapi.bigpipe.HtmlStreamHelper;
 import com.ybrikman.ping.javaapi.bigpipe.Pagelet;
-import data.ServiceClientJ;
-import play.twirl.api.Html;
+import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream;
+import data.ServiceClient;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
-import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream;
+import play.twirl.api.Html;
 
-public class WvypStreamJava extends Controller
-{
-  private final ServiceClientJ serviceClient;
+import javax.inject.Inject;
 
-  public WvypStreamJava(ServiceClientJ serviceClient) {
+public class WvypStream extends Controller {
+  private final ServiceClient serviceClient;
+
+  @Inject
+  public WvypStream(ServiceClient serviceClient) {
     this.serviceClient = serviceClient;
   }
 
-  public Result index()
-  {
-    F.Promise<String> wvypPromise = serviceClient.makeServiceCall("wvyp", request());
-    F.Promise<String> searchPromise = serviceClient.makeServiceCall("search", request());
+  public Result index() {
+    F.Promise<String> wvypPromise = serviceClient.makeServiceCall("wvyp");
+    F.Promise<String> searchPromise = serviceClient.makeServiceCall("search");
 
     F.Promise<Html> wvypHtmlPromise = wvypPromise.map(str -> views.html.wvyp.wvypCount.apply(Integer.parseInt(str)));
     F.Promise<Html> searchHtmlPromise = searchPromise.map(str -> views.html.wvyp.searchCount.apply(Integer.parseInt(str)));

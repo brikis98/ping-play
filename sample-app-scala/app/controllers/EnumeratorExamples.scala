@@ -12,7 +12,7 @@ class EnumeratorExamples(futureUtil: FutureUtil) extends Controller {
 	}
 
 	def example2 = Action {
-    Ok.chunked(Enumerator.repeatM(futureUtil.timeout("Hello\n", 500)));
+    Ok.chunked(Enumerator.repeatM(futureUtil.timeout("Hello\n", 500)))
 	}
 
 	def example3 = Action {
