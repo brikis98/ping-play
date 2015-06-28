@@ -1,16 +1,42 @@
-package ui
+package com.ybrikman.ping.scalaapi.compose
 
-import play.api.mvc.Result
+import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream
+import play.api.http.HeaderNames
+import play.api.libs.iteratee.Iteratee
+import play.api.mvc.{Cookies, Cookie, Codec, Result}
 import play.twirl.api.Html
-import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits._
 
-/**
- * Some utilities for merging and de-duping static content from multiple modules
- */
-object StaticContent {
+import scala.concurrent.{Future, ExecutionContext}
+
+object Compose {
+
   val cssHeaderName = "X-CSS"
   val jsHeaderName = "X-JS"
+
+  /**
+   * Read the body of a Result as Html. Since the body is an Enumerator and may not be available yet, this method
+   * returns a Future.
+   *
+   * @param result
+   * @param codec
+   * @return
+   */
+  def readBody(result: Result)(implicit codec: Codec, ec: ExecutionContext): Future[Html] = {
+    result.body.run(Iteratee.consume()).map(bytes => Html(new String(bytes, codec.charset)))
+  }
+
+  /**
+   * Merge all the cookies set in the given results into a single sequence.
+   *
+   * @param results
+   * @return
+   */
+  def mergeCookies(results: Result*): Seq[Cookie] = {
+    results
+      .flatMap(result => result.header.headers.get(HeaderNames.SET_COOKIE)
+      .map(Cookies.decodeSetCookieHeader)
+      .getOrElse(Seq.empty))
+  }
 
   /**
    * Convert the given sequences of CSS and JS into HTTP headers that can be added to the Result
@@ -69,7 +95,10 @@ object StaticContent {
    * @param css
    * @return
    */
-  def renderCssDependencies(css: Seq[String]): Html = views.html.ui.css(css)
+  def renderCssDependencies(css: Seq[String]): Html = {
+    // TODO: views.html.ui.css(css)
+    null
+  }
 
   /**
    * Render the given sequence of JS URLs as script tags
@@ -77,7 +106,10 @@ object StaticContent {
    * @param js
    * @return
    */
-  def renderJsDependencies(js: Seq[String]): Html = views.html.ui.js(js)
+  def renderJsDependencies(js: Seq[String]): Html = {
+    // TODO: views.html.ui.js(js)
+    null
+  }
 
   /**
    * Merge all the JavaScript dependencies from the results into a list of script tags
@@ -85,7 +117,7 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeJsFromResults(results: Future[Result]*): HtmlStream = {
+  def mergeJsFromResults(results: Future[Result]*)(implicit ec: ExecutionContext): HtmlStream = {
     mergeDependenciesFromResults(parseJsHeader, renderJsDependencies, results)
   }
 
@@ -95,7 +127,7 @@ object StaticContent {
    * @param results
    * @return
    */
-  def mergeCssFromResults(results: Future[Result]*): HtmlStream = {
+  def mergeCssFromResults(results: Future[Result]*)(implicit ec: ExecutionContext): HtmlStream = {
     mergeDependenciesFromResults(parseCssHeader, renderCssDependencies, results)
   }
 
@@ -103,7 +135,7 @@ object StaticContent {
     result.header.headers.get(headerName).map(_.split(",").toVector).getOrElse(Vector.empty)
   }
 
-  private def mergeDependenciesFromResults(parseHeader: Result => Seq[String], render: Seq[String] => Html, resultFutures: Seq[Future[Result]]): HtmlStream = {
+  private def mergeDependenciesFromResults(parseHeader: Result => Seq[String], render: Seq[String] => Html, resultFutures: Seq[Future[Result]])(implicit ec: ExecutionContext): HtmlStream = {
     val allResultsFuture = Future.sequence(resultFutures)
 
     val htmlFuture = allResultsFuture.map { results =>
@@ -111,6 +143,6 @@ object StaticContent {
       render(values)
     }
 
-    HtmlStream(htmlFuture)
+    HtmlStream.fromHtmlFuture(htmlFuture)
   }
 }

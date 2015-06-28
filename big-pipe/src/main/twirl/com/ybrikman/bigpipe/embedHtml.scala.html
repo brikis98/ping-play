@@ -1,0 +1,9 @@
+@(content: String, id: String, contentType: com.ybrikman.ping.javaapi.bigpipe.PageletContentType)
+
+@import com.ybrikman.ping.scalaapi.bigpipe.Embed
+
+@defining(s"$id-$contentType") { contentId =>
+  <code id="@contentId" class="bigpipe-embed-html"><!--@Embed.escapeForEmbedding(content)--></code>
+
+  <script>(function() { this.BigPipe.onPagelet("@id", "@contentId", "@contentType.name()"); }.call(this));</script>
+}

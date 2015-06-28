@@ -3,6 +3,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="/assets/stylesheets/wvyp.css"/>
+    <script src="/assets/com/ybrikman/bigpipe/big-pipe.js"></script>
   </head>
   <body>
     <div class="wvyp">
