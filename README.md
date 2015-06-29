@@ -353,6 +353,22 @@ and then sends the rendered HTML down to the client.
 8. Add support for pagelet priorities
 9. Add support for only rendering content that's visible
 
+# Release process
+
+This project is published to Sonatype as described in the 
+[SBT Deploying to Sonatype](http://www.scala-sbt.org/release/docs/Using-Sonatype.html) documentation. To do that, this
+project uses the [sbt-sonatype](https://github.com/xerial/sbt-sonatype), [sbt-pgp](http://www.scala-sbt.org/sbt-pgp), 
+and [sbt-release](https://github.com/sbt/sbt-release) plugins.
+
+To release a new version, you must have your PGP keys already setup 
+([docs here](http://www.scala-sbt.org/release/docs/Using-Sonatype.html#First+-+PGP+Signatures)) and then you can run:
+
+```
+activator shell
+set credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", "<username>", "<password>")
+release
+```
+
 # License
 
 This code is available under the MIT license. See the LICENSE file for more info.
