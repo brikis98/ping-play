@@ -24,7 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class Pagelet(content: Future[String], id: String, contentType: PageletContentType, ec: ExecutionContext) {
 
   def asHtmlFuture: Future[Html] = {
-    content.map(str => com.ybrikman.bigpipe.html.embedHtml(str, id, contentType))(ec)
+    content.map(str => com.ybrikman.bigpipe.html.pagelet(str, id, contentType))(ec)
   }
 
   def asHtmlStream: HtmlStream = {

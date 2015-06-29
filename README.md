@@ -171,21 +171,59 @@ Java developers should primarily be using classes in the `com.ybrikman.ping.java
 `com.ybrikman.ping.javaapi.Pagelet` class to wrap your `Html` and `Promise<Html>` as `Pagelet` objects and use the
 `com.ybrikman.ping.javaapi.HtmlStreamHelper` class to combine `Pagelet` objects into an `HtmlStream`. See 
 `sample-app-java` for examples.  
- 
-## Controlling client-side rendering
 
-Each pagelet consists of the content, wrapped in `code` tag and an HTML comment so that it is ignored by the browser,
-and some JavaScript code telling the `big-pipe.js` library to process it. It looks roughly like this:
+## HtmlStream and .scala.stream templates
+
+To do BigPipe streaming, you can't use Play's standard `.scala.html` templates as those are compiled into functions
+that append together and return `Html`, which is just a wrapper for a `StringBuilder`. This is why this project 
+introduces a new `.scala.stream` template that appends together and returns `HtmlStream` objects, which are a wrapper
+for an `Enumerator[Html]`. Note that this new template type still uses Play's template compiler 
+([Twirl](https://github.com/playframework/twirl)) and the normal Play template syntax. The only things that are 
+different are:
+ 
+1. The extension is `.scala.stream` instead of `.scala.html`.
+2. When you are using the template in a controller, the package name will be `views.stream.XXX` instead of 
+   `views.html.XXX`.
+3. You can include an `HtmlStream` object anywhere in the markup and Play will stream the content down of the 
+   `Enumerator` within that `HtmlStream` whenever the content is available.
+4. To include raw, unescaped HTML, instead of wrapping the content in an `Html` object (e.g. 
+   `Html(someStringWithMarkup)`), wrap it in an `HtmlStream` object (e.g. `HtmlStream.fromString(someStringWithMarkup)`). 
+
+## HtmlStream
+ 
+The idea behind BigPipe is to break your page down into small "pagelets" that can fetch their own data independently and 
+render themselves. For example, you might have one pagelet that fetches data from a profile service and knows how to 
+render a user's profile, another pagelet that fetches data from an ads service and knows how to render an ad unit, and
+so on. For each pagelet, the general pattern is to make some backend service calls, convert the responses to an 
+`HtmlStream`, compose the streams together using `HtmlStream.interleave`, and then insert the resulting `HtmlStream`
+into your `.scala.stream` template.
+
+## Pagelet
+
+Although you can use the `HtmlStream` class directly, this project also comes with a `Pagelet` class that allows you to
+not only stream data back to the browser, but stream your pagelets in any order, and still have them render correctly
+client-side. For each pagelet, you make your backend calls, get back some `Future` (Scala) or `Promise` (Java) objects, 
+compose them, render them into a `Future[Html]` or `Promise<Html>`, and then use `Pagelet.fromHtmlFuture` or 
+`Pagelet.fromHtmlPromise` to wrap them in a `Pagelet` class. You can then compose `Pagelet` instances together using
+`HtmlStream.fromInterleavedPagelets`.
+
+To support out-of-order rendering, the `Pagelet` class wrap your content in markup that is invisible when it first 
+arrives in the browser, plus some JavaScript that knows how to extract the content and inject it into the DOM. The 
+markup sent back by each `Pagelet` will look roughly like this:
 
 ```html
-<code id="pagelet1"><!--<p>Some content</p>--></code>
+<code id="pagelet1"><!--Your content--></code>
 <script>BigPipe.onPagelet("pagelet1");</script>
 ```
 
+The `BigPipe.onPagelet` method is part of `big-pipe.js`, so make sure to include that script on every page.
+ 
+## big-pipe.js
+
 The `BigPipe.onPagelet` method will extract the content from the `code` tag and call `BigPipe.renderPagelet` to render
-it client-side into a placeholder `div`. The default `BigPipe.renderPagelet` just inserts the content into the `div`
-using the `innerHTML` method. If you wish to use a more sophisticated method for client-side rendering, simply override
-the `BigPipe.renderPagelet` with your own:
+it client-side into the DOM node with the specified id (e.g. `pagelet1` in the example above). The default 
+`BigPipe.renderPagelet` just inserts the content into the DOM using the `innerHTML` method. If you wish to use a more 
+sophisticated method for client-side rendering, simply override the `BigPipe.renderPagelet` with your own:
 
 ```javascript
 BigPipe.renderPagelet = function(id, content) {
@@ -193,9 +231,15 @@ BigPipe.renderPagelet = function(id, content) {
 }
 ```
 
-For example, you could send down JSON as your content, and then use a client-side rendering technology, such as 
-mustache.js or handlebars.js to render it in the browser. To do that, all you need to do is create a `Pagelet` that
-contains a `JsValue` (for Scala developers) or `JsonNode` (for Java developers):
+The `id` parameter will be the id of the DOM node and `content` will be your content. Note that if your content was 
+JSON instead of HTML, `big-pipe.js` will automatically call `JSON.parse` on it before passing it to you. This can be
+convenient if you use client-side templating.
+
+## Client-side templating
+
+You can use a client-side templating technology, such as mustache.js or handlebars.js to render most of your page 
+in the browser. To do that, all you need to do is create a `Pagelet` that contains a `JsValue` (for Scala developers) 
+or `JsonNode` (for Java developers):
 
 ```scala
 def index = Action {
@@ -230,13 +274,34 @@ BigPipe.renderPagelet = function(id, content) {
 Each `Pagelet` will stream down the JSON as soon as it's available and will call your `BigPipe.renderPagelet` method
 with `content` already parsed as JSON for you.
 
-## Composable pagelets
+## Composing independent pagelets
 
 TODO: write documentation
 
 ## De-duping remote service calls
 
-TODO: write documentation
+If your page is built out of composable, independent pagelets, then each pagelet will know how to fetch all the data it
+needs from backend services. If each pagelet is truly independent, that means you may have duplicated service calls.
+For example, several pagelets may make the exact same backend call to fetch the current user's profile. This is 
+inefficient and increases the load on downstream services.
+
+This project comes with a `DedupingCache` library that makes it easy to *de-dupe* service calls. You can use it to 
+ensure that if several pagelets request the exact same data, you only make one call to a backend service, and all the 
+other calls get the same, cached response. This class has a single method called `get`:
+
+```scala
+def get(key: K, valueIfMissing: => V)(implicit playRequest: RequestHeader): V
+```
+
+If you are using Play's `WSClient` to make remote calls, you could wrap any calls to it with this `get` method to 
+ensure that any duplicate calls for a given URL get back a cached value:
+
+```scala
+cache.get(url, wsClient.url(url).get())
+```
+
+See the `Deduping` controllers in `sample-app-scala` and `sample-app-java` for a complete example of how to setup and
+use the `DedupingCache`.
 
 # Caveats and drawbacks to BigPipe
 
