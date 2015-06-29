@@ -51,7 +51,10 @@ lazy val sampleAppScala = (project in file("sample-app-scala"))
     libraryDependencies ++= Seq(
       ws,
       specs2 % Test
-    )
+    ),
+    // These two settings are to ensure the test servers don't use the same port if they happen to run in parallel
+    fork in Test := true,
+    javaOptions in Test += "-Dtestserver.port=19111"
   )
 
 // The Java sample app
@@ -67,7 +70,10 @@ lazy val sampleAppJava = (project in file("sample-app-java"))
       javaWs,
       "com.typesafe.play" %% "play-java" % play.core.PlayVersion.current,
       specs2 % Test
-    )
+    ),
+    // These two settings are to ensure the test servers don't use the same port if they happen to run in parallel
+    fork in Test := true,
+    javaOptions in Test += "-Dtestserver.port=19222"
   )
 
 
