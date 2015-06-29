@@ -238,6 +238,46 @@ TODO: write documentation
 
 TODO: write documentation
 
+# Caveats and drawbacks to BigPipe
+
+## HTTP headers and error handling 
+
+With BigPipe streaming, you typically start sending the response back to the browser before your backend calls are 
+finished. The first part of that response is the HTTP Headers and once you've sent them back to the browser, it's too
+late to change your mind. If one of those backend calls fails, you can no longer just send the browser a 500 error or a
+redirect! 
+
+Instead, you must handle errors by injecting JavaScript code into your stream that displays the message when it arrives
+in the browser or redirects the user as necessary.
+
+## Caching
+
+Because of the above (the way headers and error handling work), be extra careful using BigPipe if you cache entire 
+pages, especially at the CDN level. Otherwise, you may stream out a 200 OK to the CDN, hit an error with a backend call,
+and accidentally end up caching a page with an error on it. 
+
+If your pages are mostly static and can be cached for a long time (e.g. blogs), BigPipe is probably not for you. If 
+your pages are mostly dynamic and cannot be cached (e.g. the news feeds at Facebook, LinkedIn, Twitter), then BigPipe
+can help.
+
+## Pop-in
+
+Pagelets can be sent down to the browser and rendered client-side in any order. Therefore, you have to be careful to 
+avoid too much "pop-in", where one pagelet renders and the user is starting to use it, and suddenly another one renders
+and suddenly moves the previous one out of view.
+
+To avoid annoying your users, use CSS to size the placeholder elements appropriately so they don't resize or move much
+as the actual content pops in. Alternatively, use JavaScript to ensure that the elements on a page render from top to
+bottom, even if they show up in a different order (e.g. set `display: none` until all the pagelets above the current 
+one have been filled in).
+
+## SEO and noscript
+
+You may not want to use BigPipe for clients that don't have JavaScript enabled, or don't handle JavaScript well, such 
+as a search engine crawler. The simplest solution is to run a headless browser in your data center (e.g. 
+[zombie](http://zombie.js.org/)) that fetches each page, lets the BigPipe JavaScript execute to render the whole page,
+and then sends the rendered HTML down to the client.
+
 # TODO
 
 1. Publish artifacts to Maven central. Currently waiting for this project to be added to Sonatype.
@@ -246,7 +286,8 @@ TODO: write documentation
 4. Add support for in-order, pure server-side rendering of pagelets for use cases that don't support JavaScript (e.g. 
    SEO).
 5. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
-6. More integration tests of the streaming to actually check timings and ensure JavaScript code is working
+6. Add examples of error handling while doing BigPipe streaming.
+7. More integration tests of the streaming to actually check timings and ensure JavaScript code is working
 
 # License
 
