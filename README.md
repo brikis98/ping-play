@@ -5,51 +5,28 @@ The ping-play project brings [BigPipe](https://www.facebook.com/note.php?note_id
 "pagelets" and support for streaming those pagelets down to the browser as soon as they are ready, which can 
 significantly reduce page load time.
 
-# Why BigPipe?
-
-When a request comes in to a typical app, the app fans out to several remote backend services. For example, to load a
-user's profile page, you might make a REST over HTTP request to a "profile service" to fetch the user's profile, 
-another call to a "graph service" to fetch the user's connections, another call to an "ads service" to determine which
-ads to show the user, and so on. With most frameworks, until the data for *all* of these remote calls comes back, you 
-can't send *any* data back to the browser, so your time to first byte is determined by the slowest remote service. 
-
-With BigPipe style streaming, you can start sending data back to the browser immediately, without waiting for all the
-backend services to respond. For example, you can stream the header of your page back immediately, and then fill in all
-the other pieces as soon as the remote backends respond (e.g. as soon as the profile data comes back, you can render 
-the user's profile). Therefore, your time to first byte is essentially zero, so the browser can start rendering the
-page and loading static content (i.e. CSS, JS, images) almost immediately. 
-
-You could try to accomplish something similar to BigPipe by loading an empty page and making lots of AJAX calls after
-it loads, but this has a number of downsides.
-
-Facebook originally created [BigPipe on PHP](https://www.facebook.com/note.php?note_id=389414033919) and has been 
-using it for years. This project brings BipPipe to Play. It is loosely based off of work done originally done at 
-LinkedIn that was eventually incorporated into the [LinkedIn Homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). 
-
-For more background information see the talk *Composable and Streamable Play Apps*: 
-[slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), 
-[video](https://www.youtube.com/watch?v=4b1XLka0UIw)).
-
 # Quick start
 
-*Pre-requisite: this project is built on top of Play 2.4, Scala 2.11.6, and Java 8.*
+*Pre-requisite: this project requires Play 2.4, Scala 2.11.6, and Java 8.*
 
-To add BigPipe streaming to your own pages, first, add the ping-play big-pipe dependency to your build:
+To add BigPipe streaming to your own pages, first, add the big-pipe dependency to your build:
 
 ```scala
 libraryDependencies += "com.ybrikman.ping-play" % "big-pipe" % "0.0.1"`
 ```
 
-Next, add the new `.scala.stream` template type and some imports for it to your build:
+Next, add support for the `.scala.stream` template type and some imports for it to your build:
 
 ```scala
 TwirlKeys.templateFormats ++= Map("stream" -> "com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamFormat"),
 TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream")
 ```
 
-Now you can create streaming templates. Make sure to include the `big-pipe.js` library in the `head` (the library is
-already on your classpath, so just point your assets router to it). For example, here is 
-`app/views/bigPipeExample.scala.stream`:
+Now you can create streaming templates. These templates can mix normal HTML markup, which will be streamed to the 
+browser immediately, with the `HtmlStream` class, which is a wrapper for an `Enumerator[Html]` that will be streamed
+to the browser whenever the `Enumerator` has data. 
+
+For example, here is a streaming template called `app/views/bigPipeExample.scala.stream`:
 
 ```html
 @(body: HtmlStream)
@@ -59,276 +36,201 @@ already on your classpath, so just point your assets router to it). For example,
     <script src="@routes.Assets.at("com/ybrikman/bigpipe/big-pipe.js")"></script>
   </head>
   <body>
-    <div id="placeholder1"></div>
-    <div id="placeholder2"></div>
-    <div id="placeholder3"></div>
+    <div id="profile-placeholder"></div>
+    <div id="graph-placeholder"></div>
+    <div id="feed-placeholder"></div>
 
     @body
   </body>
 </html>
 ```
 
-Notice how the page above includes several placeholder `div` elements. These will be filled in by the `body` as it 
-streams down. Now let's create a controller to stream that body in `app/controllers/BigPipeExample.scala` (all types 
-are shown in the example below to make it clear what's happening):
+The key things to notice in this template are:
+
+1. It includes several placeholder `div` elements, each of which will be filled in incrementally by pagelets as they
+   arrive from the server.
+2. It includes the `big-pipe.js` JavaScript file, which knows how to render pagelets client-side as they arrive.
+3. It includes an `HtmlStream` called `body` at the bottom of the page. This is where all the pagelets will go as they
+   fill in.
+
+Now, let's look at the controller we use with this template, called `app/controllers/BigPipeExample.scala`:
 
 ```scala
 class BigPipeExample extends Controller {
+  def index = Action {
+    // Make several fake service calls in parallel to represent fetching data from remote backends. Some of the calls
+    // will be fast, some medium, and some slow.
+    val profileFuture = serviceClient.fakeRemoteCallMedium("profile")
+    val graphFuture = serviceClient.fakeRemoteCallMedium("graph")
+    val feedFuture = serviceClient.fakeRemoteCallSlow("feed")
 
-  def index = Action { implicit request =>
-    // Fetch data in parallel from two remote services
-    val data1: Future[String] = makeRemoteServiceCall1()
-    val data2: Future[String] = makeRemoteServiceCall2()
-    val data3: Future[String] = makeRemoteServiceCall3()
+    // Convert each Future into a Pagelet which will be rendered as HTML as soon as the data is available
+    val profile = Pagelet.fromHtmlFuture(profileFuture.map(views.html.profile.apply), "profile-placeholder")
+    val graph = Pagelet.fromHtmlFuture(graphFuture.map(views.html.graph.apply), "graph-placeholder")
+    val feed = Pagelet.fromHtmlFuture(feedFuture.map(views.html.feed.apply), "feed-placeholder")
 
-    // Render each piece of data into Html separately, using helper templates
-    val html1: Future[Html] = data1.map(data => views.html.helper1(data))
-    val html2: Future[Html] = data2.map(data => views.html.helper2(data))
-    val html3: Future[Html] = data3.map(data => views.html.helper3(data))
+    // Compose all the pagelets into an HtmlStream
+    val body = HtmlStream.fromInterleavedPagelets(profile, graph, feed)
 
-    // Convert each Future[Html] into a Pagelet that can be streamed down and rendered into its respective placeholder
-    // div as soon as the data comes back from the remote service
-    val pagelet1 = Pagelet.fromHtmlFuture(html1, "placeholder1")
-    val pagelet2 = Pagelet.fromHtmlFuture(html2, "placeholder2")
-    val pagelet3 = Pagelet.fromHtmlFuture(html3, "placeholder3")
-
-    // Interleave all the paglets into a single stream
-    val body = HtmlStream.fromInterleavedPagelets(pagelet1, pagelet2, pagelet3)
-
-    // Render the streaming template
+    // Render the streaming template immediately
     Ok.chunked(views.stream.bigPipeExample(body))
   }
 }
 ```
 
-Load the page and you'll see that page comes back immediately, and each pagelet fills in its respective placeholder
-div as soon as its data is available, instead of waiting for all of the data.
+The key things to notice in this controller are:
 
-# How to run the app
+1. It makes 3 fake service calls in parallel to represent calls to your backend services to fetch data.
+2. When each piece of data redeems, it will be rendered as HTML using its own template (e.g. `views.html.profile`).
+3. This HTML wrapped in a `Pagelet` that knows the name of the placeholder `div` where that HTML should be inserted 
+   when it arrives in the browser.
+4. It composes all the pagelets into a single `HtmlStream` that can stream down the `Pagelets` in whatever order they
+   complete.
+5. It uses the `bigPipeExample.scala.stream` template from above to render all of this.
 
-Pre-requisite: [Install Play](http://www.playframework.com/download) 
+To see this example in action, take a look at the sample Java or Scala apps (yes, BigPipe streaming works with both!).
+For example, to see the Scala sample app, you would:
 
-1. `git clone` this repo
-2. `activator run`
-3. Go to `http://localhost:9000` to test
+1. `git clone` this repo.
+2. `activator shell`
+3. `project sampleAppScala`
+4. `run`
+5. Open `http://localhost:9000/withoutBigPipe` to see how long the page takes to load without BigPipe streaming.
+6. Open `http://localhost:9000/withBigPipe` to see how much faster the page loads with BigPipe streaming.
 
-# Running with Docker
+Check out [Background](#Background) to get a better understanding of how BigPipe works and 
+[Documentation](#Documentation) to see what libraries and APIs are available. 
 
-As an alternative to installing activator and waiting for SBT to download all
-dependencies and compile the code, if you have [Docker](https://www.docker.com/) 
-and [Docker Compose](https://docs.docker.com/compose/) already installed, 
-you can run a Docker image of ping-play that has all the code already compiled
-within it.
+# Background
 
-On Linux:
+## Why BigPipe?
 
-1. `git clone` this repo
-2. `docker-compose up`
-3. Go to `http://localhost:9000` to test 
+To fetch the data for a page, modern apps often have to make requests to multiple remote backend services (e.g. RESTful
+HTTP calls to a profile service, a search service, an ads service, etc). You then have to wait for *all* of these 
+remote calls to come back before you can send *any* data back to the browser. For example, the following screenshot 
+shows a page that makes 6 remote service calls, most of which complete in few hundred milliseconds, but one takes 
+nearly 4 seconds. As a result, the time to first byte is nearly 4 seconds (during which the user sees a completely 
+blank page) and then the page finally starts rendering:
 
-On OS X, using the [docker-osx-dev](https://github.com/brikis98/docker-osx-dev)
-project:
+![Page loading without BigPipe](/images/without-big-pipe.png)
 
-1. `git clone` this repo
-2. `docker-osx-dev`
-3. `docker-compose up`
-4. Go to `http://dockerhost:9000` to test
+With BigPipe style streaming, you can start streaming data back to the browser without waiting for the backends at all, 
+and fill in the page on the fly as each backend responds. For example, the following screenshot shows the same page 
+rendered using BigPipe, where the header and much of the markup was sent back instantly, so time to first byte was 4 
+milliseconds instead of 4 seconds, static content (i.e. CSS, JS, images) could start loading right away, and then as 
+each backend service responded, the corresponding part of the page (i.e. the pagelet) was sent to the browser and
+rendered on the screen incrementally:
 
-# More info 
+![Page loading with BigPipe](/images/with-big-pipe.png)
 
-* Composable and Streamable Play Apps: [slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), [video](https://www.youtube.com/watch?v=4b1XLka0UIw)
-* [Facebook BigPipe](https://www.facebook.com/note.php?note_id=389414033919)
+## Why not AJAX or iframes?
 
-# How to browse the code
+You could try to accomplish something similar to BigPipe by sending back a page that's empty and makes lots of AJAX 
+calls or uses iframes to fill in each pagelet. This approach is much slower than BigPipe for a number of reasons: 
 
-The main example code to look at:
+1. Each AJAX call requires an extra roundtrip to your server, which adds a lot of latency. This latency is especially
+   bad on mobile or slower connections.
+2. Each extra roundtrip also increases the load on your server. Instead of 1 QPS to load a page, you now have 6 QPS to
+   load a page with 6 pagelets.
+3. Older browsers severly limit how many AJAX calls you can do and most browsers give AJAX calls a low priority during
+   the initial page load.
+4. You have to download, parse, and execute a bunch of JavaScript code before you can even make the AJAX calls. 
 
-1. `app/controllers/Wvyp` and `app/controllers/Wvyu` are examples of simple, standalone modules.
-2. `app/controllers/Aggregator` shows how these modules can be combined to build a more complicated module.
-3. `app/controllers/WvypStream` shows how to stream the contents of a module using a BigPipe approach.
-4. `app/ui` a reusable library for composing modules and streaming HTML.
+BigPipe gives you all the benefits of an AJAX portal, but without the downsides, by using a single connection&mdash;that
+is, the original connection used to request the page&mdash;and streaming down each pagelet using 
+[HTTP Chunked Encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding), which works in almost all browsers.
 
-# De-duping service calls
+## Further reading
 
-To be able to use standalone endpoints, you need to de-dupe remote service calls, or you'll end up repeating the same calls over and over again in your controllers, which could significantly increase load on the remote endpoints. The basic idea behind de-duping is easy: when you make a remote service call, store the `Future` it returns in a cache, and if the same service call is repeated, just return the cached `Future`.
+1. [Composable and Streamable Play Apps](https://engineering.linkedin.com/play/composable-and-streamable-play-apps): 
+   a talk that introduces how BigPipe streaming works on top of Play (see the 
+   [video](https://www.youtube.com/watch?v=4b1XLka0UIw) and 
+   [slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps). 
+2. [BigPipe: Pipelining web pages for high performance](https://www.facebook.com/note.php?note_id=389414033919): the
+   original blog post by Facebook that introduces BigPipe on PHP.
+3. [New technologies for the new LinkedIn home page](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page):
+   the new LinkedIn homepage is using BigPipe style streaming. This ping-play project is loosely based off of the work 
+   done originally at LinkedIn. 
 
-Below is an outline (ie, an untested, partial implementation) of a `RestClient` you can use to wrap Play's `WS` client with caching. Note that it uses a `Cache` class (see [Cache.scala](https://gist.github.com/brikis98/5843195)), which is just a Scala-friendly wrapper of a `ConcurrentHashMap`. 
+# Documentation
 
-```scala
-// This is a client you use everywhere in your code to make REST requests. 
-// It will de-dupe read requests so you never perform the same HTTP GET more
-// than once for the same user. 
-// 
-// Note that this caching strategy can be used with *any* remote protocol, not 
-// just HTTP/REST. The only thing you need is:
-//
-// 1. A way to tell if it's safe to use the cache
-// 2. A way to tell if two requests are identical
-//
-// For example, for REST: 
-//
-// 1. Any GET should be cacheable.
-// 2. Two GETs with identical URLs are equal.
-//
-object RestClient {
-  
-  // Basicaly a ConcurrentHashMap from request id => a cache of service calls made 
-  // while processing that request.
-  // For the Cache class, see: https://gist.github.com/brikis98/5843195
-  private val cache = new Cache[Long, Cache[String, Future[Response]]]()
-  
-  // Make an HTTP GET request. Assumption: two requests with the same URL are
-  // identical, so they will be de-duped. The first time there is a unique URL,
-  // we use WS to actually make the request and store the Future object in the
-  // cache. The next time we see the same URL, we just return the cached Future.
-  def get(url: String)(implicit request: RequestHeader): Future[Response] = {
-    cache.get(request.id).getOrElseUpdate(url, WS.url(url).get())
-  }
-  
-  // Initialize the cache for each incoming HTTP request. The best place to call this method
-  // is from a filter.
-  def initCacheForRequest(request: RequestHeader): Unit = {
-    cache.put(request.id, new Cache[String, Future[Response]]())
-  }
-  
-  // Once you are doing processing an incoming request, don't forget to clean up the cache, 
-  // or you will have a memory leak. The best place to call this method is from a filter.
-  def cleanupCacheForRequest(request: RequestHeader): Unit = {
-    cache.remove(request.id)
-  }
-}
-```
+## Scala vs Java
 
-To use this `RestClient`, you also need a `CacheFilter` to initialize and cleanup the cache for each request:
+BigPipe streaming is supported for both Scala and Java developers.
 
-```scala
-// Put this filter early in your filter chain so it can initialize and clean up
-// the cache
-object CacheFilter extends Filter {
-  
-  def apply(next: RequestHeader => Future[Result])(request: RequestHeader): Future[Result] = {
-    def init = RestClient.initCacheForRequest(request)
-    def cleanup = RestClient.cleanupCacheForRequest(request)
-    
-    // You have to be very careful with error handling to garauntee the cache gets cleaned 
-    // up, or you'll have a memory leak.
-    try {
-      init
-      next(request).map { result => 
-        result.body.onDoneEnumerating(cleanup)
-      }.recover { case t: Throwable => 
-        cleanup
-        // Log or re-throw the exception
-      }
-    } catch {
-      case t: Throwable => 
-        cleanup
-        // Log or re-throw the exception
-    }
-  }
-}
-```
+Scala developers should primarily be using classes in the `com.ybrikman.ping.scalaapi` package. In particular, use the
+`com.ybrikman.ping.scalaapi.Pagelet` class to wrap your `Html` and `Future[Html]` as `Pagelet` objects, and use the
+`com.ybrikman.ping.scalaapi.HtmlStream` class to combine `Pagelet` objects into an `HtmlStream`.
 
-Finally, here is an example usage of the `RestClient` in a controller:
+Java developers should primarily be using classes in the `com.ybrikman.ping.javaapi` package. In particular, use the
+`com.ybrikman.ping.javaapi.Pagelet` class to wrap your `Html` and `Promise<Html>` as `Pagelet` objects and use the
+`com.ybrikman.ping.javaapi.HtmlStreamHelper` class to combine `Pagelet` objects into an `HtmlStream`.  
+ 
+## Controlling client-side rendering
 
-```scala
-object ExampleUsage extends Controller {
-  
-  def index = Action { implicit request =>
-    // These two calls should be de-duped, so only one remote call
-    // is actually made.
-    val future1 = RestClient.get("http://www.my-site.com/foo")
-    val future2 = RestClient.get("http://www.my-site.com/foo")
-    
-    for {
-      foo1 <- future1
-      foo2 <- future2
-    } yield {
-      // ...
-    }
-  }
-}
-```
-
-# Safely injecting "pagelets"
-
-The method I used to inject pagelets in `pagelet.scala.html` is **for demonstration purposes only**. I had to keep the talk short and I wanted to minimize dependencies in this repo, but it's **not** a good idea to shove HTML directly into a script tag:
+Each pagelet consists of the content, wrapped in `code` tag and an HTML comment so that it is ignored by the browser,
+and some JavaScript code telling the `big-pipe.js` library to process it. It looks roughly like this:
 
 ```html
-<!-- Excerpt from pagelet.scala.html -->
-@(contents: Html, id: String)
-
-<script type="text/html-stream" id="@id-contents">
-  @contents
-</script>
-```
-If `contents` contains a closing `script` tag, your page will break. And if you're not careful about how you render `contents`, you may be opening yourself up for an injection attack.
-
-Instead of injecting server-side rendered HTML, a better approach is to inject JSON and to use a JavaScript templating technology (e.g. mustache, handlebars, dust, react, etc) to turn it into HTML in the browser. 
-
-To inject JSON safely, put it into a `code` tag wrapped in an HTML comment:
-
-```html
-<code id="my-data">
-<!--{"name": "Jim"}-->
-</code>
+<code id="pagelet1"><!--<p>Some content</p>--></code>
+<script>BigPipe.onPagelet("pagelet1");</script>
 ```
 
-Note that you'll need to escape/unescape the double dash in the JSON so it can't break out of the comment block. You'll probably want an `escapeForEmbedding` function in Scala and an `unescapeForEmbedding` function in JavaScript, but I've written both in  JavaScript just to keep things simple:
+The `BigPipe.onPagelet` method will extract the content from the `code` tag and call `BigPipe.renderPagelet` to render
+it client-side into a placeholder `div`. The default `BigPipe.renderPagelet` just inserts the content into the `div`
+using the `innerHTML` method. If you wish to use a more sophisticated method for client-side rendering, simply override
+the `BigPipe.renderPagelet` with your own:
 
 ```javascript
-var ESC_FLAGS = "gi";
-var HTML_ENTITY = {
-  dsh: { escaped: '\\u002d\\u002d', unescaped: '--', escaped_re: '\\\\u002d\\\\u002d' }
-};
-
-function escapeForEmbedding(str) {
-  return str.replace(new RegExp(HTML_ENTITY.dsh.unescaped, ESC_FLAGS), HTML_ENTITY.dsh.escaped);
-}
-
-function unescapeForEmbedding(str) {
-  return str.replace(new RegExp(HTML_ENTITY.dsh.escaped_re, ESC_FLAGS), HTML_ENTITY.dsh.unescaped);
-}
-```  
-
-You can then use JavaScript to read the contents of the `code` block, strip the comments, and use `JSON.parse` to safely parse the JSON without exposing yourself to any sort of injection attack:
-
-```javascript
-function parseEmbeddedJson(domId) {
-  var contentElem = document.getElementById(domId);
-  var innerContent = contentElem.firstChild.nodeValue;
-  contentElem.parentNode.removeChild(contentElem);
-  return JSON.parse(unescapeForEmbedding(innerContent));
+BigPipe.renderPagelet = function(id, content) {
+  // Provide a custom way to insert the specified content into the DOM node with the given id
 }
 ```
 
-You can pass this JSON to your favorite templating technology, render it, and inject it into the DOM. Here's an example using [Mustache.js](https://github.com/janl/mustache.js/):
+For example, you could send down JSON as your content, and then use a client-side rendering technology, such as 
+mustache.js or handlebars.js to render it in the browser. To do that, all you need to do is create a `Pagelet` that
+contains a `JsValue` (for Scala developers) or `JsonNode` (for Java developers):
+
+```scala
+def index = Action {
+  // Make several fake service calls in parallel and get back a Future[JsValue] from each one 
+  val profileFuture = serviceClient.fakeRemoteCallMedium("profile")
+  val graphFuture = serviceClient.fakeRemoteCallMedium("graph")
+  val feedFuture = serviceClient.fakeRemoteCallSlow("feed")
+
+  // Convert each Future[JsValue] into a Pagelet
+  val profile = Pagelet.fromJsonFuture(profileFuture, "profile-placeholder")
+  val graph = Pagelet.fromJsonFuture(graphFuture, "graph-placeholder")
+  val feed = Pagelet.fromJsonFuture(feedFuture, "feed-placeholder")
+
+  // Compose all the pagelets into an HtmlStream
+  val body = HtmlStream.fromInterleavedPagelets(profile, graph, feed)
+
+  // Render the streaming template immediately
+  Ok.chunked(views.stream.bigPipeExample(body))
+}
+```
+
+Next, create your custom `BigPipe.renderPagelet` method:
 
 ```javascript
-// You probably want to store your template in an external file
-var template = "Hello {{name}}"; 
-var json = parseEmbeddedJson("my-data");
-var html = Mustache.render(template, json);
-document.getElementById("some-dom-node").innerHTML = html;
+BigPipe.renderPagelet = function(id, content) {
+  var myTemplate = "Hello {{ name }}";
+  var html = Mustache.render(myTemplate, content);
+  document.getElementByid(id, html);
+}
 ```
 
-Putting this all together, a better version of `pagelet.scala.html` would look something like this:
+Each `Pagelet` will stream down the JSON as soon as it's available and will call your `BigPipe.renderPagelet` method
+with `content` already parsed as JSON for you.
 
-```html
-@(data: Json, id: String)
+## Composable pagelets
 
-<code id="@id-data">
-  <!--@escapeForEmbedding(Json.stringify(data))-->
-</script>
+TODO: write documentation
 
-<script type="text/javascript">
-  // You probably want to store your template in an external file
-  var template = "Hello {{name}}"; 
-  var json = parseEmbeddedJson("@id-data");
-  var html = Mustache.render(template, json);
-  document.getElementById("@id").innerHTML = html;
-</script>
-```
+## De-duping remote service calls
+
+TODO: write documentation
 
 # License
 
