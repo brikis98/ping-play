@@ -246,6 +246,7 @@ TODO: write documentation
 4. Add support for in-order, pure server-side rendering of pagelets for use cases that don't support JavaScript (e.g. 
    SEO).
 5. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
+6. More integration tests of the streaming to actually check timings and ensure JavaScript code is working
 
 # License
 
