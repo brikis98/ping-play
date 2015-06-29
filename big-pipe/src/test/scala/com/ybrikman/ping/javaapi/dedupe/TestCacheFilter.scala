@@ -5,7 +5,6 @@ import java.util.function.Supplier
 import com.ybrikman.ping.scalaapi.dedupe.CacheNotInitializedException
 import org.specs2.mutable.Specification
 import play.api.mvc.{Results, Result, RequestHeader}
-import play.api.test.FakeRequest
 import play.mvc.Http.{RequestBuilder, Context}
 import play.api.test.Helpers._
 import play.api.libs.concurrent.Execution.Implicits._
@@ -17,14 +16,14 @@ class TestCacheFilter extends Specification {
     "initialize the cache before the filter chain and clean it up after the filter chain" >> {
       val fakeContext = new Context(new RequestBuilder)
       val cache = new DedupingCache[String, String]
-      val filter = new CacheFilter(cache, defaultContext, fakeContext)
+      val filter = new CacheFilter(cache, defaultContext)
       val expectedResult = "bar"
 
       def next(rh: RequestHeader): Future[Result] = {
         Future.successful(Results.Ok(cache.get("foo", supplier(expectedResult), fakeContext)))
       }
 
-      val fakeRequest = FakeRequest()
+      val fakeRequest = fakeContext._requestHeader()
       val actualResult = contentAsString(filter(next _)(fakeRequest))
       actualResult mustEqual expectedResult
 
@@ -35,14 +34,14 @@ class TestCacheFilter extends Specification {
     "initialize the cache before the filter chain and clean it up after the filter chain even if an exception is thrown" >> {
       val fakeContext = new Context(new RequestBuilder)
       val cache = new DedupingCache[String, String]
-      val filter = new CacheFilter(cache, defaultContext, fakeContext)
+      val filter = new CacheFilter(cache, defaultContext)
       val expectedResult = "bar"
 
       def next(rh: RequestHeader): Future[Result] = {
         throw new CacheFilterTestException(cache.get("foo", supplier(expectedResult), fakeContext))
       }
 
-      val fakeRequest = FakeRequest()
+      val fakeRequest = fakeContext._requestHeader()
       contentAsString(filter(next _)(fakeRequest)) must throwA[CacheFilterTestException](message = expectedResult)
 
       // Ensure cache was cleaned up for that request

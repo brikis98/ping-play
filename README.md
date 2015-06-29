@@ -84,14 +84,16 @@ The key things to notice in this controller are:
 
 1. It makes 3 fake service calls in parallel to represent calls to your backend services to fetch data.
 2. When each piece of data redeems, it will be rendered as HTML using its own template (e.g. `views.html.profile`).
-3. This HTML wrapped in a `Pagelet` that knows the name of the placeholder `div` where that HTML should be inserted 
+3. This HTML is wrapped in a `Pagelet` that knows the name of the placeholder `div` where that HTML should be inserted 
    when it arrives in the browser.
 4. It composes all the pagelets into a single `HtmlStream` that can stream down the `Pagelets` in whatever order they
    complete.
 5. It uses the `bigPipeExample.scala.stream` template from above to render all of this.
 
-To see this example in action, take a look at the sample Java or Scala apps (yes, BigPipe streaming works with both!).
-For example, to see the Scala sample app, you would:
+To see this example in action, take a look at sample-app-scala or sample-app-java (yes, BigPipe streaming works with 
+both Scala and Java) as well as sample-app-common (which has some code shared by both sample apps, including all the
+templates). For example, here is how to run the Scala sample app (assuming you have 
+[Typesafe Activator](https://www.typesafe.com/community/core-tools/activator-and-sbt) installed already):
 
 1. `git clone` this repo.
 2. `activator shell`
@@ -118,9 +120,9 @@ blank page) and then the page finally starts rendering:
 
 With BigPipe style streaming, you can start streaming data back to the browser without waiting for the backends at all, 
 and fill in the page on the fly as each backend responds. For example, the following screenshot shows the same page 
-rendered using BigPipe, where the header and much of the markup was sent back instantly, so time to first byte was 4 
-milliseconds instead of 4 seconds, static content (i.e. CSS, JS, images) could start loading right away, and then as 
-each backend service responded, the corresponding part of the page (i.e. the pagelet) was sent to the browser and
+rendered using BigPipe, where the header and much of the markup is sent back instantly, so time to first byte is 4 
+milliseconds instead of 4 seconds, static content (i.e. CSS, JS, images) can start loading right away, and then as 
+each backend service responds, the corresponding part of the page (i.e. the pagelet) are sent to the browser and
 rendered on the screen incrementally:
 
 ![Page loading with BigPipe](/images/with-big-pipe.png)
@@ -147,12 +149,12 @@ is, the original connection used to request the page&mdash;and streaming down ea
 1. [Composable and Streamable Play Apps](https://engineering.linkedin.com/play/composable-and-streamable-play-apps): 
    a talk that introduces how BigPipe streaming works on top of Play (see the 
    [video](https://www.youtube.com/watch?v=4b1XLka0UIw) and 
-   [slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps). 
+   [slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps)). 
 2. [BigPipe: Pipelining web pages for high performance](https://www.facebook.com/note.php?note_id=389414033919): the
    original blog post by Facebook that introduces BigPipe on PHP.
 3. [New technologies for the new LinkedIn home page](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page):
-   the new LinkedIn homepage is using BigPipe style streaming. This ping-play project is loosely based off of the work 
-   done originally at LinkedIn. 
+   the new LinkedIn homepage is using BigPipe style streaming with Play. This ping-play project is loosely based off of 
+   the work done originally at LinkedIn. 
 
 # Documentation
 
@@ -162,11 +164,13 @@ BigPipe streaming is supported for both Scala and Java developers.
 
 Scala developers should primarily be using classes in the `com.ybrikman.ping.scalaapi` package. In particular, use the
 `com.ybrikman.ping.scalaapi.Pagelet` class to wrap your `Html` and `Future[Html]` as `Pagelet` objects, and use the
-`com.ybrikman.ping.scalaapi.HtmlStream` class to combine `Pagelet` objects into an `HtmlStream`.
+`com.ybrikman.ping.scalaapi.HtmlStream` class to combine `Pagelet` objects into an `HtmlStream`. See 
+`sample-app-scala` for examples.
 
 Java developers should primarily be using classes in the `com.ybrikman.ping.javaapi` package. In particular, use the
 `com.ybrikman.ping.javaapi.Pagelet` class to wrap your `Html` and `Promise<Html>` as `Pagelet` objects and use the
-`com.ybrikman.ping.javaapi.HtmlStreamHelper` class to combine `Pagelet` objects into an `HtmlStream`.  
+`com.ybrikman.ping.javaapi.HtmlStreamHelper` class to combine `Pagelet` objects into an `HtmlStream`. See 
+`sample-app-java` for examples.  
  
 ## Controlling client-side rendering
 
@@ -233,6 +237,15 @@ TODO: write documentation
 ## De-duping remote service calls
 
 TODO: write documentation
+
+# TODO
+
+1. Publish artifacts to Maven central. Currently waiting for this project to be added to Sonatype.
+2. Finish the "Composable pagelets" implementation (it is currently unfinished and untested).
+3. Finish the "Composable pagelets" and "De-duping remote service calls" documentation.
+4. Add support for in-order, pure server-side rendering of pagelets for use cases that don't support JavaScript (e.g. 
+   SEO).
+5. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
 
 # License
 

@@ -7,12 +7,12 @@ import play.libs.F;
 
 import javax.inject.Inject;
 
-public class ServiceClient {
-  private final data.ServiceClient delegate;
+public class FakeServiceClient {
+  private final data.FakeServiceClient delegate;
 
   @Inject
-  public ServiceClient(ActorSystem actorSystem) {
-    delegate = new data.ServiceClient(new FutureUtil(actorSystem));
+  public FakeServiceClient(ActorSystem actorSystem) {
+    delegate = new data.FakeServiceClient(new FutureUtil(actorSystem));
   }
 
   public F.Promise<Response> fakeRemoteCallFast(String id) {

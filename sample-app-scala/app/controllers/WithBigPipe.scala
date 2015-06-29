@@ -1,7 +1,7 @@
 package controllers
 
 import com.ybrikman.ping.scalaapi.bigpipe.{HtmlStream, Pagelet}
-import data.ServiceClient
+import data.FakeServiceClient
 import play.api.mvc.{Controller, Action}
 import play.api.libs.concurrent.Execution.Implicits._
 import com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamImplicits._
@@ -11,7 +11,7 @@ import com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamImplicits._
  * 
  * @param serviceClient
  */
-class WithBigPipe(serviceClient: ServiceClient) extends Controller {
+class WithBigPipe(serviceClient: FakeServiceClient) extends Controller {
 
   def index = Action {
     // Make several fake service calls in parallel to represent fetching data from remote backends. Some of the calls

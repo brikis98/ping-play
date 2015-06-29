@@ -5,6 +5,7 @@ import com.ybrikman.ping.scalaapi.dedupe.CacheNotInitializedException;
 import com.ybrikman.ping.scalaapi.dedupe.JavaFunctionHelper;
 import play.mvc.Http;
 
+import javax.inject.Singleton;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +32,7 @@ import java.util.function.Supplier;
  * @param <V> The type of value that will be returned. For example, if you're making REST over HTTP calls using Play's
  *            WS library, a Promise<Response> might be a good type for the value.
  */
+@Singleton
 public class DedupingCache<K, V> {
   private final Cache<Long, Cache<K, V>> cache;
 

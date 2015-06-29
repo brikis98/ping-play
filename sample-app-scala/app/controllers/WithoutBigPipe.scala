@@ -1,6 +1,6 @@
 package controllers
 
-import data.ServiceClient
+import data.FakeServiceClient
 import play.api.mvc.{Action, Controller}
 import play.api.libs.concurrent.Execution.Implicits._
 
@@ -9,7 +9,7 @@ import play.api.libs.concurrent.Execution.Implicits._
  *
  * @param serviceClient
  */
-class WithoutBigPipe(serviceClient: ServiceClient) extends Controller {
+class WithoutBigPipe(serviceClient: FakeServiceClient) extends Controller {
 
   def index = Action.async { implicit request =>
     // Make several fake service calls in parallel to represent fetching data from remote backends. Some of the calls

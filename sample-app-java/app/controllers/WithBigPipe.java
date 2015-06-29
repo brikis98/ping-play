@@ -4,7 +4,7 @@ import com.ybrikman.ping.javaapi.bigpipe.HtmlStreamHelper;
 import com.ybrikman.ping.javaapi.bigpipe.Pagelet;
 import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream;
 import data.Response;
-import helper.ServiceClient;
+import helper.FakeServiceClient;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -12,10 +12,10 @@ import play.mvc.Result;
 import javax.inject.Inject;
 
 public class WithBigPipe extends Controller {
-  private final ServiceClient serviceClient;
+  private final FakeServiceClient serviceClient;
 
   @Inject
-  public WithBigPipe(ServiceClient serviceClient) {
+  public WithBigPipe(FakeServiceClient serviceClient) {
     this.serviceClient = serviceClient;
   }
   

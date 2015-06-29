@@ -2,7 +2,7 @@ package controllers;
 
 import com.ybrikman.ping.javaapi.promise.PromiseHelper;
 import data.Response;
-import helper.ServiceClient;
+import helper.FakeServiceClient;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -11,10 +11,10 @@ import javax.inject.Inject;
 
 public class WithoutBigPipe extends Controller {
 
-  private final ServiceClient serviceClient;
+  private final FakeServiceClient serviceClient;
 
   @Inject
-  public WithoutBigPipe(ServiceClient serviceClient) {
+  public WithoutBigPipe(FakeServiceClient serviceClient) {
     this.serviceClient = serviceClient;
   }
 

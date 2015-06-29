@@ -1,0 +1,44 @@
+@(result1: data.UrlAndId, result2: data.UrlAndId, result3: data.UrlAndId, result4: data.UrlAndId)
+
+<html>
+  <head>
+    <style>
+      td { border: 1px solid #CCC; padding: 10px 20px; }
+      .url { width: 50%; }
+      .id { width: 50%; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>Deduping example</h1>
+    <p>
+      Requests to the same remote URL should be de-duped, so only one request is actually sent, and all the others get
+      the same cached response.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Service URL</th>
+          <th>Request ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="url">@result1.url</td>
+          <td class="id">@result1.id</td>
+        </tr>
+        <tr>
+          <td class="url">@result2.url</td>
+          <td class="id">@result2.id</td>
+        </tr>
+        <tr>
+          <td class="url">@result3.url</td>
+          <td class="id">@result3.id</td>
+        </tr>
+        <tr>
+          <td class="url">@result4.url</td>
+          <td class="id">@result4.id</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

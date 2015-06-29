@@ -2,11 +2,16 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /withoutBigPipe           controllers.WithoutBigPipe.index
-GET        /withBigPipe              controllers.WithBigPipe.index
+# BigPipe examples
+GET        /withoutBigPipe        controllers.WithoutBigPipe.index
+GET        /withBigPipe           controllers.WithBigPipe.index
+
+# Deduping examples
+GET        /dedupe                controllers.Deduping.index
+GET        /mock/requestId        controllers.Mock.requestId
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file             controllers.Assets.at(path="/public", file)
+GET        /assets/*file          controllers.Assets.at(path="/public", file)
 
 
 

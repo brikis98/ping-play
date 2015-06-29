@@ -8,9 +8,9 @@ import scala.util.Random
 /**
  * A client that represents fake calls to remote backend services.
  */
-class ServiceClient(futureUtil: FutureUtil) {
+class FakeServiceClient(futureUtil: FutureUtil) {
 
-  import data.ServiceClient._
+  import data.FakeServiceClient._
 
   def fakeRemoteCallFast(id: String): Future[Response] = fakeRemoteCall(id, FAST_RESPONSE_TIME_IN_MILLIS)
   def fakeRemoteCallMedium(id: String): Future[Response] = fakeRemoteCall(id, MEDIUM_RESPONSE_TIME_IN_MILLIS)
@@ -25,7 +25,7 @@ class ServiceClient(futureUtil: FutureUtil) {
   }
 }
 
-object ServiceClient {
+object FakeServiceClient {
   val FAST_RESPONSE_TIME_IN_MILLIS = 3
   val MEDIUM_RESPONSE_TIME_IN_MILLIS = 300
   val SLOW_RESPONSE_TIME_IN_MILLIS = 3000
