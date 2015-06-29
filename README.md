@@ -9,7 +9,7 @@ significantly reduce page load time.
 
 *Pre-requisite: this project requires Play 2.4, Scala 2.11.6, and Java 8.*
 
-*Note*: these artifacts are not yet published!
+**Note: these artifacts are not yet published!**
 
 To add BigPipe streaming to your own pages, first, add the big-pipe dependency to your build:
 
