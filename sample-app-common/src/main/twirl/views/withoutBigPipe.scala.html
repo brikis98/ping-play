@@ -1,0 +1,26 @@
+@(profile: data.Response, graph: data.Response, feed: data.Response, inbox: data.Response, ads: data.Response, search: data.Response)
+
+<html>
+  <head>
+    <link rel="stylesheet" href="/assets/stylesheets/main.css">
+  </head>
+  <body>
+    <h1>Without Big Pipe</h1>
+    @views.html.helpers.timing()
+    <table class="wrapper">
+      <tr>
+        <td><div id="profile">@views.html.helpers.module(profile)</div></td>
+        <td><div id="ads">@views.html.helpers.module(ads)</div></td>
+      </tr>
+      <tr>
+        <td><div id="graph">@views.html.helpers.module(graph)</div></td>
+        <td><div id="inbox">@views.html.helpers.module(inbox)</div></td>
+      </tr>
+      <tr>
+        <td><div id="feed">@views.html.helpers.module(feed)</div></td>
+        <td><div id="search">@views.html.helpers.module(search)</div></td>
+      </tr>
+    </table>
+
+  </body>
+</html>

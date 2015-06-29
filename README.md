@@ -1,11 +1,108 @@
 # Ping-Play
 
-This is a sample [Play Framework](http://playframework.com/) application that shows how to:
+The ping-play project brings [BigPipe](https://www.facebook.com/note.php?note_id=389414033919) style streaming to 
+[Play Framework](http://playframework.com/) applications. It includes tools for splitting your pages up into small
+"pagelets" and support for streaming those pagelets down to the browser as soon as they are ready, which can 
+significantly reduce page load time.
 
-1. **Compose standalone controllers** to build a more complex page from simpler parts.
-2. **Implement BigPipe-style streaming** so you can break a page into "pagelets" and stream each pagelet to the browser as soon as the data is available, dramatically reducing load times. See [Facebook BigPipe](https://www.facebook.com/note.php?note_id=389414033919) for more info.
+# Why BigPipe?
 
-LinkedIn is using composable endpoints and BigPipe streaming in production on its [new homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). However, the code in *this* repo was built for a talk called *Composable and Streamable Play Apps* ([slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), [video](https://www.youtube.com/watch?v=4b1XLka0UIw)) at [Ping Conference 2014](http://www.ping-conf.com/), so it's just for demonstration and education purposes, and includes no tests.
+When a request comes in to a typical app, the app fans out to several remote backend services. For example, to load a
+user's profile page, you might make a REST over HTTP request to a "profile service" to fetch the user's profile, 
+another call to a "graph service" to fetch the user's connections, another call to an "ads service" to determine which
+ads to show the user, and so on. With most frameworks, until the data for *all* of these remote calls comes back, you 
+can't send *any* data back to the browser, so your time to first byte is determined by the slowest remote service. 
+
+With BigPipe style streaming, you can start sending data back to the browser immediately, without waiting for all the
+backend services to respond. For example, you can stream the header of your page back immediately, and then fill in all
+the other pieces as soon as the remote backends respond (e.g. as soon as the profile data comes back, you can render 
+the user's profile). Therefore, your time to first byte is essentially zero, so the browser can start rendering the
+page and loading static content (i.e. CSS, JS, images) almost immediately. 
+
+You could try to accomplish something similar to BigPipe by loading an empty page and making lots of AJAX calls after
+it loads, but this has a number of downsides.
+
+Facebook originally created [BigPipe on PHP](https://www.facebook.com/note.php?note_id=389414033919) and has been 
+using it for years. This project brings BipPipe to Play. It is loosely based off of work done originally done at 
+LinkedIn that was eventually incorporated into the [LinkedIn Homepage](http://engineering.linkedin.com/frontend/new-technologies-new-linkedin-home-page). 
+
+For more background information see the talk *Composable and Streamable Play Apps*: 
+[slides](http://www.slideshare.net/brikis98/composable-and-streamable-play-apps), 
+[video](https://www.youtube.com/watch?v=4b1XLka0UIw)).
+
+# Quick start
+
+*Pre-requisite: this project is built on top of Play 2.4, Scala 2.11.6, and Java 8.*
+
+To add BigPipe streaming to your own pages, first, add the ping-play big-pipe dependency to your build:
+
+```scala
+libraryDependencies += "com.ybrikman.ping-play" % "big-pipe" % "0.0.1"`
+```
+
+Next, add the new `.scala.stream` template type and some imports for it to your build:
+
+```scala
+TwirlKeys.templateFormats ++= Map("stream" -> "com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamFormat"),
+TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream")
+```
+
+Now you can create streaming templates. Make sure to include the `big-pipe.js` library in the `head` (the library is
+already on your classpath, so just point your assets router to it). For example, here is 
+`app/views/bigPipeExample.scala.stream`:
+
+```html
+@(body: HtmlStream)
+
+<html>
+  <head>
+    <script src="@routes.Assets.at("com/ybrikman/bigpipe/big-pipe.js")"></script>
+  </head>
+  <body>
+    <div id="placeholder1"></div>
+    <div id="placeholder2"></div>
+    <div id="placeholder3"></div>
+
+    @body
+  </body>
+</html>
+```
+
+Notice how the page above includes several placeholder `div` elements. These will be filled in by the `body` as it 
+streams down. Now let's create a controller to stream that body in `app/controllers/BigPipeExample.scala` (all types 
+are shown in the example below to make it clear what's happening):
+
+```scala
+class BigPipeExample extends Controller {
+
+  def index = Action { implicit request =>
+    // Fetch data in parallel from two remote services
+    val data1: Future[String] = makeRemoteServiceCall1()
+    val data2: Future[String] = makeRemoteServiceCall2()
+    val data3: Future[String] = makeRemoteServiceCall3()
+
+    // Render each piece of data into Html separately, using helper templates
+    val html1: Future[Html] = data1.map(data => views.html.helper1(data))
+    val html2: Future[Html] = data2.map(data => views.html.helper2(data))
+    val html3: Future[Html] = data3.map(data => views.html.helper3(data))
+
+    // Convert each Future[Html] into a Pagelet that can be streamed down and rendered into its respective placeholder
+    // div as soon as the data comes back from the remote service
+    val pagelet1 = Pagelet.fromHtmlFuture(html1, "placeholder1")
+    val pagelet2 = Pagelet.fromHtmlFuture(html2, "placeholder2")
+    val pagelet3 = Pagelet.fromHtmlFuture(html3, "placeholder3")
+
+    // Interleave all the paglets into a single stream
+    val body = HtmlStream.fromInterleavedPagelets(pagelet1, pagelet2, pagelet3)
+
+    // Render the streaming template
+    Ok.chunked(views.stream.bigPipeExample(body))
+  }
+}
+```
+
+Load the page and you'll see that page comes back immediately, and each pagelet fills in its respective placeholder
+div as soon as its data is available, instead of waiting for all of the data.
 
 # How to run the app
 

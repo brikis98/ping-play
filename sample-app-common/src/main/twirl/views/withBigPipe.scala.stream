@@ -1,0 +1,30 @@
+@(body: HtmlStream)
+
+<html>
+  <head>
+    <link rel="stylesheet" href="/assets/stylesheets/main.css">
+    <!-- You need to include the BigPipe JavaScript at the top of the page -->
+    <script src="/assets/com/ybrikman/pingplay/big-pipe.js"></script>
+  </head>
+  <body>
+    <h1>With Big Pipe</h1>
+    @HtmlStream.fromHtml(views.html.helpers.timing())
+    <!-- These are placeholders that will be filled in as the data becomes available -->
+    <table class="wrapper">
+      <tr>
+        <td><div id="profile"></div></td>
+        <td><div id="ads"></div></td>
+      </tr>
+      <tr>
+        <td><div id="graph"></div></td>
+        <td><div id="inbox"></div></td>
+      </tr>
+      <tr>
+        <td><div id="feed"></div></td>
+        <td><div id="search"></div></td>
+      </tr>
+    </table>
+
+    @body
+  </body>
+</html>

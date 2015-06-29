@@ -1,12 +1,7 @@
 import loader.PingApplicationLoader
 import org.specs2.mutable._
-import org.specs2.runner._
-import org.junit.runner._
-import play.api.{Mode, Environment, ApplicationLoader, Application}
-
 import play.api.test._
-
-import controllers.Mock
+import play.api.{Application, ApplicationLoader, Environment, Mode}
 
 class IntegrationSpec extends Specification {
 
@@ -17,15 +12,14 @@ class IntegrationSpec extends Specification {
   }
 
   "Application" should {
-
-    "render the non-streaming WVYP page" in new WithBrowser(app = app) {
-      browser.goTo(s"http://localhost:$port/wvyp")
-      browser.$(".wvyp-count .large-number").getTexts.get(0) must equalTo(Mock.DEFAULT_WVYP_RESPONSE)
+    "render page without big pipe" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/withoutBigPipe")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
     }
 
     "render the streaming WVYP page" in new WithBrowser(app = app) {
-      browser.goTo(s"http://localhost:$port/stream")
-      browser.$(".wvyp-count .large-number").getTexts.get(0) must equalTo(Mock.DEFAULT_WVYP_RESPONSE)
+      browser.goTo(s"http://localhost:$port/withBigPipe")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
     }
   }
 }

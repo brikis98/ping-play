@@ -1,0 +1,58 @@
+body {
+  padding: 20px;
+}
+
+.wrapper {
+  width: 100%;
+}
+
+.wrapper td {
+  width: 33%;
+  height: 160px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  text-align: center;
+  margin: 20px;
+}
+
+#timing {
+  margin: 20px 0;
+}
+
+#timing td {
+  padding-right: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  margin: 0;
+}
+
+h1 {
+  font-size: 48px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 36px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 12px;
+}
+
+.highlight {
+  color: #0077b5;
+}

@@ -1,5 +1,5 @@
 lazy val commonSettings = Seq(
-  organization := "com.ybrikman",
+  organization := "com.ybrikman.ping-play",
   version := "0.0.1",
   scalaVersion := "2.11.6",
   scalacOptions += "-feature",
@@ -8,8 +8,8 @@ lazy val commonSettings = Seq(
 
 // You must added these settings to your Play app to be able to use .scala.stream templates for BigPipe-style streaming
 lazy val bigPipeSettings = Seq(
-  play.twirl.sbt.Import.TwirlKeys.templateFormats ++= Map("stream" -> "com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamFormat"),
-  play.twirl.sbt.Import.TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream", "com.ybrikman.ping.scalaapi.bigpipe.HtmlStream._")
+  TwirlKeys.templateFormats ++= Map("stream" -> "com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamFormat"),
+  TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream")
 )
 
 // The BigPipe library
@@ -17,7 +17,7 @@ lazy val bigPipe = (project in file("big-pipe"))
   .settings(commonSettings)
   .enablePlugins(SbtTwirl)
   .settings(
-    name := "ping-play-big-pipe",
+    name := "big-pipe",
     libraryDependencies ++= Seq(
       "com.typesafe.play" %% "play" % play.core.PlayVersion.current,
       "com.typesafe.play" %% "play-iteratees" % play.core.PlayVersion.current,
@@ -32,7 +32,7 @@ lazy val sampleAppCommon = (project in file("sample-app-common"))
   .enablePlugins(SbtTwirl)
   .dependsOn(bigPipe)
   .settings(
-    name := "ping-play-sample-app-common",
+    name := "sample-app-common",
     libraryDependencies ++= Seq(
       "com.typesafe.play" %% "play" % play.core.PlayVersion.current,
       specs2 % Test
@@ -46,7 +46,7 @@ lazy val sampleAppScala = (project in file("sample-app-scala"))
   .enablePlugins(PlayScala)
   .dependsOn(bigPipe, sampleAppCommon)
   .settings(
-    name := "ping-play-sample-app-scala",
+    name := "sample-app-scala",
     routesGenerator := InjectedRoutesGenerator,
     libraryDependencies ++= Seq(
       ws,
@@ -61,7 +61,7 @@ lazy val sampleAppJava = (project in file("sample-app-java"))
   .enablePlugins(PlayJava)
   .dependsOn(bigPipe, sampleAppCommon)
   .settings(
-    name := "ping-play-sample-app-java",
+    name := "sample-app-java",
     routesGenerator := InjectedRoutesGenerator,
     libraryDependencies ++= Seq(
       javaWs,
