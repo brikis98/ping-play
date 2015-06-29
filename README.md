@@ -203,9 +203,9 @@ objects, render them into a `Future[Html]` or `Promise<Html>`, and then use `Pag
 `Pagelet.fromHtmlPromise` to wrap them in a `Pagelet` class. You can then compose `Pagelet` instances together using 
 `HtmlStream.fromInterleavedPagelets`.
 
-To support out-of-order rendering, the `Pagelet` class wrap your content in markup that is invisible when it first 
-arrives in the browser, plus some JavaScript that knows how to extract the content and inject it into the DOM. The 
-markup sent back by each `Pagelet` will look roughly like this:
+To support out-of-order rendering, the `Pagelet` class wraps your content in markup that is invisible when it first 
+arrives in the browser, plus some JavaScript that knows how to extract the content and inject it into the right place
+in the DOM. The markup sent back by each `Pagelet` will look roughly like this:
 
 ```html
 <code id="pagelet1"><!--Your content--></code>
@@ -234,12 +234,12 @@ convenient if you use client-side templating.
 ## Client-side templating
 
 You can use a client-side templating technology, such as mustache.js or handlebars.js to render most of your page 
-in the browser. To do that, all you need to do is create a `Pagelet` that contains a `JsValue` (for Scala developers) 
-or `JsonNode` (for Java developers):
+in the browser. To do that, all you need to do is create a `Pagelet` that contains JSON (a `JsValue` for Scala 
+developers or `JsonNode` for Java developers) instead of HTML:
 
 ```scala
 def index = Action {
-  // Make several fake service calls in parallel and get back a Future[JsValue] from each one 
+  // Make several fake service calls in parallel and get back JSON (a Future[JsValue]) from each one 
   val profileFuture = serviceClient.fakeRemoteCallMedium("profile")
   val graphFuture = serviceClient.fakeRemoteCallMedium("graph")
   val feedFuture = serviceClient.fakeRemoteCallSlow("feed")
@@ -267,9 +267,6 @@ BigPipe.renderPagelet = function(id, content) {
 }
 ```
 
-Each `Pagelet` will stream down the JSON as soon as it's available and will call your `BigPipe.renderPagelet` method
-with `content` already parsed as JSON for you.
-
 ## Composing independent pagelets
 
 TODO: write documentation
@@ -283,37 +280,41 @@ inefficient and increases the load on downstream services.
 
 This project comes with a `DedupingCache` library that makes it easy to *de-dupe* service calls. You can use it to 
 ensure that if several pagelets request the exact same data, you only make one call to a backend service, and all the 
-other calls get the same, cached response. This class has a single method called `get`:
+other calls get the same cached response. This class has a single method called `get` that takes a key and a way to
+generate the value for that key if it isn't already in the cache. 
+
+For example, if you are using Play's `WSClient` to make remote calls, you could wrap any calls to it with this `get` 
+method to ensure that any duplicate calls for a given URL get back a cached value:
 
 ```scala
-def get(key: K, valueIfMissing: => V)(implicit playRequest: RequestHeader): V
-```
-
-If you are using Play's `WSClient` to make remote calls, you could wrap any calls to it with this `get` method to 
-ensure that any duplicate calls for a given URL get back a cached value:
-
-```scala
-cache.get(url, wsClient.url(url).get())
+class ServiceClient {
+  val cache = new DedupingCache[String, Future[WSResponse]]
+  
+  def makeRequest(url: String): Future[WSResponse] = {
+    cache.get(url, wsClient.url(url).get())
+  }
+}
 ```
 
 See the `Deduping` controllers in `sample-app-scala` and `sample-app-java` for a complete example of how to setup and
-use the `DedupingCache`.
+use the `DedupingCache`. You will also have to add the `CacheFilter` to your filter chain, as shown in the
+`PingApplicationLoader` class in `sample-app-scala` and the `Filters` class in `sample-app-java`. 
 
 # Caveats and drawbacks to BigPipe
 
 ## HTTP headers and error handling 
 
 With BigPipe streaming, you typically start sending the response back to the browser before your backend calls are 
-finished. The first part of that response is the HTTP Headers and once you've sent them back to the browser, it's too
-late to change your mind. If one of those backend calls fails, you can no longer just send the browser a 500 error or a
-redirect! 
+finished. The first part of that response is the HTTP headers and once you've sent them back to the browser, it's too
+late to change your mind. If one of those backend calls fails, you've already sent your 200 OK, so you can no longer 
+just send the browser a 500 error or a redirect! 
 
 Instead, you must handle errors by injecting JavaScript code into your stream that displays the message when it arrives
 in the browser or redirects the user as necessary.
 
 ## Caching
 
-Because of the above (the way headers and error handling work), be extra careful using BigPipe if you cache entire 
+Because of the the way headers and error handling work, be extra careful using BigPipe if you cache entire 
 pages, especially at the CDN level. Otherwise, you may stream out a 200 OK to the CDN, hit an error with a backend call,
 and accidentally end up caching a page with an error on it. 
 
@@ -324,8 +325,8 @@ can help.
 ## Pop-in
 
 Pagelets can be sent down to the browser and rendered client-side in any order. Therefore, you have to be careful to 
-avoid too much "pop-in", where one pagelet renders and the user is starting to use it, and suddenly another one renders
-and suddenly moves the previous one out of view.
+avoid too much "pop-in", where rendering each pagelet causes random parts of the page to pop in and move around, which
+makes the page hard to use.
 
 To avoid annoying your users, use CSS to size the placeholder elements appropriately so they don't resize or move much
 as the actual content pops in. Alternatively, use JavaScript to ensure that the elements on a page render from top to
@@ -349,6 +350,8 @@ and then sends the rendered HTML down to the client.
 5. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
 6. Add examples of error handling while doing BigPipe streaming.
 7. More integration tests of the streaming to actually check timings and ensure JavaScript code is working
+8. Add support for pagelet priorities
+9. Add support for only rendering content that's visible
 
 # License
 

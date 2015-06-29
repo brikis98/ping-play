@@ -9,6 +9,9 @@ import play.libs.ws.WSResponse;
 
 import javax.inject.Inject;
 
+/**
+ * Custom Filters for this app. Play knows to load this class because we put it into conf/application.conf
+ */
 public class Filters implements HttpFilters {
 
   private final CacheFilter<String, F.Promise<WSResponse>> cacheFilter;
