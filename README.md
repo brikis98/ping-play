@@ -174,37 +174,33 @@ Java developers should primarily be using classes in the `com.ybrikman.ping.java
 
 ## HtmlStream and .scala.stream templates
 
-To do BigPipe streaming, you can't use Play's standard `.scala.html` templates as those are compiled into functions
-that append together and return `Html`, which is just a wrapper for a `StringBuilder`. This is why this project 
-introduces a new `.scala.stream` template that appends together and returns `HtmlStream` objects, which are a wrapper
-for an `Enumerator[Html]`. Note that this new template type still uses Play's template compiler 
-([Twirl](https://github.com/playframework/twirl)) and the normal Play template syntax. The only things that are 
-different are:
+Play's built-in `.scala.html` templates are compiled into functions that append together and return `Html`, which is 
+just a wrapper for a `StringBuilder`, and cannot be streamed. This is why this project introduces a new `.scala.stream` 
+template that appends together and returns `HtmlStream` objects, which are a wrapper for an `Enumerator[Html]`, which 
+can be streamed. Note that this new template type still uses Play's [Twirl](https://github.com/playframework/twirl) 
+template compiler and its syntax. The only things that are different are:
  
 1. The extension is `.scala.stream` instead of `.scala.html`.
 2. When you are using the template in a controller, the package name will be `views.stream.XXX` instead of 
    `views.html.XXX`.
-3. You can include an `HtmlStream` object anywhere in the markup and Play will stream the content down of the 
-   `Enumerator` within that `HtmlStream` whenever the content is available.
-4. To include raw, unescaped HTML, instead of wrapping the content in an `Html` object (e.g. 
-   `Html(someStringWithMarkup)`), wrap it in an `HtmlStream` object (e.g. `HtmlStream.fromString(someStringWithMarkup)`). 
+3. To include raw, unescaped HTML, instead of wrapping the content in an `Html` object (e.g. 
+   `Html(someStringWithMarkup)`), wrap it in an `HtmlStream` object (e.g. `HtmlStream.fromString(someStringWithMarkup)`).
+4. You can include an `HtmlStream` object anywhere in the markup of a `.scala.stream` template and Play will stream the 
+   content down from the `HtmlStream`'s `Enumerator` whenever the content is available.
 
-## HtmlStream
- 
-The idea behind BigPipe is to break your page down into small "pagelets" that can fetch their own data independently and 
-render themselves. For example, you might have one pagelet that fetches data from a profile service and knows how to 
-render a user's profile, another pagelet that fetches data from an ads service and knows how to render an ad unit, and
-so on. For each pagelet, the general pattern is to make some backend service calls, convert the responses to an 
-`HtmlStream`, compose the streams together using `HtmlStream.interleave`, and then insert the resulting `HtmlStream`
-into your `.scala.stream` template.
+The last point is how you get BigPipe style streaming. The `HtmlStream` class has many helper methods to create an
+`HtmlStream`, including `fromHtml` and `fromHtmlFuture`, and to compose several streams into one, such as `interleave`.  
 
 ## Pagelet
 
-Although you can use the `HtmlStream` class directly, this project also comes with a `Pagelet` class that allows you to
-not only stream data back to the browser, but stream your pagelets in any order, and still have them render correctly
-client-side. For each pagelet, you make your backend calls, get back some `Future` (Scala) or `Promise` (Java) objects, 
-compose them, render them into a `Future[Html]` or `Promise<Html>`, and then use `Pagelet.fromHtmlFuture` or 
-`Pagelet.fromHtmlPromise` to wrap them in a `Pagelet` class. You can then compose `Pagelet` instances together using
+Although you can use the `HtmlStream` class directly, this project also comes with a `Pagelet` class that not only 
+helps you stream data back to the browser, but stream that data in any order, and still have it render correctly 
+client-side. The idea is to break your page down into small "pagelets" that know how to fetch their own data 
+independently and render themselves. For example, you might have one pagelet that fetches data from a profile service 
+and knows how to render a user's profile, another pagelet that fetches data from an ads service and knows how to render
+an ad unit, and so on. For each pagelet, you make your backend calls, get back some `Future` (Scala) or `Promise` (Java) 
+objects, render them into a `Future[Html]` or `Promise<Html>`, and then use `Pagelet.fromHtmlFuture` or 
+`Pagelet.fromHtmlPromise` to wrap them in a `Pagelet` class. You can then compose `Pagelet` instances together using 
 `HtmlStream.fromInterleavedPagelets`.
 
 To support out-of-order rendering, the `Pagelet` class wrap your content in markup that is invisible when it first 
