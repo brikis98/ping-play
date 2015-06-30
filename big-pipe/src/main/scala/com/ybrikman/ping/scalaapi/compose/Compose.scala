@@ -9,7 +9,7 @@ import play.twirl.api.Html
 import scala.concurrent.{Future, ExecutionContext}
 
 /**
- * Helpers for building Play apps out of composable controllers.
+ * Helpers for building Play apps out of standalone, composable pagelets.
  * Note: these are not yet tested or documented, so use at your own risk.
  */
 object Compose {
@@ -100,8 +100,7 @@ object Compose {
    * @return
    */
   def renderCssDependencies(css: Seq[String]): Html = {
-    // TODO: views.html.ui.css(css)
-    null
+    com.ybrikman.bigpipe.html.css(css)
   }
 
   /**
@@ -111,8 +110,7 @@ object Compose {
    * @return
    */
   def renderJsDependencies(js: Seq[String]): Html = {
-    // TODO: views.html.ui.js(js)
-    null
+    com.ybrikman.bigpipe.html.js(js)
   }
 
   /**
