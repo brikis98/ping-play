@@ -288,34 +288,57 @@ in the browser. To do that, all you need to do is create a `Pagelet` that contai
 developers or `JsonNode` for Java developers) instead of HTML:
 
 ```scala
-def index = Action {
-  // Make several fake service calls in parallel and get back JSON (a Future[JsValue]) from each one 
-  val profileFuture = serviceClient.fakeRemoteCallMedium("profile")
-  val graphFuture = serviceClient.fakeRemoteCallMedium("graph")
-  val feedFuture = serviceClient.fakeRemoteCallSlow("feed")
+class MoreBigPipeExamples(serviceClient: FakeServiceClient) extends Controller {
 
-  // Convert each Future[JsValue] into a Pagelet
-  val profile = Pagelet.fromJsonFuture(profileFuture, "profile-placeholder")
-  val graph = Pagelet.fromJsonFuture(graphFuture, "graph-placeholder")
-  val feed = Pagelet.fromJsonFuture(feedFuture, "feed-placeholder")
+  /**
+   * Instead of rendering each pagelet server-side with Play's templating, you can send back JSON and render each 
+   * pagelet with a client-side templating library such as mustache.js
+   * 
+   * @return
+   */
+  def clientSideTemplating = Action {
+    // Make several fake service calls in parallel to represent fetching data from remote backends. Some of the calls
+    // will be fast, some medium, and some slow.
+    val profileFuture = serviceClient.fakeRemoteCallJsonMedium("profile")
+    val graphFuture = serviceClient.fakeRemoteCallJsonMedium("graph")
+    val feedFuture = serviceClient.fakeRemoteCallJsonSlow("feed")
+    val inboxFuture = serviceClient.fakeRemoteCallJsonSlow("inbox")
+    val adsFuture = serviceClient.fakeRemoteCallJsonFast("ads")
+    val searchFuture = serviceClient.fakeRemoteCallJsonFast("search")
 
-  // Compose all the pagelets into an HtmlStream
-  val body = HtmlStream.fromInterleavedPagelets(profile, graph, feed)
+    // Convert each Future into a Pagelet which will send the JSON to the browser as soon as it's available
+    val profile = Pagelet.fromJsonFuture(profileFuture, "profile")
+    val graph = Pagelet.fromJsonFuture(graphFuture, "graph")
+    val feed = Pagelet.fromJsonFuture(feedFuture, "feed")
+    val inbox = Pagelet.fromJsonFuture(inboxFuture, "inbox")
+    val ads = Pagelet.fromJsonFuture(adsFuture, "ads")
+    val search = Pagelet.fromJsonFuture(searchFuture, "search")
 
-  // Render the streaming template immediately
-  Ok.chunked(views.stream.bigPipeExample(body))
+    // Compose all the pagelets into an HtmlStream
+    val body = HtmlStream.fromInterleavedPagelets(profile, graph, feed, inbox, ads, search)
+
+    // Render the streaming template immediately
+    Ok.chunked(views.stream.clientSideTemplating(body))
+    
+  }
 }
 ```
 
 Next, create your custom `BigPipe.renderPagelet` method:
 
 ```javascript
-BigPipe.renderPagelet = function(id, content) {
-  var myTemplate = "Hello {{ name }}";
-  var html = Mustache.render(myTemplate, content);
-  document.getElementByid(id, html);
-}
+// Override the original BigPipe.renderPagelet method with one that uses mustache.js for client-side rendering
+BigPipe.renderPagelet = function(id, json) {
+  var domElement = document.getElementById(id);
+  if (domElement) {
+    domElement.innerHTML = Mustache.render(template, json);
+  } else {
+    console.log("ERROR: cannot render pagelet because DOM node with id " + id + " does not exist");
+  }
+};
 ```
+
+See `MoreBigPipeExamples#clientSideTemplating` and `big-pipe-with-mustache.js` for working examples.
 
 ## Composing independent pagelets
 
@@ -440,11 +463,10 @@ Contributions in the form of bug reports and pull requests are very welcome. If 
 
 1. Publish artifacts automatically as part of the build process instead of doing it manually.
 2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-3. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
-4. Add examples of error handling while doing BigPipe streaming.
-5. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
-6. Add support for pagelet priorities.
-7. Add support for only rendering content that's visible.
+3. Add examples of error handling while doing BigPipe streaming.
+4. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
+5. Add support for pagelet priorities.
+6. Add support for only rendering content that's visible.
 
 ## Release process
 

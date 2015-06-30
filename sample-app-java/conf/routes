@@ -5,6 +5,7 @@
 # BigPipe examples
 GET        /withoutBigPipe           controllers.WithoutBigPipe.index
 GET        /withBigPipe              controllers.WithBigPipe.index
+GET        /clientSideTemplating     controllers.MoreBigPipeExamples.clientSideTemplating
 
 # Deduping examples
 GET        /dedupe                   controllers.Deduping.index

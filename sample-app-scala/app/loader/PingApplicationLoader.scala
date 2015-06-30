@@ -36,7 +36,8 @@ class PingComponents(context: Context) extends BuiltInComponentsFromContext(cont
 
   val withoutBigPipe = new WithoutBigPipe(fakeServiceClient)
   val withBigPipe = new WithBigPipe(fakeServiceClient)
-  
+  val moreBigPipeExamples = new MoreBigPipeExamples(fakeServiceClient)
+
   val deduping = new Deduping(serviceClient)
   val mock = new Mock
 
@@ -46,6 +47,7 @@ class PingComponents(context: Context) extends BuiltInComponentsFromContext(cont
     httpErrorHandler,
     withoutBigPipe,
     withBigPipe,
+    moreBigPipeExamples,
     deduping,
     mock,
     assets)

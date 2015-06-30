@@ -1,9 +1,11 @@
 package data
 
 import play.api.libs.concurrent.Execution.Implicits._
+import play.api.libs.json.{Json, JsValue}
 
 import scala.concurrent.Future
 import scala.util.Random
+import data.Response._
 
 /**
  * A client that represents fake calls to remote backend services.
@@ -15,6 +17,11 @@ class FakeServiceClient(futureUtil: FutureUtil) {
   def fakeRemoteCallFast(id: String): Future[Response] = fakeRemoteCall(id, FAST_RESPONSE_TIME_IN_MILLIS)
   def fakeRemoteCallMedium(id: String): Future[Response] = fakeRemoteCall(id, MEDIUM_RESPONSE_TIME_IN_MILLIS)
   def fakeRemoteCallSlow(id: String): Future[Response] = fakeRemoteCall(id, SLOW_RESPONSE_TIME_IN_MILLIS)
+
+  def fakeRemoteCallJsonFast(id: String): Future[JsValue] = fakeRemoteCallJson(id, FAST_RESPONSE_TIME_IN_MILLIS)
+  def fakeRemoteCallJsonMedium(id: String): Future[JsValue] = fakeRemoteCallJson(id, MEDIUM_RESPONSE_TIME_IN_MILLIS)
+  def fakeRemoteCallJsonSlow(id: String): Future[JsValue] = fakeRemoteCallJson(id, SLOW_RESPONSE_TIME_IN_MILLIS)
+  def fakeRemoteCallJson(id: String, delayInMillis: Long): Future[JsValue] = fakeRemoteCall(id, delayInMillis).map(Json.toJson(_))
 
   def fakeRemoteCall(id: String, delayInMillis: Long): Future[Response] = {
     val randomJitter = new Random().nextInt(delayInMillis.toInt).toLong
