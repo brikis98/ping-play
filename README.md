@@ -33,7 +33,7 @@ For example, here is a streaming template called `app/views/bigPipeExample.scala
 
 <html>
   <head>
-    <script src="@routes.Assets.at("com/ybrikman/bigpipe/big-pipe.js")"></script>
+    <script src="@routes.Assets.versioned("com/ybrikman/ping/big-pipe.js")"></script>
   </head>
   <body>
     <div id="profile-placeholder"></div>

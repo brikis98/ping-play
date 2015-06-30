@@ -10,7 +10,7 @@ import scala.io.Source
 
 class TestBigPipeJavaScript extends Specification {
 
-  private val BigPipeJsPath = "public/com/ybrikman/pingplay/big-pipe.js"
+  private val BigPipeJsPath = "public/com/ybrikman/ping/big-pipe.js"
 
   "big-pipe.js should" >> {
     "be able to unescape HTML escaped by Embed.escapeForEmbedding" >> {
