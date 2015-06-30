@@ -6,6 +6,7 @@
 GET        /withoutBigPipe           controllers.WithoutBigPipe.index
 GET        /withBigPipe              controllers.WithBigPipe.index
 GET        /clientSideTemplating     controllers.MoreBigPipeExamples.clientSideTemplating
+GET        /errorHandling            controllers.MoreBigPipeExamples.errorHandling
 
 # Deduping examples
 GET        /dedupe                   controllers.Deduping.index

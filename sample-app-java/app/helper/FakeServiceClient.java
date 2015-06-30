@@ -30,6 +30,10 @@ public class FakeServiceClient {
     return F.Promise.wrap(delegate.fakeRemoteCallSlow(id));
   }
 
+  public F.Promise<Response> fakeRemoteCall(String id, long delayInMillis) {
+    return F.Promise.wrap(delegate.fakeRemoteCall(id, delayInMillis));
+  }
+
   public F.Promise<JsonNode> fakeRemoteCallJsonFast(String id) {
     return toJsonNode(F.Promise.wrap(delegate.fakeRemoteCallJsonFast(id)));
   }
@@ -50,7 +54,19 @@ public class FakeServiceClient {
     return jsValuePromise.map(jsValue -> Json.parse(jsValue.toString()));
   }
 
-  public F.Promise<Response> fakeRemoteCall(String id, long delayInMillis) {
-    return F.Promise.wrap(delegate.fakeRemoteCall(id, delayInMillis));
+  public F.Promise<Response> fakeRemoteCallErrorFast(String id) {
+    return F.Promise.wrap(delegate.fakeRemoteCallErrorFast(id));
+  }
+
+  public F.Promise<Response> fakeRemoteCallErrorMedium(String id) {
+    return F.Promise.wrap(delegate.fakeRemoteCallErrorMedium(id));
+  }
+
+  public F.Promise<Response> fakeRemoteCallErrorSlow(String id) {
+    return F.Promise.wrap(delegate.fakeRemoteCallErrorSlow(id));
+  }
+
+  public F.Promise<Response> fakeRemoteCallError(String id, long delayInMillis) {
+    return F.Promise.wrap(delegate.fakeRemoteCallError(id, delayInMillis));
   }
 }

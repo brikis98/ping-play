@@ -23,6 +23,14 @@ class FakeServiceClient(futureUtil: FutureUtil) {
   def fakeRemoteCallJsonSlow(id: String): Future[JsValue] = fakeRemoteCallJson(id, SLOW_RESPONSE_TIME_IN_MILLIS)
   def fakeRemoteCallJson(id: String, delayInMillis: Long): Future[JsValue] = fakeRemoteCall(id, delayInMillis).map(Json.toJson(_))
 
+  def fakeRemoteCallErrorFast(id: String): Future[Response] = fakeRemoteCallError(id, FAST_RESPONSE_TIME_IN_MILLIS)
+  def fakeRemoteCallErrorMedium(id: String): Future[Response] = fakeRemoteCallError(id, MEDIUM_RESPONSE_TIME_IN_MILLIS)
+  def fakeRemoteCallErrorSlow(id: String): Future[Response] = fakeRemoteCallError(id, SLOW_RESPONSE_TIME_IN_MILLIS)
+
+  def fakeRemoteCallError(id: String, delayInMillis: Long): Future[Response] = {
+    fakeRemoteCall(id, delayInMillis).map(response => throw FakeRemoteCallException(response))
+  }
+
   def fakeRemoteCall(id: String, delayInMillis: Long): Future[Response] = {
     val randomJitter = new Random().nextInt(delayInMillis.toInt).toLong
     val delay = delayInMillis + randomJitter
@@ -37,5 +45,7 @@ object FakeServiceClient {
   val MEDIUM_RESPONSE_TIME_IN_MILLIS = 500
   val SLOW_RESPONSE_TIME_IN_MILLIS = 3000
 }
+
+case class FakeRemoteCallException(response: Response) extends RuntimeException(s"""Error in "${response.id}" after ${response.delay} ms""")
 
 

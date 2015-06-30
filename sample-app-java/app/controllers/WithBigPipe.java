@@ -29,6 +29,7 @@ public class WithBigPipe extends Controller {
     F.Promise<Response> adsPromise = serviceClient.fakeRemoteCallFast("ads");
     F.Promise<Response> searchPromise = serviceClient.fakeRemoteCallFast("search");
 
+    // Convert each Promise into a Pagelet which will be rendered as HTML as soon as the data is available.
     Pagelet profile = Pagelet.fromHtmlPromise(profilePromise.map(views.html.helpers.module::apply), "profile");
     Pagelet graph = Pagelet.fromHtmlPromise(graphPromise.map(views.html.helpers.module::apply), "graph");
     Pagelet feed = Pagelet.fromHtmlPromise(feedPromise.map(views.html.helpers.module::apply), "feed");
