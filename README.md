@@ -14,7 +14,7 @@ significantly reduce page load time.
 To add BigPipe streaming to your own pages, first, add the big-pipe dependency to your build:
 
 ```scala
-libraryDependencies += "com.ybrikman.ping" %% "big-pipe" % "0.0.7"
+libraryDependencies += "com.ybrikman.ping" %% "big-pipe" % "0.0.8"
 ```
 
 Next, add support for the `.scala.stream` template type and some imports for it to your build:
