@@ -387,7 +387,7 @@ late to change your mind. If one of those backend calls fails, you've already se
 just send the browser a 500 error or a redirect! 
 
 Instead, you must handle errors by injecting JavaScript code into your stream that displays the message when it arrives
-in the browser or redirects the user as necessary.
+in the browser or redirects the user as necessary. See `MoreBigPipeExamples#errorHandling` for an example.
 
 ### Caching
 
@@ -463,10 +463,9 @@ Contributions in the form of bug reports and pull requests are very welcome. If 
 
 1. Publish artifacts automatically as part of the build process instead of doing it manually.
 2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-3. Add examples of error handling while doing BigPipe streaming.
-4. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
-5. Add support for pagelet priorities.
-6. Add support for only rendering content that's visible.
+3. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
+4. Add support for pagelet priorities.
+5. Add support for only rendering content that's visible.
 
 ## Release process
 
