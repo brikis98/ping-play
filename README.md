@@ -9,8 +9,6 @@ significantly reduce page load time.
 
 *Pre-requisite: this project requires Play 2.4, Scala 2.11.6, and Java 8.*
 
-**Note: these artifacts are not yet published!**
-
 To add BigPipe streaming to your own pages, first, add the big-pipe dependency to your build:
 
 ```scala
@@ -342,16 +340,13 @@ and then sends the rendered HTML down to the client.
 
 # TODO
 
-1. Publish artifacts to Maven central. Currently waiting for this project to be added to Sonatype.
-2. Finish the "Composable pagelets" implementation (it is currently unfinished and untested).
-3. Finish the "Composable pagelets" and "De-duping remote service calls" documentation.
-4. Add support for in-order, pure server-side rendering of pagelets for use cases that don't support JavaScript (e.g. 
-   SEO).
-5. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
-6. Add examples of error handling while doing BigPipe streaming.
-7. More integration tests of the streaming to actually check timings and ensure JavaScript code is working
-8. Add support for pagelet priorities
-9. Add support for only rendering content that's visible
+1. Publish artifacts automatically as part of the build process instead of doing it manually.
+2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
+3. Add examples to the sample apps of using client-side templates (e.g. Mustache.js) to render pagelets.
+4. Add examples of error handling while doing BigPipe streaming.
+5. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
+6. Add support for pagelet priorities.
+7. Add support for only rendering content that's visible.
 
 # Release process
 
