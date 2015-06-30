@@ -2,12 +2,8 @@ body {
   padding: 20px;
 }
 
-.wrapper {
-  width: 100%;
-}
-
 .wrapper td {
-  width: 33%;
+  width: 200px;
   height: 160px;
   border: 1px solid #CCC;
   border-radius: 5px;
@@ -30,7 +26,6 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 48px;
-  text-align: center;
 }
 
 h2 {

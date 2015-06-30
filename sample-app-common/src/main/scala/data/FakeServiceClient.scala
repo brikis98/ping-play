@@ -17,7 +17,7 @@ class FakeServiceClient(futureUtil: FutureUtil) {
   def fakeRemoteCallSlow(id: String): Future[Response] = fakeRemoteCall(id, SLOW_RESPONSE_TIME_IN_MILLIS)
 
   def fakeRemoteCall(id: String, delayInMillis: Long): Future[Response] = {
-    val randomJitter = new Random().nextInt((delayInMillis / 2).toInt).toLong
+    val randomJitter = new Random().nextInt(delayInMillis.toInt).toLong
     val delay = delayInMillis + randomJitter
 
     val fakeJsonResponse = Response(id, delay)
@@ -26,8 +26,8 @@ class FakeServiceClient(futureUtil: FutureUtil) {
 }
 
 object FakeServiceClient {
-  val FAST_RESPONSE_TIME_IN_MILLIS = 3
-  val MEDIUM_RESPONSE_TIME_IN_MILLIS = 300
+  val FAST_RESPONSE_TIME_IN_MILLIS = 5
+  val MEDIUM_RESPONSE_TIME_IN_MILLIS = 500
   val SLOW_RESPONSE_TIME_IN_MILLIS = 3000
 }
 
