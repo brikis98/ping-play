@@ -461,11 +461,10 @@ Contributions in the form of bug reports and pull requests are very welcome. If 
 
 ## TODO
 
-1. Publish artifacts automatically as part of the build process instead of doing it manually.
-2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-3. More integration tests of the streaming to actually check timings and ensure JavaScript code is working.
-4. Add support for pagelet priorities.
-5. Add support for only rendering content that's visible.
+1. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
+2. Publish artifacts automatically as part of the build process instead of doing it manually.
+3. Add support for pagelet priorities.
+4. Add support for only rendering content that's visible.
 
 ## Release process
 

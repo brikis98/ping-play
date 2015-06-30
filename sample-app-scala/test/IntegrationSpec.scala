@@ -33,5 +33,16 @@ class IntegrationSpec extends Specification {
       values(1) mustEqual values(2)
       values(1) mustNotEqual values(3)
     }
+
+    "be able to render Mustache.js templates client-side" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/clientSideTemplating")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+    }
+
+    "be able to handle errors" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/errorHandling")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+      browser.$("#feed .id").getTexts.get(0) must equalTo("error")
+    }
   }
 }
