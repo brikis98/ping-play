@@ -2,27 +2,31 @@ import ReleaseTransformations._
 
 // The BigPipe library
 lazy val bigPipe = (project in file("big-pipe"))
-  .settings(commonSettings ++ publishSettings ++ bigPipeSettings)
+  .settings(bigPipeSettings:_*)
   .enablePlugins(SbtTwirl)
 
 // Some shared code for the sample apps
 lazy val sampleAppCommon = (project in file("sample-app-common"))
-  .settings(commonSettings ++ streamingTemplateSettings ++ sampleAppCommonSettings)
+  .settings(sampleAppCommonSettings:_*)
   .enablePlugins(SbtTwirl)
   .dependsOn(bigPipe)
 
 // The Scala sample app
 lazy val sampleAppScala = (project in file("sample-app-scala"))
-  .settings(commonSettings ++ streamingTemplateSettings ++ sampleAppScalaSettings)
+  .settings(sampleAppScalaSettings:_*)
   .enablePlugins(PlayScala)
   .dependsOn(bigPipe, sampleAppCommon)
 
 // The Java sample app
 lazy val sampleAppJava = (project in file("sample-app-java"))
-  .settings(commonSettings ++ streamingTemplateSettings ++ sampleAppJavaSettings)
-  .settings()
+  .settings(sampleAppJavaSettings:_*)
   .enablePlugins(PlayJava)
   .dependsOn(bigPipe, sampleAppCommon)
+
+// The root project
+lazy val root = (project in file("."))
+  .aggregate(bigPipe, sampleAppCommon, sampleAppScala, sampleAppJava)
+  .settings(rootSettings:_*)
 
 // Settings shared by all the projects
 lazy val commonSettings = Seq(
@@ -30,7 +34,7 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.11.6",
   scalacOptions += "-feature",
   resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-)
+) ++ publishSettings
 
 // Settings specific to the bigPipe project
 lazy val bigPipeSettings = Seq(
@@ -40,7 +44,7 @@ lazy val bigPipeSettings = Seq(
     "com.typesafe.play" %% "play-iteratees" % play.core.PlayVersion.current,
     specs2 % Test
   )
-)
+) ++ commonSettings
 
 // Settings specific to the sampleAppCommon project
 lazy val sampleAppCommonSettings = Seq(
@@ -49,7 +53,7 @@ lazy val sampleAppCommonSettings = Seq(
     "com.typesafe.play" %% "play" % play.core.PlayVersion.current,
     specs2 % Test
   )
-)
+) ++ commonSettings ++ streamingTemplateSettings
 
 // Settings specific to the sampleAppScala project
 lazy val sampleAppScalaSettings = Seq(
@@ -62,7 +66,7 @@ lazy val sampleAppScalaSettings = Seq(
   // These two settings are to ensure the test servers don't use the same port if they happen to run in parallel
   fork in Test := true,
   javaOptions in Test += "-Dtestserver.port=19111"
-)
+) ++ commonSettings ++ streamingTemplateSettings
 
 // Settings specific to the sampleAppJava project
 lazy val sampleAppJavaSettings = Seq(
@@ -76,7 +80,23 @@ lazy val sampleAppJavaSettings = Seq(
   // These two settings are to ensure the test servers don't use the same port if they happen to run in parallel
   fork in Test := true,
   javaOptions in Test += "-Dtestserver.port=19222"
-)
+) ++ commonSettings ++ streamingTemplateSettings
+
+// Settings specific to the root project
+lazy val rootSettings = Seq(
+  updateVersionNumberInReadme := {
+    val readmePath = baseDirectory.value / "README.md"
+    val readmeText = IO.read(readmePath)
+    val releaseVersion = version.value
+
+    streams.value.log.info(s"Updating version number in $readmePath to $releaseVersion")
+    val DependencyRegex = """("com.ybrikman.ping" %% "big-pipe" % ")(.+?)(")""".r
+    val updatedReadmeText = DependencyRegex.replaceAllIn(readmeText, "$1" + releaseVersion + "$3")
+    IO.write(readmePath, updatedReadmeText)
+
+    releaseVersion
+  }
+) ++ commonSettings
 
 // You must added these settings to your Play app to be able to use .scala.stream templates for BigPipe-style streaming
 lazy val streamingTemplateSettings = Seq(
@@ -111,17 +131,6 @@ lazy val publishSettings = Seq(
       </developer>
     </developers>
     ),
-  updateVersionNumberInReadme := {
-    val readmePath = baseDirectory.value / ".." / "README.md"
-    val readmeText = IO.read(readmePath)
-    val releaseVersion = version.value
-
-    val DependencyRegex = """("com.ybrikman.ping" %% "big-pipe" % ")(.+?)(")""".r
-    val updatedReadmeText = DependencyRegex.replaceAllIn(readmeText, "$1" + releaseVersion + "$3")
-    IO.write(readmePath, updatedReadmeText)
-
-    releaseVersion
-  },
   releaseProcess := Seq[ReleaseStep](
     checkSnapshotDependencies,
     inquireVersions,
