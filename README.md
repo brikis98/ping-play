@@ -463,8 +463,10 @@ Contributions in the form of bug reports and pull requests are very welcome. If 
 
 1. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
 2. Publish artifacts automatically as part of the build process instead of doing it manually.
-3. Add support for pagelet priorities.
-4. Add support for only rendering content that's visible.
+3. Add automated tests that check the actual timing of the BigPipe streaming.
+4. Add support for pagelet priorities.
+5. Add support for only rendering content that's visible.
+6. Add support for monitoring hooks for each pagelet.
 
 ## Release process
 
