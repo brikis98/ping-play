@@ -118,6 +118,7 @@ lazy val updateVersionNumberInReadme = taskKey[String]("Updates the version numb
 // Used to publish the bigPipe project to Sonatype as per http://www.scala-sbt.org/release/docs/Using-Sonatype.html
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
+  sonatypeProfileName := "com.ybrikman",
   pomIncludeRepository := { _ => false },
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
@@ -152,7 +153,7 @@ lazy val publishSettings = Seq(
     ReleaseStep(action = Command.process("publishSigned", _)),
     setNextVersion,
     commitNextVersion,
-    ReleaseStep(action = Command.process("sonatypeRelease", _)),
+    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
     pushChanges
   )
 )
