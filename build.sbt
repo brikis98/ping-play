@@ -85,7 +85,8 @@ lazy val sampleAppJavaSettings = Seq(
 // Settings specific to the root project
 lazy val rootSettings = Seq(
   updateVersionNumberInReadme := {
-    val readmePath = baseDirectory.value / "README.md"
+    val ReadmeFile = "README.md"
+    val readmePath = baseDirectory.value / ReadmeFile
     val readmeText = IO.read(readmePath)
     val releaseVersion = version.value
 
@@ -93,6 +94,14 @@ lazy val rootSettings = Seq(
     val DependencyRegex = """("com.ybrikman.ping" %% "big-pipe" % ")(.+?)(")""".r
     val updatedReadmeText = DependencyRegex.replaceAllIn(readmeText, "$1" + releaseVersion + "$3")
     IO.write(readmePath, updatedReadmeText)
+
+    val vcs = releaseVcs.value.getOrElse(throw new RuntimeException("Could not find a version control system to commit README changes"))
+    vcs.add(ReadmeFile) !! streams.value.log
+    val status = (vcs.status !!).trim
+    if (status.nonEmpty) {
+      streams.value.log.info("Committing changes to $readmePath")
+      vcs.commit(s"Updating version number in $ReadmeFile to $releaseVersion") ! streams.value.log
+    }
 
     releaseVersion
   }
