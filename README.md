@@ -11,7 +11,7 @@ remote calls to come back before you can send *any* data back to the browser. Fo
 shows a page that makes 6 remote service calls, most of which complete in few hundred milliseconds, but one takes 
 over 5 seconds. As a result, the time to first byte is 5 seconds, during which the user sees a completely blank page:
 
-![Page loading without BigPipe](/images/without-big-pipe.gif)
+![Page loading without BigPipe](images/without-big-pipe.gif)
 
 With BigPipe, you can start streaming data back to the browser without waiting for the backends at all, and fill in the 
 page incrementally as each backend responds. For example, the following screen capture shows the same page making the 
@@ -20,12 +20,13 @@ instantly, so time to first byte is 10 milliseconds (instead of 5 seconds), stat
 start loading right away, and then, as each backend service responds, the corresponding part of the page (i.e. the 
 pagelet) is sent to the browser and rendered on the screen:
 
-![Page loading with BigPipe](/images/with-big-pipe.gif)
+![Page loading with BigPipe](images/with-big-pipe.gif)
 
 # Quick start
 
 To understand how to transform your Play app to use BigPipe, it's helpful to first see an example that does *not* use
-BigPipe. Here is the controller code, `controllers/WithoutBigPipe.scala`, for the example mentioned above: 
+BigPipe. Here is the controller code, [controllers/WithoutBigPipe.scala](sample-app-scala/app/controllers/WithoutBigPipe.scala), 
+for the example mentioned above: 
 
 ```scala
 class WithoutBigPipe(serviceClient: FakeServiceClient) extends Controller {
@@ -56,7 +57,7 @@ class WithoutBigPipe(serviceClient: FakeServiceClient) extends Controller {
 ```
 
 This controller makes 6 remote service calls, gets back 6 `Future` objects, and when they have all redeemed, it uses 
-them to render the following template, `views/withoutBigPipe.scala.html`:
+them to render the following template, [views/withoutBigPipe.scala.html](sample-app-common/src/main/twirl/views/withoutBigPipe.scala.html):
 
 ```html
 @(profile: data.Response, graph: data.Response, feed: data.Response, inbox: data.Response, ads: data.Response, search: data.Response)
@@ -102,8 +103,8 @@ TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStr
 
 Now you can create streaming templates. These templates can mix normal HTML markup, which will be streamed to the 
 browser immediately, with the `HtmlStream` class, which is a wrapper for an `Enumerator[Html]` that will be streamed
-to the browser whenever the `Enumerator` has data. Here is `views/withBigPipe.scala.stream`, which is the streaming
-version of the template above:
+to the browser whenever the `Enumerator` has data. Here is [views/withBigPipe.scala.stream](sample-app-common/src/main/twirl/views/withBigPipe.scala.stream), 
+which is the streaming version of the template above:
 
 ```html
 @(body: HtmlStream)
@@ -144,7 +145,7 @@ The key changes to notice from the original template are:
 3. The `big-pipe.js` JavaScript file is included in the `head`. `big-pipe.js` takes care of rendering each pagelet when 
    it arrives in the browser.
 
-Now, let's look at the controller you can use with this template, called `controllers/WithBigPipe.scala`:
+Now, let's look at the controller you can use with this template, called [controllers/WithBigPipe.scala](sample-app-scala/app/controllers/WithBigPipe.scala):
 
 ```scala
 class WithBigPipe(serviceClient: FakeServiceClient) extends Controller {
@@ -190,11 +191,11 @@ fill in this outline as soon as the corresponding remote service responds.
 
 # More examples
 
-There are several BigPipe examples, including the one described above, in `sample-app-scala` and `sample-app-java` in
-this repo (yes, BigPipe streaming works with both Scala and Java). You'll also want to browse `sample-app-common`, 
-which has some code shared by both sample apps, including all of their templates. For example, here is how to run the 
-Scala sample app (assuming you have [Typesafe Activator](https://www.typesafe.com/community/core-tools/activator-and-sbt) 
-installed already):
+There are several BigPipe examples, including the one described above, in [sample-app-scala](sample-app-scala) and 
+[sample-app-java](sample-app-java) in this repo (yes, BigPipe streaming works with both Scala and Java). You'll also 
+want to browse [sample-app-common](sample-app-common), which has some code shared by both sample apps, including all of 
+their templates. For example, here is how to run the Scala sample app (assuming you have 
+[Typesafe Activator](https://www.typesafe.com/community/core-tools/activator-and-sbt) installed already):
 
 1. `git clone` this repo.
 2. `activator shell`
@@ -215,12 +216,12 @@ BigPipe streaming is supported for both Scala and Java developers.
 Scala developers should primarily be using classes in the `com.ybrikman.ping.scalaapi` package. In particular, use the
 `com.ybrikman.ping.scalaapi.Pagelet` class to wrap your `Html` and `Future[Html]` as `Pagelet` objects, and use the
 `com.ybrikman.ping.scalaapi.HtmlStream` class to combine `Pagelet` objects into an `HtmlStream`. See 
-`sample-app-scala` for examples.
+[sample-app-scala](sample-app-scala) for examples.
 
 Java developers should primarily be using classes in the `com.ybrikman.ping.javaapi` package. In particular, use the
 `com.ybrikman.ping.javaapi.Pagelet` class to wrap your `Html` and `Promise<Html>` as `Pagelet` objects and use the
 `com.ybrikman.ping.javaapi.HtmlStreamHelper` class to combine `Pagelet` objects into an `HtmlStream`. See 
-`sample-app-java` for examples.  
+[sample-app-java](sample-app-java) for examples.  
 
 ## HtmlStream and .scala.stream templates
 
@@ -255,14 +256,17 @@ objects, render them into a `Future[Html]` or `Promise<Html>`, and then use `Pag
 
 To support out-of-order rendering, the `Pagelet` class wraps your content in markup that is invisible when it first 
 arrives in the browser, plus some JavaScript that knows how to extract the content and inject it into the right place
-in the DOM. The markup sent back by each `Pagelet` will look roughly like this:
+in the DOM. The markup sent back by each `Pagelet` is in 
+[com.ybrikman.bigpipe.pagelet.scala.html](big-pipe/src/main/twirl/com/ybrikman/bigpipe/pagelet.scala.html) and looks 
+roughly like this:
 
 ```html
 <code id="pagelet1"><!--Your content--></code>
 <script>BigPipe.onPagelet("pagelet1");</script>
 ```
 
-The `BigPipe.onPagelet` method is part of `big-pipe.js`, so make sure to include that script on every page.
+The `BigPipe.onPagelet` method is part of [big-pipe.js](big-pipe/src/main/resources/public/com/ybrikman/ping/big-pipe.js), 
+so make sure to include that script on every page.
  
 ## big-pipe.js
 
@@ -338,7 +342,10 @@ BigPipe.renderPagelet = function(id, json) {
 };
 ```
 
-See `MoreBigPipeExamples#clientSideTemplating` and `big-pipe-with-mustache.js` for working examples.
+See the `clientSideTemplating` method in 
+[controllers/MoreBigPipeExamples.scala](sample-app-scala/app/controllers/MoreBigPipeExamples.scala) (Scala developers) or
+[controllers/MoreBigPipeExamples.java](sample-app-java/app/controllers/MoreBigPipeExamples.java) (Java developers) and
+[big-pipe-with-mustache.js](sample-app-common/src/main/resources/public/javascripts/big-pipe-with-mustache.js) for working examples.
 
 ## Composing independent pagelets
 
@@ -369,9 +376,11 @@ class ServiceClient {
 }
 ```
 
-See the `Deduping` controllers in `sample-app-scala` and `sample-app-java` for a complete example of how to setup and
-use the `DedupingCache`. You will also have to add the `CacheFilter` to your filter chain, as shown in the
-`PingApplicationLoader` class in `sample-app-scala` and the `Filters` class in `sample-app-java`. 
+See [controllers/Deduping.scala](sample-app-scala/app/controllers/Deduping.scala) (Scala developers) or
+[controllers/Deduping.java](sample-app-java/app/controllers/Deduping.java) (Java developers) for a complete example of 
+how to setup and use the `DedupingCache`. You will also have to add the `CacheFilter` to your filter chain, as shown in 
+[loader/PingApplicationLoader.scala](sample-app-scala/app/loader/PingApplicationLoader.scala) (Scala developers) or
+[loader/Filters.java](sample-app-java/app/loader/Filters.java) (Java developers). 
 
 # FAQ
 
@@ -387,7 +396,10 @@ late to change your mind. If one of those backend calls fails, you've already se
 just send the browser a 500 error or a redirect! 
 
 Instead, you must handle errors by injecting JavaScript code into your stream that displays the message when it arrives
-in the browser or redirects the user as necessary. See `MoreBigPipeExamples#errorHandling` for an example.
+in the browser or redirects the user as necessary. See the `errorHandling` method in 
+[controllers/MoreBigPipeExamples.scala](sample-app-scala/app/controllers/MoreBigPipeExamples.scala) (Scala developers) or
+[controllers/MoreBigPipeExamples.java](sample-app-java/app/controllers/MoreBigPipeExamples.java) (Java developers) for 
+a working example.
 
 ### Caching
 
