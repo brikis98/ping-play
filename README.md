@@ -25,8 +25,9 @@ pagelet) is sent to the browser and rendered on the screen:
 # Quick start
 
 To understand how to transform your Play app to use BigPipe, it's helpful to first see an example that does *not* use
-BigPipe. Here is the controller code, [controllers/WithoutBigPipe.scala](sample-app-scala/app/controllers/WithoutBigPipe.scala), 
-for the example mentioned above: 
+BigPipe (note, the example is in Scala, but ping-play supports Java too!). Here is the controller code, 
+[controllers/WithoutBigPipe.scala](sample-app-scala/app/controllers/WithoutBigPipe.scala), for the example mentioned 
+earlier: 
 
 ```scala
 class WithoutBigPipe(serviceClient: FakeServiceClient) extends Controller {
@@ -136,7 +137,7 @@ which is the streaming version of the template above:
       one becomes available.
     -->
     @body
-    
+
   </body>
 </html>
 ```
