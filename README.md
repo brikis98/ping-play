@@ -131,7 +131,12 @@ which is the streaming version of the template above:
       </tr>
     </table>
 
+    <!-- 
+      This is our HtmlStream that will pipe down pagelets as the data for each 
+      one becomes available.
+    -->
     @body
+    
   </body>
 </html>
 ```
