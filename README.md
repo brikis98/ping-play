@@ -566,6 +566,7 @@ versions.
 4. Add support for pagelet priorities.
 5. Add support for only rendering content that's visible.
 6. Add support for monitoring hooks for each pagelet.
+7. Turn the sample apps into Activator templates
 
 # License
 
