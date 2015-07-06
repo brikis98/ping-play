@@ -531,18 +531,9 @@ Contributions in the form of bug reports and pull requests are very welcome. If 
 * Refactored the `Pagelet` API into a trait and subclasses
 * Added the `BigPipe` class for composing and rendering `Pagelets` 
 
-### 0.11
+### 0.11 (06/30/15)
 
 * First public release.
-
-## TODO
-
-1. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-2. Publish artifacts automatically as part of the build process instead of doing it manually.
-3. Add automated tests that check the actual timing of the BigPipe streaming.
-4. Add support for pagelet priorities.
-5. Add support for only rendering content that's visible.
-6. Add support for monitoring hooks for each pagelet.
 
 ## Release process
 
@@ -566,6 +557,15 @@ release
 
 Currently, only the maintainer, [Yevgeniy Brikman](http://www.ybrikman.com) has the credentials for publishing new 
 versions.
+
+## TODO
+
+1. Publish artifacts automatically as part of the build process instead of doing it manually.
+2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
+3. Add automated tests that check the actual timing of the BigPipe streaming.
+4. Add support for pagelet priorities.
+5. Add support for only rendering content that's visible.
+6. Add support for monitoring hooks for each pagelet.
 
 # License
 
