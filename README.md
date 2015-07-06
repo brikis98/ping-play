@@ -92,7 +92,7 @@ To transform this page to use BigPipe, you first add the big-pipe dependency to 
 Play 2.4, Scala 2.11.6, SBT 0.13.8, and Java 8):
 
 ```scala
-libraryDependencies += "com.ybrikman.ping" %% "big-pipe" % "0.0.11"
+libraryDependencies += "com.ybrikman.ping" %% "big-pipe" % "0.0.12"
 ```
 
 Next, add support for the `.scala.stream` template type and some imports for it to your build:
