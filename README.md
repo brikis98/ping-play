@@ -147,17 +147,10 @@ which is the streaming version of the template above:
 The key changes to notice from the original template are:
 
 1. Most of the markup in the page is wrapped in a call to the `BigPipe.render` method.
-2. The `BigPipe.render` method gives you a parameter, which we named `pagelets` in the example above, that is a `Map`
+2. The `BigPipe.render` method gives you a parameter, named `pagelets` in the example above, that is a `Map`
    from Pagelet `id` to the `HtmlStream` for that Pagelet. The idea is to place the `HtmlStream` for each of your 
-   Pagelets into the proper place in the markup.
-3. When using BigPipe with client-side rendering, the `HtmlSream` you place in the markup will contain a placeholder
-   (e.g. `<div id="profile"></div>`), and the actual content for all the Pagelets will be inserted at the very end, 
-   where it will stream down out-of-order (minimizing page load time) and will be inserted into the proper placeholder
-   in the DOM using `big-pipe.js` (which is included in `head`). 
-4. When using BigPipe with server-side rendering, the HtmlStream you place in the markup will contain the actual 
-   content for the Pagelet. The load time will not be as fast as client-side rendering (albet, still much faster than 
-   not using BigPipe at all), but it does not rely on any JavaScript, which is useful for certain cases (e.g. slower
-   browsers, search engine crawlers, SEO).
+   Pagelets into the proper place in the markup where that Pagelet should appear.
+3. You need to include `big-pipe.js` in the `head` of the document. 
 
 Now, let's look at the controller you can use with this template, called [controllers/WithBigPipe.scala](sample-app-scala/app/controllers/WithBigPipe.scala):
 
@@ -195,8 +188,7 @@ The key changes to notice from the original controller are:
    the data is available, giving you a `Future[Html]`.
 2. Each `Future[Html]`, plus the DOM id of where in the DOM it should be inserted, is wrapped in an `HtmlPagelet` 
    object.  
-3. The `HtmlPagelet` objects are composed into a `BigPipe` object, and in this case, you're selecting the `ClientSide`
-   rendering option. 
+3. The `HtmlPagelet` objects are composed into a `BigPipe` object, and told to use client-side rendering.
 4. This `BigPipe` instance and all the `HtmlPagelet` objects are passed to the streaming template for rendering.   
 
 When you load this page, you will see the outline of the page almost immediately, and each piece of the page will 
@@ -238,15 +230,17 @@ Java developers should primarily be using classes in the `com.ybrikman.ping.java
 
 ## Client-side vs server-side rendering
 
-The Ping-Play supports both client-side and server-side BigPipe streaming. Client-side streaming sends down the 
+Ping-Play supports both client-side and server-side BigPipe streaming. Client-side streaming sends down the 
 pagelets in whatever order they complete and uses JavaScript to insert each pagelet into the correct spot in the DOM. 
 This gives you the fastest possible loading time, but it does add a dependency on JavaScript. For use cases where you
 want to avoid JavaScript, such as slower browsers or search engine crawlers (i.e. SEO), you can use server-side 
-rendering, which sends all the pagelets down in the proper order. 
+rendering, which sends all the pagelets down already rendered as HTML and in the proper order. This will have a longer
+page-load time than client-side rendering, but still much faster than not using BigPipe at all.
 
-The *only* part of your code that you have to change to switch between one or the other is the `PageletRenderOptions`
-parameter you pass into the `BigPipe` constructor. Here is an example of how you could check the `User-Agent` header 
-and select `PageletRenderOptions.ServerSide` if you detect GoogleBot and `PageletRenderOptions.ClientSide` otherwise:
+The *only* part of your code that you have to change to switch between server-side and client-side rendering is the 
+`PageletRenderOptions` parameter you pass into the `BigPipe` constructor. Here is an example of how you could check 
+the `User-Agent` header and select `PageletRenderOptions.ServerSide` if you detect GoogleBot and 
+`PageletRenderOptions.ClientSide` otherwise:
 
 ```scala
 def index = Action { request =>
@@ -296,10 +290,10 @@ some `Future` (Scala) or `Promise` (Java) objects, render them into a `Future[Ht
 `new HtmlPagelet(id, future)` or `new HtmlPagelet(id, promise)` to wrap them in a `Pagelet` class. You can then compose 
 multiple `Pagelet` instances together using the `BigPipe` constructor.
 
-The `BigPipe` class has a `render` method that you use to actually render your pagelets. The `render` method process
-your `Pagelets` as necessary for server-side or client-side rendering and gives you a `Map` from `Pagelet.id` to the
-`HtmlStream` for that `Pagelet`. In your template, you should extract the `HtmlStream` for each of your `Pagelets` from
-this map and put it into the proper place in the markup:
+The `BigPipe` instance you get back has a `render` method that you use to actually render your pagelets. The `render` 
+method processes your `Pagelets` as necessary for server-side or client-side rendering and gives you a `Map` from 
+`Pagelet` id to the `HtmlStream` for that `Pagelet`. In your template, you should extract the `HtmlStream` for each of 
+your `Pagelets` from this map and put it into the proper place in the markup:
 
 ```html
 @bigPipe.render { pagelets =>
@@ -320,11 +314,12 @@ something like this:
 ```
 
 The actual content for your `Pagelet` will be streamed down at the very end (ie, at the bottom of all the markup you
-pass to the `BigPipe.render` method) and it will be wrapped in markup that makes it invisible when it first 
-arrives in the browser, plus some JavaScript that knows how to extract the content and inject it into the right 
-placeholder in the DOM. The markup sent back by each `Pagelet` is in 
-[com.ybrikman.bigpipe.pagelet.scala.html](big-pipe/src/main/twirl/com/ybrikman/bigpipe/pageletClientSide.scala.html) and looks 
-roughly like this:
+pass to the `BigPipe.render` method) and it will be wrapped in markup that makes it invisible when it first arrives in 
+the browser. It will also include some JavaScript that knows how to extract the content and inject it into the right 
+placeholder in the DOM. This is what allows the pagelets to be sent down in any order, but still render correctly on
+the page. The markup sent back by each `Pagelet` is in 
+[com.ybrikman.bigpipe.pagelet.scala.html](big-pipe/src/main/twirl/com/ybrikman/bigpipe/pageletClientSide.scala.html) 
+and looks roughly like this:
 
 ```html
 <code id="pagelet1"><!--Your content--></code>
@@ -485,7 +480,7 @@ as the actual content pops in. Alternatively, use JavaScript to ensure that the 
 bottom, even if they show up in a different order (e.g. set `display: none` until all the pagelets above the current 
 one have been filled in).
 
-## Why not AJAX
+## Why not AJAX?
 
 You could try to accomplish something similar to BigPipe by sending back a page that's empty and makes lots of AJAX 
 calls to fill in each pagelet. This approach is much slower than BigPipe for a number of reasons: 
