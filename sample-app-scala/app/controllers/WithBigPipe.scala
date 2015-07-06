@@ -1,10 +1,11 @@
 package controllers
 
-import com.ybrikman.ping.scalaapi.bigpipe.{HtmlStream, Pagelet}
-import data.FakeServiceClient
-import play.api.mvc.{Controller, Action}
-import play.api.libs.concurrent.Execution.Implicits._
+import com.ybrikman.ping.javaapi.bigpipe.PageletRenderOptions
 import com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamImplicits._
+import com.ybrikman.ping.scalaapi.bigpipe.{BigPipe, HtmlPagelet}
+import data.FakeServiceClient
+import play.api.libs.concurrent.Execution.Implicits._
+import play.api.mvc.{Action, Controller}
 
 /**
  * A page that uses BigPipe style streaming to show you how much faster it is to load.
@@ -24,17 +25,15 @@ class WithBigPipe(serviceClient: FakeServiceClient) extends Controller {
     val searchFuture = serviceClient.fakeRemoteCallFast("search")
 
     // Convert each Future into a Pagelet which will be rendered as HTML as soon as the data is available
-    val profile = Pagelet.fromHtmlFuture(profileFuture.map(views.html.helpers.module.apply), "profile")
-    val graph = Pagelet.fromHtmlFuture(graphFuture.map(views.html.helpers.module.apply), "graph")
-    val feed = Pagelet.fromHtmlFuture(feedFuture.map(views.html.helpers.module.apply), "feed")
-    val inbox = Pagelet.fromHtmlFuture(inboxFuture.map(views.html.helpers.module.apply), "inbox")
-    val ads = Pagelet.fromHtmlFuture(adsFuture.map(views.html.helpers.module.apply), "ads")
-    val search = Pagelet.fromHtmlFuture(searchFuture.map(views.html.helpers.module.apply), "search")
+    val profile = HtmlPagelet("profile", profileFuture.map(views.html.helpers.module.apply))
+    val graph = HtmlPagelet("graph", graphFuture.map(views.html.helpers.module.apply))
+    val feed = HtmlPagelet("feed", feedFuture.map(views.html.helpers.module.apply))
+    val inbox = HtmlPagelet("inbox", inboxFuture.map(views.html.helpers.module.apply))
+    val ads = HtmlPagelet("ads", adsFuture.map(views.html.helpers.module.apply))
+    val search = HtmlPagelet("search", searchFuture.map(views.html.helpers.module.apply))
 
-    // Compose all the pagelets into an HtmlStream
-    val body = HtmlStream.fromInterleavedPagelets(profile, graph, feed, inbox, ads, search)
-
-    // Render the streaming template immediately
-    Ok.chunked(views.stream.withBigPipe(body))
+    // Use BigPipe to compose the pagelets and render them immediately using a streaming template
+    val bigPipe = new BigPipe(PageletRenderOptions.ClientSide, profile, graph, feed, inbox, ads, search)
+    Ok.chunked(views.stream.withBigPipe(bigPipe, profile, graph, feed, inbox, ads, search))
   }
 }

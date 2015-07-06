@@ -1,60 +1,106 @@
 package com.ybrikman.ping.scalaapi.bigpipe
 
 import com.ybrikman.ping.javaapi.bigpipe.PageletContentType
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json.{JsValue, Json}
 import play.twirl.api.Html
 
 import scala.concurrent.{ExecutionContext, Future}
+import PageletConstants._
 
 /**
- * Create a "pagelet" that can be sent down the browser as soon as the given content is available and rendered
- * client-side into the correct spot on the page, as identified by the given DOM id. This is done by:
- *
- * 1. Wrapping the given content in HTML markup that will not be visible when the browser first processes it
- * 2. Adding JavaScript that will extract the hidden content and insert it into the proper location in the DOM
- *
- * Use the Pagelet.fromXXX methods to create Pagelets from a variety of types. Use the Pagelet.asHtmlXXX methods to
- * get the HTML/JS code that you should insert into your page.
- *
- * @param content
- * @param id
- * @param contentType
- * @param ec
+ * The base trait for "pagelets", which represent small, self-contained pieces of a page that can be rendered
+ * independently. 
  */
-class Pagelet(content: Future[String], id: String, contentType: PageletContentType, ec: ExecutionContext) {
+trait Pagelet {
+  /**
+   * A unique id for this Pagelet. Usually corresponds to the id in the DOM where this Pagelet should be inserted.
+   */
+  val id: String
 
-  def asHtmlFuture: Future[Html] = {
-    content.map(str => com.ybrikman.bigpipe.html.pagelet(str, id, contentType))(ec)
+  /**
+   * Render an HTML placeholder for this Pagelet. This will be filled in later using JavaScript code when the Pagelet
+   * data is available and shows up in the browser.
+   * 
+   * @param ec
+   * @return
+   */
+  def renderPlaceholder(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtml(com.ybrikman.bigpipe.html.pageletServerSide(id, EmptyContent))
   }
 
-  def asHtmlStream: HtmlStream = {
-    HtmlStream.fromHtmlFuture(asHtmlFuture)(ec)
+  /**
+   * Render all the HTML for this Pagelet server-side. This is typically used when the Pagelets are being streamed 
+   * in-order, which is useful for clients that do not support JavaScript and search engine crawlers (i.e. SEO).
+   * 
+   * @param ec
+   * @return
+   */
+  def renderServerSide(implicit ec: ExecutionContext): HtmlStream
+
+  /**
+   * Render the HTML for this Pagelet so that it's initially invisible and can be inserted into the proper place in the
+   * DOM client-side, using JavaScript. This is typically used when the Pagelets are being streamed out-of-order to 
+   * minimize the load-time for a page.
+   * 
+   * @param ec
+   * @return
+   */
+  def renderClientSide(implicit ec: ExecutionContext): HtmlStream
+}
+
+/**
+ * A Pagelet that contains HTML. Both server-side and client-side rendering are supported.
+ * 
+ * @param id
+ * @param content
+ */
+case class HtmlPagelet(id: String, content: Future[Html]) extends Pagelet {
+  override def renderServerSide(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtmlFuture(content.map(str => com.ybrikman.bigpipe.html.pageletServerSide(id, str.body)))
+  }
+
+  override def renderClientSide(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtmlFuture(content.map(str =>
+      com.ybrikman.bigpipe.html.pageletClientSide(str.body, id, PageletContentType.html)))
   }
 }
 
-object Pagelet {
-
-  def fromStringFuture(content: Future[String], id: String)(implicit ec: ExecutionContext): Pagelet = {
-    new Pagelet(content, id, PageletContentType.text, ec)
+/**
+ * A Pagelet that contains JSON. The general usage pattern is to send this JSON to the browser and render it using a
+ * client-side templating language, such as Mustache.js. Therefore, this Pagelet only supports client-side rendering
+ * and will throw an exception if you try to render it server-side.
+ * 
+ * @param id
+ * @param content
+ */
+case class JsonPagelet(id: String, content: Future[JsValue]) extends Pagelet {
+  override def renderServerSide(implicit ec: ExecutionContext): HtmlStream = {
+    throw new UnsupportedOperationException(s"Server-side rendering is not supported for ${getClass.getName}")
   }
 
-  def fromString(content: String, id: String)(implicit ec: ExecutionContext): Pagelet = {
-    fromStringFuture(Future.successful(content), id)
+  override def renderClientSide(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtmlFuture(content.map(json =>
+      com.ybrikman.bigpipe.html.pageletClientSide(Json.stringify(json), id, PageletContentType.json)))
+  }
+}
+
+/**
+ * A Pagelet that contains plain text. Both server-side and client-side rendering are supported.
+ * 
+ * @param id
+ * @param content
+ */
+case class TextPagelet(id: String, content: Future[String]) extends Pagelet {
+  override def renderServerSide(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtmlFuture(content.map(str => com.ybrikman.bigpipe.html.pageletServerSide(id, str)))
   }
 
-  def fromHtmlFuture(content: Future[Html], id: String)(implicit ec: ExecutionContext): Pagelet = {
-    new Pagelet(content.map(html => html.body), id, PageletContentType.html, ec)
+  override def renderClientSide(implicit ec: ExecutionContext): HtmlStream = {
+    HtmlStream.fromHtmlFuture(content.map(str =>
+      com.ybrikman.bigpipe.html.pageletClientSide(str, id, PageletContentType.text)))
   }
+}
 
-  def fromHtml(content: Html, id: String)(implicit ec: ExecutionContext): Pagelet = {
-    fromHtmlFuture(Future.successful(content), id)
-  }
-
-  def fromJsonFuture(content: Future[JsValue], id: String)(implicit ec: ExecutionContext): Pagelet = {
-    new Pagelet(content.map(json => Json.stringify(json)), id, PageletContentType.json, ec)
-  }
-
-  def fromJson(content: JsValue, id: String)(implicit ec: ExecutionContext): Pagelet = {
-    fromJsonFuture(Future.successful(content), id)
-  }
+object PageletConstants {
+  val EmptyContent = ""
 }

@@ -2,9 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# BigPipe examples
+# Examples without BigPipe
 GET        /withoutBigPipe        controllers.WithoutBigPipe.index
+
+# Examples with BigPipe
 GET        /withBigPipe           controllers.WithBigPipe.index
+GET        /serverSideRendering   controllers.MoreBigPipeExamples.serverSideRendering
 GET        /clientSideTemplating  controllers.MoreBigPipeExamples.clientSideTemplating
 GET        /errorHandling         controllers.MoreBigPipeExamples.errorHandling
 

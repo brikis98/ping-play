@@ -13,14 +13,30 @@ class IntegrationSpec extends Specification {
   }
 
   "Application" should {
-    "render page without big pipe" in new WithBrowser(app = app) {
+    "render the page without BigPipe" in new WithBrowser(app = app) {
       browser.goTo(s"http://localhost:$port/withoutBigPipe")
       browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
     }
 
-    "render the streaming WVYP page" in new WithBrowser(app = app) {
+    "render the page client-side with BigPipe" in new WithBrowser(app = app) {
       browser.goTo(s"http://localhost:$port/withBigPipe")
       browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+    }
+
+    "render the page server-side with BigPipe" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/serverSideRendering")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+    }
+
+    "render the page client-side with BigPipe and Mustache.js JavaScript templates" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/clientSideTemplating")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+    }
+
+    "handle errors while rendering with BigPipe" in new WithBrowser(app = app) {
+      browser.goTo(s"http://localhost:$port/errorHandling")
+      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
+      browser.$("#feed .id").getTexts.get(0) must equalTo("error")
     }
 
     "dedupe remote calls" in new WithBrowser(app = app) {
@@ -32,17 +48,6 @@ class IntegrationSpec extends Specification {
       values(0) mustEqual values(1)
       values(1) mustEqual values(2)
       values(1) mustNotEqual values(3)
-    }
-
-    "be able to render Mustache.js templates client-side" in new WithBrowser(app = app) {
-      browser.goTo(s"http://localhost:$port/clientSideTemplating")
-      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
-    }
-
-    "be able to handle errors" in new WithBrowser(app = app) {
-      browser.goTo(s"http://localhost:$port/errorHandling")
-      browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
-      browser.$("#feed .id").getTexts.get(0) must equalTo("error")
     }
   }
 }

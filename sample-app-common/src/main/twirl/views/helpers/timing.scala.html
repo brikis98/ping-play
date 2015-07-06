@@ -1,3 +1,4 @@
+<!-- This code is included only to display timings -->
 <table id="timing">
   <tr>
     <td><h4>Time to first byte:</h4></td>
@@ -8,17 +9,5 @@
     <td><h3 id="time-to-dom-loading" class="highlight"></h3></td>
   </tr>
 </table>
-<script>
-  if (window.performance && window.performance.timing) {
-    var timing = window.performance.timing;
+<script src="/assets/javascripts/timing.js"></script>
 
-    var timeToFirstByte = timing.responseStart - timing.requestStart;
-    var timeToDomLoading = timing.domLoading - timing.requestStart;
-
-    document.getElementById("time-to-first-byte").innerHTML = timeToFirstByte + "ms";
-    document.getElementById("time-to-dom-loading").innerHTML = timeToDomLoading + "ms";
-  } else {
-    document.getElementById("time-to-first-byte").innerHTML = "Navigation Timing API not supported in this browser"
-    document.getElementById("time-to-dom-loading").innerHTML = "Navigation Timing API not supported in this browser"
-  }
-</script>

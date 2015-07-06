@@ -42,6 +42,16 @@ object HtmlStream {
   }
 
   /**
+   * Create an HtmlStream from a Future that will eventually contain a String
+   *
+   * @param eventuallyString
+   * @return
+   */
+  def fromStringFuture(eventuallyString: Future[String])(implicit ec: ExecutionContext): HtmlStream = {
+    fromHtmlFuture(eventuallyString.map(Html.apply))
+  }
+
+  /**
    * Create an HtmlStream from Html
    *
    * @param html
@@ -89,27 +99,6 @@ object HtmlStream {
    */
   def fromResultFuture(result: Future[Result])(implicit ec: ExecutionContext): HtmlStream = {
     flatten(result.map(fromResult))
-  }
-
-  /**
-   * Create an HtmlStream that interleaves a number of pagelets together so that they stream down in whatever order
-   * they become available.
-   *
-   * @param pagelets
-   * @return
-   */
-  def fromInterleavedPagelets(pagelets: Pagelet*): HtmlStream = {
-    interleave(pagelets.map(_.asHtmlStream):_*)
-  }
-
-  /**
-   * Create an HtmlStream from the given pagelets, sent down in the order they are passed to this function.
-   *
-   * @param pagelets
-   * @return
-   */
-  def fromSequentialPagelets(pagelets: Pagelet*): HtmlStream = {
-    pagelets.foldLeft(HtmlStream.empty)((stream, pagelet) => stream.andThen(pagelet.asHtmlStream))
   }
 
   /**

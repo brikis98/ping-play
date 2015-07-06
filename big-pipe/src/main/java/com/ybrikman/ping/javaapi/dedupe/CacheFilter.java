@@ -1,7 +1,7 @@
 package com.ybrikman.ping.javaapi.dedupe;
 
+import com.ybrikman.ping.scalaapi.bigpipe.JavaAdapter;
 import com.ybrikman.ping.scalaapi.dedupe.BeforeAndAfterFilter;
-import com.ybrikman.ping.scalaapi.dedupe.JavaFunctionHelper;
 import play.libs.HttpExecution;
 import play.mvc.Http;
 import scala.concurrent.ExecutionContext;
@@ -22,8 +22,8 @@ public class CacheFilter<K, V> extends BeforeAndAfterFilter {
 
   public CacheFilter(DedupingCache<K, V> cache, ExecutionContext executionContext) {
     super(
-        JavaFunctionHelper.toScalaFunction(rh -> cache.initCacheForRequest(contextFromRequestHeader(rh))),
-        JavaFunctionHelper.toScalaFunction(rh -> cache.cleanupCacheForRequest(contextFromRequestHeader(rh))),
+        JavaAdapter.javaConsumerToScalaFunction(rh -> cache.initCacheForRequest(contextFromRequestHeader(rh))),
+        JavaAdapter.javaConsumerToScalaFunction(rh -> cache.cleanupCacheForRequest(contextFromRequestHeader(rh))),
         executionContext);
   }
 

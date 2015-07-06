@@ -5,6 +5,7 @@
 # BigPipe examples
 GET        /withoutBigPipe           controllers.WithoutBigPipe.index
 GET        /withBigPipe              controllers.WithBigPipe.index
+GET        /serverSideRendering      controllers.MoreBigPipeExamples.serverSideRendering
 GET        /clientSideTemplating     controllers.MoreBigPipeExamples.clientSideTemplating
 GET        /errorHandling            controllers.MoreBigPipeExamples.errorHandling
 

@@ -110,7 +110,7 @@ lazy val rootSettings = Seq(
 // You must added these settings to your Play app to be able to use .scala.stream templates for BigPipe-style streaming
 lazy val streamingTemplateSettings = Seq(
   TwirlKeys.templateFormats ++= Map("stream" -> "com.ybrikman.ping.scalaapi.bigpipe.HtmlStreamFormat"),
-  TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream")
+  TwirlKeys.templateImports ++= Vector("com.ybrikman.ping.scalaapi.bigpipe.HtmlStream", "com.ybrikman.ping.scalaapi.bigpipe._")
 )
 
 lazy val updateVersionNumberInReadme = taskKey[String]("Updates the version number in the README to the current version")

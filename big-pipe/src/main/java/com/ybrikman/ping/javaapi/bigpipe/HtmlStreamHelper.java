@@ -1,7 +1,7 @@
 package com.ybrikman.ping.javaapi.bigpipe;
 
 import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream;
-import com.ybrikman.ping.scalaapi.bigpipe.JavaStreamHelper;
+import com.ybrikman.ping.scalaapi.bigpipe.JavaAdapter;
 import play.api.http.ContentTypeOf;
 import play.api.http.Writeable;
 import play.api.libs.iteratee.Enumerator;
@@ -16,7 +16,6 @@ import scala.concurrent.ExecutionContext;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HtmlStreamHelper {
 
@@ -60,27 +59,6 @@ public class HtmlStreamHelper {
     return HtmlStream.fromResultFuture(result.map(Result::toScala, ec).wrapped(), ec);
   }
 
-  public static HtmlStream fromInterleavedPagelets(List<Pagelet> pagelets) {
-    return interleave(pagelets.stream().map(Pagelet::asHtmlStream).collect(Collectors.toList()));
-  }
-
-  public static HtmlStream fromInterleavedPagelets(Pagelet ... pagelets) {
-    return fromInterleavedPagelets(Arrays.asList(pagelets));
-  }
-
-  public static HtmlStream fromSequentialPagelets(List<Pagelet> pagelets) {
-    return pagelets
-        .stream()
-        .sequential()
-        .map(Pagelet::asHtmlStream)
-        .reduce(HtmlStream::andThen)
-        .orElse(HtmlStream.empty());
-  }
-
-  public static HtmlStream fromSequentialPagelets(Pagelet ... pagelets) {
-    return fromSequentialPagelets(Arrays.asList(pagelets));
-  }
-
   public static HtmlStream flatten(Promise<HtmlStream> stream) {
     return flatten(stream, HttpExecution.defaultContext());
   }
@@ -105,7 +83,7 @@ public class HtmlStreamHelper {
     return new Results.Chunks<Html>(Writeable.writeableOf_Content(codec, ContentTypeOf.contentTypeOf_Html(codec))) {
       @Override
       public void onReady(Out<Html> out) {
-        JavaStreamHelper.writeEnumeratorToOut(stream.enumerator(), out, executionContext);
+        JavaAdapter.writeEnumeratorToOut(stream.enumerator(), out, executionContext);
       }
     };
   }

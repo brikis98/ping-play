@@ -1,8 +1,10 @@
 package controllers;
 
+import com.ybrikman.ping.javaapi.bigpipe.BigPipe;
+import com.ybrikman.ping.javaapi.bigpipe.HtmlPagelet;
 import com.ybrikman.ping.javaapi.bigpipe.HtmlStreamHelper;
 import com.ybrikman.ping.javaapi.bigpipe.Pagelet;
-import com.ybrikman.ping.scalaapi.bigpipe.HtmlStream;
+import com.ybrikman.ping.javaapi.bigpipe.PageletRenderOptions;
 import data.Response;
 import helper.FakeServiceClient;
 import play.libs.F;
@@ -30,17 +32,15 @@ public class WithBigPipe extends Controller {
     F.Promise<Response> searchPromise = serviceClient.fakeRemoteCallFast("search");
 
     // Convert each Promise into a Pagelet which will be rendered as HTML as soon as the data is available.
-    Pagelet profile = Pagelet.fromHtmlPromise(profilePromise.map(views.html.helpers.module::apply), "profile");
-    Pagelet graph = Pagelet.fromHtmlPromise(graphPromise.map(views.html.helpers.module::apply), "graph");
-    Pagelet feed = Pagelet.fromHtmlPromise(feedPromise.map(views.html.helpers.module::apply), "feed");
-    Pagelet inbox = Pagelet.fromHtmlPromise(inboxPromise.map(views.html.helpers.module::apply), "inbox");
-    Pagelet ads = Pagelet.fromHtmlPromise(adsPromise.map(views.html.helpers.module::apply), "ads");
-    Pagelet search = Pagelet.fromHtmlPromise(searchPromise.map(views.html.helpers.module::apply), "search");
+    Pagelet profile = new HtmlPagelet("profile", profilePromise.map(views.html.helpers.module::apply));
+    Pagelet graph = new HtmlPagelet("graph", graphPromise.map(views.html.helpers.module::apply));
+    Pagelet feed = new HtmlPagelet("feed", feedPromise.map(views.html.helpers.module::apply));
+    Pagelet inbox = new HtmlPagelet("inbox", inboxPromise.map(views.html.helpers.module::apply));
+    Pagelet ads = new HtmlPagelet("ads", adsPromise.map(views.html.helpers.module::apply));
+    Pagelet search = new HtmlPagelet("search", searchPromise.map(views.html.helpers.module::apply));
 
-    // Compose all the pagelets into an HtmlStream
-    HtmlStream body = HtmlStreamHelper.fromInterleavedPagelets(profile, graph, feed, inbox, ads, search);
-
-    // Render the streaming template immediately
-    return ok(HtmlStreamHelper.toChunks(views.stream.withBigPipe.apply(body)));
+    // Use BigPipe to compose the pagelets and render them immediately using a streaming template
+    BigPipe bigPipe = new BigPipe(PageletRenderOptions.ClientSide, profile, graph, feed, inbox, ads, search);
+    return ok(HtmlStreamHelper.toChunks(views.stream.withBigPipe.apply(bigPipe, profile, graph, feed, inbox, ads, search)));
   }
 }

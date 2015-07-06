@@ -1,8 +1,8 @@
 package com.ybrikman.ping.javaapi.dedupe;
 
+import com.ybrikman.ping.scalaapi.bigpipe.JavaAdapter;
 import com.ybrikman.ping.scalaapi.dedupe.Cache;
 import com.ybrikman.ping.scalaapi.dedupe.CacheNotInitializedException;
-import com.ybrikman.ping.scalaapi.dedupe.JavaFunctionHelper;
 import play.mvc.Http;
 
 import javax.inject.Singleton;
@@ -63,7 +63,7 @@ public class DedupingCache<K, V> {
    * @return
    */
   public V get(K key, Supplier<V> valueIfMissing, Http.Context context) {
-    return getCacheForPlayRequest(context).getOrElseUpdate(key, JavaFunctionHelper.toScalaFunction(valueIfMissing));
+    return getCacheForPlayRequest(context).getOrElseUpdate(key, JavaAdapter.javaSupplierToScalaFunction(valueIfMissing));
   }
 
   /**
@@ -86,7 +86,7 @@ public class DedupingCache<K, V> {
   }
 
   private Cache<K, V> getCacheForPlayRequest(Http.Context context) {
-    return cache.get(context.id()).getOrElse(JavaFunctionHelper.toScalaFunction(() -> {
+    return cache.get(context.id()).getOrElse(JavaAdapter.javaSupplierToScalaFunction(() -> {
       throw new CacheNotInitializedException(
           "No cache found for request with id " + context.id() + " Did you add " +
               CacheFilter.class.getName() + " to your filter chain?");

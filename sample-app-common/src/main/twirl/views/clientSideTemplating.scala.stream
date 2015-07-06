@@ -1,4 +1,4 @@
-@(body: HtmlStream)
+@(bigPipe: BigPipe, profile: Pagelet, graph: Pagelet, feed: Pagelet, inbox: Pagelet, ads: Pagelet, search: Pagelet)
 
 <html>
   <head>
@@ -13,20 +13,21 @@
   <body>
     <h1>With Big Pipe and Client-Side Templating</h1>
     @HtmlStream.fromHtml(views.html.helpers.timing())
-    <!-- These are placeholders that will be filled in as the data becomes available -->
-    <table class="wrapper">
-      <tr>
-        <td><div id="profile"></div></td>
-        <td><div id="ads"></div></td>
-        <td><div id="feed"></div></td>
-      </tr>
-      <tr>
-        <td><div id="search"></div></td>
-        <td><div id="inbox"></div></td>
-        <td><div id="graph"></div></td>
-      </tr>
-    </table>
 
-    @body
+    @bigPipe.render { pagelets =>
+      <table class="wrapper">
+        <tr>
+          <td>@pagelets(profile.id)</td>
+          <td>@pagelets(ads.id)</td>
+          <td>@pagelets(feed.id)</td>
+        </tr>
+        <tr>
+          <td>@pagelets(search.id)</td>
+          <td>@pagelets(inbox.id)</td>
+          <td>@pagelets(graph.id)</td>
+        </tr>
+      </table>
+    }
+
   </body>
 </html>
