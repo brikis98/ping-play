@@ -523,6 +523,18 @@ version 1.0.0, backwards compatibility is *not* guaranteed, so expect APIs to ch
 Contributions in the form of bug reports and pull requests are very welcome. If you're using this project in production,
 [drop me a line](mailto:jim@ybrikman.com), as I'd love to hear about your experiences! 
 
+## Changelog
+
+### 0.12 (07/06/15)
+
+* Added support for server-side rendering. 
+* Refactored the `Pagelet` API into a trait and subclasses
+* Added the `BigPipe` class for composing and rendering `Pagelets` 
+
+### 0.11
+
+* First public release.
+
 ## TODO
 
 1. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
@@ -539,8 +551,12 @@ This project is published to Sonatype as described in the
 project uses the [sbt-sonatype](https://github.com/xerial/sbt-sonatype), [sbt-pgp](http://www.scala-sbt.org/sbt-pgp), 
 and [sbt-release](https://github.com/sbt/sbt-release) plugins.
 
-To release a new version, you must have your PGP keys already setup 
-([docs here](http://www.scala-sbt.org/release/docs/Using-Sonatype.html#First+-+PGP+Signatures)) and then you can run:
+To release a new version:
+
+1. Add an entry to the [Changelog](#Changelog) in this README.
+2. Make sure your PGP keys are setup 
+([docs here](http://www.scala-sbt.org/release/docs/Using-Sonatype.html#First+-+PGP+Signatures)) 
+3. Run the SBT `release` command:
 
 ```
 activator shell
