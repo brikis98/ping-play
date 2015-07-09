@@ -562,11 +562,10 @@ versions.
 
 1. Publish artifacts automatically as part of the build process instead of doing it manually.
 2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-3. Add automated tests that check the actual timing of the BigPipe streaming.
-4. Add support for pagelet priorities.
-5. Add support for only rendering content that's visible.
-6. Add support for monitoring hooks for each pagelet.
-7. Turn the sample apps into Activator templates
+3. Add support for pagelet priorities.
+4. Add support for only rendering content that's visible.
+5. Add support for monitoring hooks for each pagelet.
+6. Turn the sample apps into Activator templates
 
 # License
 

@@ -1,0 +1,7 @@
+package com.ybrikman.ping
+
+class DedupeSpec extends BaseDedupeSpec with PingJavaTestComponents
+
+class BigPipeSpec extends BaseBigPipeSpec with PingJavaTestComponents
+
+class BigPipeTimingSpec extends BaseBigPipeTimingSpec with PingJavaTestComponents

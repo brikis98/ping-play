@@ -43,7 +43,7 @@ class PingComponents(context: Context) extends BuiltInComponentsFromContext(cont
 
   val assets = new Assets(httpErrorHandler)
 
-  override val router: Router = new Routes(
+  val routes =  new Routes(
     httpErrorHandler,
     withoutBigPipe,
     withBigPipe,
@@ -51,6 +51,8 @@ class PingComponents(context: Context) extends BuiltInComponentsFromContext(cont
     deduping,
     mock,
     assets)
+
+  override val router: Router = routes
 
   val cacheFilter = new CacheFilter(cache)
   override lazy val httpFilters = Seq(cacheFilter)

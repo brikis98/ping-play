@@ -15,13 +15,13 @@ lazy val sampleAppCommon = (project in file("sample-app-common"))
 lazy val sampleAppScala = (project in file("sample-app-scala"))
   .settings(sampleAppScalaSettings:_*)
   .enablePlugins(PlayScala)
-  .dependsOn(bigPipe, sampleAppCommon)
+  .dependsOn(bigPipe, sampleAppCommon % "test->test;compile->compile")
 
 // The Java sample app
 lazy val sampleAppJava = (project in file("sample-app-java"))
   .settings(sampleAppJavaSettings:_*)
   .enablePlugins(PlayJava)
-  .dependsOn(bigPipe, sampleAppCommon)
+  .dependsOn(bigPipe, sampleAppCommon % "test->test;compile->compile")
 
 // The root project
 lazy val root = (project in file("."))
@@ -51,6 +51,7 @@ lazy val sampleAppCommonSettings = Seq(
   name := "sample-app-common",
   libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play" % play.core.PlayVersion.current,
+    ws % Test,
     specs2 % Test
   )
 ) ++ commonSettings ++ streamingTemplateSettings
