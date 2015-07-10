@@ -520,8 +520,12 @@ version 1.0.0, backwards compatibility is *not* guaranteed, so expect APIs to ch
 
 ## Contributing
 
-Contributions in the form of bug reports and pull requests are very welcome. If you're using this project in production,
-[drop me a line](mailto:jim@ybrikman.com), as I'd love to hear about your experiences! 
+Contributions in the form of bug reports and pull requests are very welcome. 
+Check out the [help wanted label](https://github.com/brikis98/ping-play/labels/help%20wanted)
+for ideas.
+
+Also, if you're using this project in production, [drop me a line](mailto:jim@ybrikman.com), 
+as I'd love to hear about your experiences! 
 
 ## Changelog
 
@@ -560,12 +564,10 @@ versions.
 
 ## TODO
 
-1. Publish artifacts automatically as part of the build process instead of doing it manually.
-2. Finish the "Composable pagelets" implementation and documentation (it is currently unfinished and untested).
-3. Add support for pagelet priorities.
-4. Add support for only rendering content that's visible.
-5. Add support for monitoring hooks for each pagelet.
-6. Turn the sample apps into Activator templates
+1. The implementation, tests, and documentation for "composing" pagelets are not
+   yet finished. See #18.
+2. There are a number of feature requests. See the [enhancement label](https://github.com/brikis98/ping-play/labels/enhancement)
+   in issues.
 
 # License
 
