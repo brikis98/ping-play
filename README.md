@@ -565,7 +565,7 @@ versions.
 ## TODO
 
 1. The implementation, tests, and documentation for "composing" pagelets are not
-   yet finished. See #18.
+   yet finished. See [#18](https://github.com/brikis98/ping-play/issues/18).
 2. There are a number of feature requests. See the [enhancement label](https://github.com/brikis98/ping-play/labels/enhancement)
    in issues.
 
