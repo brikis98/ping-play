@@ -529,7 +529,7 @@ as I'd love to hear about your experiences!
 
 ## Changelog
 
-### 0.12 (10/22/15)
+### 0.13 (10/22/15)
 
 * Fix issue where the pagelet body was not being escaped correctly
 
