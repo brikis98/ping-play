@@ -1,6 +1,7 @@
 package com.ybrikman.ping
 
 import play.api.test.WithBrowser
+import data.FakeServiceClient
 
 /**
  * End-to-end tests of BigPipe functionality. The Scala and Java sample apps can extend this trait to run all the tests
@@ -32,6 +33,11 @@ trait BaseBigPipeSpec extends PingSpecification {
       browser.goTo(s"http://localhost:$port/errorHandling")
       browser.$("#profile .id").getTexts.get(0) must equalTo("profile")
       browser.$("#feed .id").getTexts.get(0) must equalTo("error")
+    }
+
+    "escape the body of pagelets when using BigPipe" in new WithBrowser(app = createTestComponents().app) {
+      browser.goTo(s"http://localhost:$port/escaping")
+      browser.$("#shouldBeEscaped .id").getTexts.get(0) must equalTo(FakeServiceClient.RESPONSE_TO_TEST_ESCAPING)
     }
   }
 }

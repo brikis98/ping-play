@@ -15,7 +15,7 @@ class TestEmbed extends Specification {
     }
 
     "escape all double dashes" >> {
-      Embed.escapeForEmbedding("foo--bar--baz") mustEqual Html("foo\u002d\u002dbar\u002d\u002dbaz")
+      Embed.escapeForEmbedding("foo--bar--baz") mustEqual Html("foo\\u002d\\u002dbar\\u002d\\u002dbaz")
     }
   }
 }

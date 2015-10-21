@@ -44,6 +44,8 @@ object FakeServiceClient {
   val FAST_RESPONSE_TIME_IN_MILLIS = 5
   val MEDIUM_RESPONSE_TIME_IN_MILLIS = 500
   val SLOW_RESPONSE_TIME_IN_MILLIS = 3000
+
+  val RESPONSE_TO_TEST_ESCAPING = "Escaping test <!-- This comment should be escaped in the HTML -->"
 }
 
 case class FakeRemoteCallException(response: Response) extends RuntimeException(s"""Error in "${response.id}" after ${response.delay} ms""")

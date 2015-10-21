@@ -46,6 +46,6 @@ object Embed {
    * @return
    */
   private def escapeDashes(str: String): String = {
-    str.replaceAll("--", "\u002d\u002d")
+    str.replaceAll("--", "\\\\\\u002d\\\\\\u002d")
   }
 }

@@ -1,0 +1,21 @@
+@(bigPipe: BigPipe, shouldBeEscaped: Pagelet)
+
+<html>
+  <head>
+    <link rel="stylesheet" href="/assets/stylesheets/main.css">
+    <!-- You need to include the BigPipe JavaScript at the top of the page -->
+    <script src="/assets/com/ybrikman/ping/big-pipe.js"></script>
+    <!-- Include mustache.js, a client-side templating library -->
+    <script src="/assets/javascripts/mustache.js"></script>
+    <!-- Include custom code that will allow you to use BigPipe with mustache.js -->
+    <script src="/assets/javascripts/big-pipe-with-mustache.js"></script>
+  </head>
+  <body>
+    <h1>Big Pipe Escaping Test</h1>
+
+    @bigPipe.render { pagelets =>
+      @pagelets(shouldBeEscaped.id)
+    }
+
+    </body>
+</html>

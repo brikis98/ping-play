@@ -9,6 +9,7 @@ import com.ybrikman.ping.javaapi.bigpipe.Pagelet;
 import com.ybrikman.ping.javaapi.bigpipe.PageletRenderOptions;
 import data.Response;
 import helper.FakeServiceClient;
+import data.FakeServiceClient$;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -118,6 +119,23 @@ public class MoreBigPipeExamples extends Controller {
     // Use BigPipe to compose the pagelets and render them immediately using a streaming template
     BigPipe bigPipe = new BigPipe(PageletRenderOptions.ClientSide, profile, graph, feed, inbox, ads, search);
     return ok(HtmlStreamHelper.toChunks(views.stream.withBigPipe.apply(bigPipe, profile, graph, feed, inbox, ads, search)));
+  }
+
+  /**
+   * Shows an example of how BigPipe escapes the contents of your pagelets so
+   * they cannot break out of their containing HTML elements (which are
+   * intentionally invisible).
+   *
+   * @return
+   */
+  public Result escaping() {
+    F.Promise<JsonNode> shouldBeEscapedPromise = serviceClient.fakeRemoteCallJsonFast(FakeServiceClient$.MODULE$.RESPONSE_TO_TEST_ESCAPING());
+
+    Pagelet shouldBeEscaped = new JsonPagelet("shouldBeEscaped", shouldBeEscapedPromise);
+
+    BigPipe bigPipe = new BigPipe(PageletRenderOptions.ClientSide, shouldBeEscaped);
+
+    return ok(HtmlStreamHelper.toChunks(views.stream.escaping.apply(bigPipe, shouldBeEscaped)));
   }
 
   /**

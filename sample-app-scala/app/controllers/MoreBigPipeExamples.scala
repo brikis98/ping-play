@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 /**
  * A few more BigPipe examples
- * 
+ *
  * @param serviceClient
  */
 class MoreBigPipeExamples(serviceClient: FakeServiceClient) extends Controller {
@@ -51,9 +51,9 @@ class MoreBigPipeExamples(serviceClient: FakeServiceClient) extends Controller {
   }
 
   /**
-   * Instead of rendering each pagelet server-side with Play's templating, you can send back JSON and render each 
+   * Instead of rendering each pagelet server-side with Play's templating, you can send back JSON and render each
    * pagelet with a client-side templating library such as mustache.js
-   * 
+   *
    * @return
    */
   def clientSideTemplating = Action {
@@ -109,6 +109,22 @@ class MoreBigPipeExamples(serviceClient: FakeServiceClient) extends Controller {
     // Use BigPipe to compose the pagelets and render them immediately using a streaming template
     val bigPipe = new BigPipe(PageletRenderOptions.ClientSide, profile, graph, feed, inbox, ads, search)
     Ok.chunked(views.stream.withBigPipe(bigPipe, profile, graph, feed, inbox, ads, search))
+  }
+
+  /**
+   * Shows an example of how BigPipe escapes the contents of your pagelets so
+   * they cannot break out of their containing HTML elements (which are
+   * intentionally invisible).
+   *
+   * @return
+   */
+  def escaping = Action {
+    val shouldBeEscapedFuture = serviceClient.fakeRemoteCallJsonFast(FakeServiceClient.RESPONSE_TO_TEST_ESCAPING)
+
+    val shouldBeEscaped = JsonPagelet("shouldBeEscaped", shouldBeEscapedFuture)
+
+    val bigPipe = new BigPipe(PageletRenderOptions.ClientSide, shouldBeEscaped)
+    Ok.chunked(views.stream.escaping(bigPipe, shouldBeEscaped))
   }
 
   /**
