@@ -569,7 +569,8 @@ versions.
 ## TODO
 
 1. The implementation, tests, and documentation for "composing" pagelets are not
-   yet finished. See [#18](https://github.com/brikis98/ping-play/issues/18).
+   yet finished. See [#18](https://github.com/brikis98/ping-play/issues/18). Note, you can find an implementation of composable
+   pagelets in the [splink/pagelets](https://github.com/splink/pagelets) library. Perhaps the two can be merged?
 2. There are a number of feature requests. See the [enhancement label](https://github.com/brikis98/ping-play/labels/enhancement)
    in issues.
 
